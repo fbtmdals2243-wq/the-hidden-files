@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Hidden Files — Mobile Archive OS</title>
+<style>
+:root{
+  --bg:#040605;--panel:#0b120f;--green:#12382c;--gold:#b99355;--paper:#d8c6a0;
+  --ink:#21190f;--red:#8f3028;--muted:#9e9582;--line:rgba(185,147,85,.35)
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:#020302;color:#efe6d2;font-family:Georgia,"Times New Roman",serif}
+body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% 0,#173226,#040605 58%,#000);z-index:-2}
+body:after{content:"";position:fixed;inset:0;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 3px);opacity:.18;pointer-events:none;z-index:-1}
+button,input{font:inherit}
+#boot{position:fixed;inset:0;background:#020302;z-index:99;display:grid;place-items:center;padding:22px}
+.bootbox{width:min(760px,100%);border:1px solid var(--line);background:rgba(8,12,10,.95);padding:28px;box-shadow:0 40px 120px #000}
+.bootbox h1{font-size:42px;line-height:1;color:var(--gold);letter-spacing:3px;margin:0 0 10px;text-transform:uppercase}
+.bootbox p{color:var(--muted);line-height:1.6}.bar{height:12px;border:1px solid var(--line);margin:20px 0;overflow:hidden}.bar div{height:100%;width:44%;background:var(--gold)}
+.btn{background:var(--green);border:1px solid var(--gold);color:#fff;padding:13px 16px;cursor:pointer;border-radius:2px}
+.app{min-height:100vh;padding-bottom:76px}
+header{position:sticky;top:0;z-index:20;background:rgba(4,6,5,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:16px}
+.brand{display:flex;align-items:center;gap:12px}.mark{width:48px;height:48px;border:1px solid var(--gold);display:grid;place-items:center;color:var(--gold);font-size:24px}.brand h2{margin:0;color:var(--gold);font-size:18px;letter-spacing:1.5px}.brand small{color:var(--muted)}
+.searchrow{display:flex;gap:8px;margin-top:14px}.search{flex:1;background:#020302;border:1px solid var(--line);color:#efe6d2;padding:12px;min-width:0}
+main{padding:16px;max-width:980px;margin:0 auto}.page{display:none}.page.on{display:block;animation:fade .2s ease}@keyframes fade{from{opacity:.35;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012));padding:17px;margin-bottom:14px;box-shadow:0 18px 50px rgba(0,0,0,.34)}
+.paper{background:var(--paper);color:var(--ink);border:1px solid #806c45;padding:19px;margin-bottom:14px;box-shadow:0 18px 50px rgba(0,0,0,.38)}
+h1,h2,h3{margin-top:0;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase}.paper h1,.paper h2,.paper h3{color:#2a1c0c}
+.muted{color:var(--muted)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{border:1px solid var(--line);padding:12px;background:rgba(0,0,0,.22)}.stat b{font-size:30px;color:var(--gold)}
+.terminal{font-family:"Courier New",monospace;background:#020403;color:#9efac4;border:1px solid #1a6b43;padding:14px;white-space:pre-wrap;line-height:1.5;font-size:13px}
+.list{display:grid;gap:10px}.item{border:1px solid var(--line);padding:13px;background:rgba(0,0,0,.25);cursor:pointer}.item:active{background:rgba(18,56,44,.65)}.item b{color:#fff}.caption{font-size:13px;color:var(--muted)}
+.stamp{display:inline-block;color:var(--red);border:2px solid var(--red);padding:4px 9px;transform:rotate(-3deg);font-weight:bold;margin-bottom:10px}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:8px;font-size:14px}.kv b{color:#674516}
+.node{display:inline-block;border:1px solid var(--line);padding:8px 10px;margin:5px 4px;background:rgba(0,0,0,.25);cursor:pointer}.paper .node{border-color:#7e5a2a;color:#43280c;background:rgba(255,255,255,.16)}
+.boxgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.artifact{min-height:120px;border:1px solid var(--line);display:grid;place-items:center;text-align:center;padding:10px;background:linear-gradient(135deg,rgba(216,198,160,.12),rgba(0,0,0,.25))}
+nav{position:fixed;left:0;right:0;bottom:0;background:rgba(4,6,5,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);z-index:30}
+nav button{border:0;border-right:1px solid rgba(185,147,85,.16);background:transparent;color:#d9ceb8;padding:10px 4px;font-size:11px;min-height:58px}
+nav button.on{color:var(--gold);background:rgba(18,56,44,.5)}
+.trail{font-size:12px;margin-bottom:10px;overflow-x:auto;white-space:nowrap}.filter{display:flex;gap:8px;overflow:auto;margin-bottom:12px}.filter button{white-space:nowrap;background:#070b09;border:1px solid var(--line);color:#efe6d2;padding:8px}.filter button.on{background:var(--green);border-color:var(--gold)}
+.lock{filter:blur(.6px);opacity:.9}.redacted{background:#111;color:#111;border-radius:2px;padding:0 18px}
+@media(min-width:780px){.boxgrid{grid-template-columns:repeat(4,1fr)}.grid2{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<section id="boot">
+  <div class="bootbox">
+    <h1>The Hidden Files</h1>
+    <p>Recovered Records from the British Magical Archives</p>
+    <div class="bar"><div></div></div>
+    <p>Restoration progress: 44% · Collection unlocked: BOX 17</p>
+    <button class="btn" onclick="enter()">ENTER ARCHIVE OS</button>
+  </div>
+</section>
+
+<div class="app">
+<header>
+  <div class="brand"><div class="mark">HF</div><div><h2>The Hidden Files</h2><small>Archive OS · Mobile v0.1</small></div></div>
+  <div class="searchrow">
+    <input id="q" class="search" placeholder="Search: Ryu, Lethe, Traitor, Box 17...">
+    <button class="btn" onclick="search()">Search</button>
+  </div>
+</header>
+
+<main>
+  <div id="trail" class="trail muted"></div>
+
+  <section id="dashboard" class="page on">
+    <div class="card">
+      <h1>Recovered Archive</h1>
+      <div class="grid2">
+        <div class="stat"><b id="pcount">0</b><br>People</div>
+        <div class="stat"><b id="ccount">0</b><br>Cases</div>
+        <div class="stat"><b id="rcount">0</b><br>Records</div>
+        <div class="stat"><b>44%</b><br>Restored</div>
+      </div>
+    </div>
+    <div class="terminal">ARCHIVE OS ONLINE
+COLLECTION: BOX 17
+CORE SUBJECT: EMP-0471
+WARNING: CASE-T00017 IS SEALED
+TIP: Search "Ryu" or "Lethe"</div>
+    <div class="card">
+      <h2>Recommended Trails</h2>
+      <p><span class="node" onclick="openId('EMP-0471')">EMP-0471</span><span class="node" onclick="openId('CASE-A23791')">CASE-A23791</span><span class="node" onclick="openId('EVD-A23791-01')">EVD-A23791-01</span></p>
+      <p><span class="node" onclick="openId('CASE-T00017')">CASE-T00017</span><span class="node" onclick="openId('EMP-1021')">EMP-1021</span><span class="node" onclick="openId('PHOTO-2027-022')">PHOTO-2027-022</span></p>
+    </div>
+  </section>
+
+  <section id="people" class="page"><div class="card"><h1>People</h1><div id="peopleList" class="list"></div></div></section>
+  <section id="cases" class="page"><div class="card"><h1>Cases</h1><div id="caseList" class="list"></div></div></section>
+  <section id="records" class="page"><div class="card"><h1>Records</h1><div class="filter" id="filters"></div><div id="recordList" class="list"></div></div></section>
+  <section id="box17" class="page"><div class="card"><h1>Box 17</h1><p class="muted">Recovered physical traces linked to EMP-0471.</p><div id="boxGrid" class="boxgrid"></div></div></section>
+  <section id="results" class="page"><div class="card"><h1>Search Results</h1><div id="resultList" class="list"></div></div></section>
+  <section id="viewer" class="page"><div id="detail"></div></section>
+</main>
+
+<nav>
+  <button onclick="show('dashboard')" class="on" data-tab="dashboard">Home</button>
+  <button onclick="show('people')" data-tab="people">People</button>
+  <button onclick="show('cases')" data-tab="cases">Cases</button>
+  <button onclick="show('records')" data-tab="records">Records</button>
+  <button onclick="show('box17')" data-tab="box17">Box 17</button>
+</nav>
+</div>
+
+<script>
+const db = {
+ people:[
+{id:"EMP-0471",name:"Ryu TaeO",role:"Senior Auror",org:"Special Investigations Division",clearance:"LEVEL V",status:"ACTIVE",summary:"Evidence-driven Senior Auror. Known for restraint, quiet field command, and refusal to close a case without proof.",links:["CASE-A23791","CASE-T00017","CASE-M00918","EDU-2012-001","WND-88201","GV-718-K","HR-2025-017","BOX17-INDEX"]},
+{id:"EMP-0312",name:"Noah Byrne",role:"Captain",org:"Special Investigations Division",clearance:"LEVEL V",status:"ACTIVE",summary:"SID Captain. Values clean evidence over clean headlines.",links:["EMP-0471","CASE-A23791","OWL-02081","HR-2025-017"]},
+{id:"EMP-0528",name:"Isla Mercer",role:"Magical Forensic Analyst",org:"Magical Forensics Bureau",clearance:"RESTRICTED",status:"ACTIVE",summary:"Specialist in curse residue and memory-fragment contamination.",links:["CASE-A23791","EVD-A23791-02","LAB-2025-188"]},
+{id:"EMP-0844",name:"Mara Venn",role:"Internal Affairs Investigator",org:"Internal Affairs",clearance:"EYES ONLY",status:"ACTIVE",summary:"Assigned to the sealed betrayal inquiry.",links:["CASE-T00017","IA-2028-001","IA-2028-009"]},
+{id:"EMP-1021",name:"Theo March",role:"Junior Auror",org:"Special Investigations Division",clearance:"SEALED",status:"UNKNOWN",summary:"Junior Auror connected to the sealed betrayal inquiry. Full profile unavailable.",links:["CASE-T00017","IA-2028-001","PHOTO-2027-022"]},
+{id:"MLO-0188",name:"Eleanor Ashcombe",role:"Family Liaison Officer",org:"Magical Liaison Office",clearance:"OFFICIAL",status:"RETIRED",summary:"Handled TaeO's first contact with the magical world in 2012.",links:["EDU-2012-001","EDU-2012-002","MLO-2012-044"]},
+{id:"PRS-0042",name:"Agnes Vale",role:"Reporter",org:"Daily Prophet",clearance:"PUBLIC",status:"ACTIVE",summary:"Covered the Crown of Lethe promotion story; often frames TaeO more heroically than records support.",links:["DP-2025-044","DP-2028-013"]},
+{id:"ARC-0906",name:"Julian Wren",role:"Archive Recovery Officer",org:"British Magical Archives",clearance:"RESTRICTED",status:"ACTIVE",summary:"First catalogued Box 17 in 2048.",links:["ARC-2048-017","BOX17-INDEX"]}
+ ],
+ cases:[
+{id:"CASE-A23791",title:"The Crown of Lethe",year:2025,classification:"LEVEL V",status:"Closed",lead:"EMP-0471",summary:"A memory-stealing crown recovered after witness-memory anomalies across three districts.",links:["CASE-A23791-RPT","DP-2025-044","OWL-02081","HR-2025-017","EVD-A23791-01","EVD-A23791-02","LAB-2025-188"]},
+{id:"CASE-M00918",title:"The Black Mirror Case",year:2026,classification:"EYES ONLY",status:"Restricted",lead:"EMP-0471",summary:"Mirror network reflecting rooms that did not exist in the current building plan.",links:["MED-2026-004","CASE-M00918-RPT"]},
+{id:"CASE-T00017",title:"The Traitor File",year:2028,classification:"EYES ONLY",status:"Sealed",lead:"EMP-0844",summary:"Internal betrayal inquiry involving unauthorized transfer of sealed evidence.",links:["EMP-0471","EMP-1021","IA-2028-001","PHOTO-2027-022","IA-2028-009"]},
+{id:"CASE-G718K",title:"The Seventh Vault",year:2025,classification:"LEVEL V",status:"Dormant",lead:"EMP-0471",summary:"Gringotts vault access anomaly linked to an artefact inventory that predates its owner.",links:["GV-718-K","GR-2025-718"]},
+{id:"CASE-B14022",title:"The Hollow Wand",year:2024,classification:"RESTRICTED",status:"Monitoring",lead:"EMP-0660",summary:"A wand that drains the user's life force while preserving spell output.",links:["EVD-B14022-01","CASE-B14022-RPT"]}
+ ],
+ records:[
+{id:"EDU-2012-001",title:"Hogwarts Admission Dossier",type:"Education",date:"2012-07-31",subject:"EMP-0471",classification:"RESTRICTED",summary:"Muggle-born orientation file. Notes that the student watches before trusting.",body:"Student Ryu TaeO was interviewed by Magical Liaison Officer Eleanor Ashcombe. Parents were non-magical and initially assumed fraud. Student answer to why he wanted to attend Hogwarts: 'I want to know why I am like this.'",links:["EMP-0471","MLO-0188","EDU-2012-002"]},
+{id:"EDU-2012-002",title:"Platform Orientation Card",type:"Education",date:"2012-08-30",subject:"EMP-0471",classification:"OFFICIAL",summary:"Small card issued to the Ryu family before King's Cross departure.",body:"Front: Magical Liaison Office / Family Support. Back: King's Cross, 11:00. Don't be late.",links:["EMP-0471","MLO-0188"]},
+{id:"MLO-2012-044",title:"Family Support Visit Note",type:"Education",date:"2012-08-05",subject:"EMP-0471",classification:"OFFICIAL",summary:"Home visit note after repeated letter delivery.",body:"Father asked whether the child would be able to return to a normal school if necessary. Officer did not answer directly.",links:["EMP-0471","MLO-0188","EDU-2012-001"]},
+{id:"WND-88201",title:"Wand Registry",type:"Equipment",date:"2012-08-22",subject:"EMP-0471",classification:"OFFICIAL",summary:"Ebony, dragon heartstring, 12¾ inches, unyielding.",body:"The wand showed unusually strong response to defensive and containment spells. Clerk note: 'Will not tolerate careless handling.'",links:["EMP-0471"]},
+{id:"GV-718-K",title:"Gringotts Vault Registry",type:"Financial",date:"2012-08-22",subject:"EMP-0471",classification:"CONFIDENTIAL",summary:"Vault record later protected after the Seventh Vault anomaly.",body:"Initial access created for a Muggle-born student support transfer. Later sealed after unrelated access logs appeared in CASE-G718K.",links:["EMP-0471","CASE-G718K"]},
+{id:"CASE-A23791-RPT",title:"Official Report: Crown of Lethe",type:"Case Report",date:"2025-10-15",subject:"CASE-A23791",classification:"LEVEL V",summary:"Official SID closure report for the Crown of Lethe case.",body:"Artefact contained. Two suspects arrested. Three witnesses stabilized. Public statement minimized memory-hazard details. Captain's note: EMP-0471 delayed pursuit to preserve witness memory integrity.",links:["CASE-A23791","EMP-0471","EMP-0312","EVD-A23791-01","EVD-A23791-02"]},
+{id:"EVD-A23791-01",title:"Gold Circlet with Runic Seam",type:"Evidence",date:"2025-10-14",subject:"CASE-A23791",classification:"LEVEL V",summary:"Primary artefact in the Lethe case.",body:"Surface appears gold but reacts as bone under detection charms. Handling prohibited without memory anchoring.",links:["CASE-A23791","CASE-A23791-RPT"]},
+{id:"EVD-A23791-02",title:"Witness Memory Residue Sample",type:"Evidence",date:"2025-10-14",subject:"CASE-A23791",classification:"LEVEL V",summary:"Silver residue recovered from a pensieve basin.",body:"Analyzed by Isla Mercer. Sample drifted toward the nearest living memory source during handling.",links:["CASE-A23791","EMP-0528","LAB-2025-188"]},
+{id:"LAB-2025-188",title:"Forensic Lab Note: Lethe Residue",type:"Lab Note",date:"2025-10-16",subject:"EVD-A23791-02",classification:"RESTRICTED",summary:"Forensic note by Isla Mercer.",body:"Residue is not memory itself. It is the outline left when memory is removed too cleanly.",links:["EMP-0528","EVD-A23791-02","CASE-A23791"]},
+{id:"OWL-02081",title:"Briefing moved to 09:00",type:"Owl Mail",date:"2025-10-14",subject:"EMP-0471",classification:"RESTRICTED",summary:"Short operational message from Noah Byrne.",body:"TaeO, briefing is now 09:00. Bring the red folder. Not the copy. Witness names stay sealed unless I ask directly. Do not speak to the Prophet. — Byrne",links:["EMP-0471","EMP-0312","CASE-A23791"]},
+{id:"DP-2025-044",title:"Special Auror Promoted After Cursed Artefact Case",type:"Press",date:"2025-10-18",subject:"CASE-A23791",classification:"PUBLIC",summary:"Daily Prophet coverage of the Lethe promotion.",body:"Sources describe Ryu TaeO as 'calm to the point of unsettling' and 'not someone who enjoys cameras.' Ministry declined to explain the artefact's exact nature.",links:["CASE-A23791","EMP-0471","PRS-0042"]},
+{id:"HR-2025-017",title:"Promotion Review",type:"Personnel",date:"2025-10-20",subject:"EMP-0471",classification:"RESTRICTED",summary:"Promotion review after CASE-A23791.",body:"Approved for Special Auror clearance extension. Strengths: field restraint, evidence prioritization, low panic response. Risk: tendency to isolate.",links:["EMP-0471","EMP-0312","CASE-A23791"]},
+{id:"MED-2026-004",title:"Memory Hazard Exposure Note",type:"Medical",date:"2026-02-11",subject:"EMP-0471",classification:"RESTRICTED",summary:"Medical note after Black Mirror exposure.",body:"Mild disorientation after mirror exposure. Patient refused extended leave. Healer note: body stable; mind over-controlled.",links:["EMP-0471","CASE-M00918"]},
+{id:"IA-2028-001",title:"Internal Affairs Notice: Sealed Inquiry",type:"Internal Affairs",date:"2028-09-03",subject:"CASE-T00017",classification:"EYES ONLY",summary:"Sealed inquiry concerning unauthorized evidence transfer.",body:"Named personnel: EMP-0471 and EMP-1021. Handwritten addition: Do not let TaeO read the second page yet.",links:["CASE-T00017","EMP-0471","EMP-0844","EMP-1021"]},
+{id:"PHOTO-2027-022",title:"SID Training Room Photograph",type:"Photo",date:"2027-03-14",subject:"EMP-0471",classification:"CONFIDENTIAL",summary:"Recovered photograph showing EMP-0471 and EMP-1021 in training room.",body:"Back of photograph reads: 'He learns fast. Too fast.' Handwriting not verified.",links:["EMP-0471","EMP-1021","CASE-T00017"]},
+{id:"BOX17-INDEX",title:"Box 17 Index",type:"Archive",date:"2048-11-17",subject:"EMP-0471",classification:"LEVEL V",summary:"Index of recovered Box 17 materials.",body:"Contents include folded Hogwarts envelope, cracked ID badge case, red folder fragment, sealed owl mail bundle, wand registry copy, black notebook, and one photograph envelope marked DO NOT CATALOGUE.",links:["EMP-0471","ARC-2048-017","PHOTO-2027-022"]},
+{id:"ARC-2048-017",title:"Box 17 Intake Sheet",type:"Archive",date:"2048-11-17",subject:"BOX17-INDEX",classification:"LEVEL V",summary:"Black storage box recovered from archive vault.",body:"Outer label: EMP-0471 / RYU TAEO / DO NOT DESTROY. Archive officer's note: The box was not hidden. It was waiting.",links:["EMP-0471","ARC-0906","BOX17-INDEX"]}
+ ]
+};
+
+let currentFilter = "ALL";
+let trail = [];
+function enter(){document.getElementById("boot").style.display="none"}
+function all(){return [...db.people,...db.cases,...db.records]}
+function find(id){return all().find(x=>x.id===id)}
+function typeOf(x){if(x.name)return "person"; if(x.year)return "case"; return "record"}
+function show(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("on"));
+ document.getElementById(id).classList.add("on");
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===id));
+}
+function item(title,sub,fn){const d=document.createElement("div");d.className="item";d.innerHTML=`<b>${title}</b><br><span class="caption">${sub}</span>`;d.onclick=fn;return d}
+function render(){
+ pcount.textContent=db.people.length; ccount.textContent=db.cases.length; rcount.textContent=db.records.length;
+ fill("peopleList",db.people,x=>item(`${x.id} · ${x.name}`,`${x.role} · ${x.clearance}`,()=>openId(x.id)));
+ fill("caseList",db.cases,x=>item(`${x.id} · ${x.title}`,`${x.year} · ${x.classification} · ${x.status}`,()=>openId(x.id)));
+ renderFilters(); renderRecords();
+ const ids=["BOX17-INDEX","ARC-2048-017","EDU-2012-001","OWL-02081","WND-88201","PHOTO-2027-022","IA-2028-001","GV-718-K"];
+ boxGrid.innerHTML=""; ids.forEach(id=>{const x=find(id); const d=document.createElement("div");d.className="artifact";d.innerHTML=`${id}<br><small>${x?x.title:"sealed"}</small>`;d.onclick=()=>openId(id);boxGrid.appendChild(d)})
+}
+function fill(id,arr,fn){const box=document.getElementById(id);box.innerHTML="";arr.forEach(x=>box.appendChild(fn(x)))}
+function renderFilters(){
+ const types=["ALL",...new Set(db.records.map(r=>r.type))];
+ filters.innerHTML="";
+ types.forEach(t=>{const b=document.createElement("button");b.textContent=t;b.className=currentFilter===t?"on":"";b.onclick=()=>{currentFilter=t;renderFilters();renderRecords()};filters.appendChild(b)})
+}
+function renderRecords(){const arr=currentFilter==="ALL"?db.records:db.records.filter(r=>r.type===currentFilter);fill("recordList",arr,x=>item(`${x.id} · ${x.title}`,`${x.type} · ${x.classification}`,()=>openId(x.id)))}
+function openId(id){
+ const x=find(id); if(!x){alert("Record not recovered yet: "+id);return}
+ trail=[...trail.filter(v=>v!==id),id].slice(-5);
+ trailBox();
+ show("viewer");
+ const t=typeOf(x);
+ let html=`<div class="paper"><span class="stamp">${x.classification||x.clearance}</span><h1>${x.name||x.title}</h1><p><b>${x.summary}</b></p>`;
+ if(x.body) html+=`<p>${x.body}</p>`;
+ html+=`<div class="kv"><b>ID</b><span>${x.id}</span>`;
+ if(t==="person") html+=`<b>Role</b><span>${x.role}</span><b>Organization</b><span>${x.org}</span><b>Status</b><span>${x.status}</span>`;
+ if(t==="case") html+=`<b>Year</b><span>${x.year}</span><b>Status</b><span>${x.status}</span><b>Lead</b><span><span class="node" onclick="openId('${x.lead}')">${x.lead}</span></span>`;
+ if(t==="record") html+=`<b>Type</b><span>${x.type}</span><b>Date</b><span>${x.date}</span><b>Subject</b><span><span class="node" onclick="openId('${x.subject}')">${x.subject}</span></span>`;
+ html+=`</div><h3>Recovered Links</h3>`;
+ (x.links||[]).forEach(l=>html+=`<span class="node" onclick="openId('${l}')">${l}</span>`);
+ html+="</div>";
+ detail.innerHTML=html;
+}
+function trailBox(){trail.innerHTML ? null : null; document.getElementById("trail").innerHTML=trail.length?"Trail: "+trail.map(id=>`<span class="node" onclick="openId('${id}')">${id}</span>`).join(""):""}
+function search(){
+ const q=document.getElementById("q").value.toLowerCase().trim();
+ const res=all().filter(x=>JSON.stringify(x).toLowerCase().includes(q));
+ resultList.innerHTML="";
+ res.forEach(x=>resultList.appendChild(item(`${x.id} · ${x.name||x.title}`,`${typeOf(x).toUpperCase()} · ${x.classification||x.clearance||x.status}`,()=>openId(x.id))));
+ if(!res.length) resultList.innerHTML=`<p class="muted">No recovered records found.</p>`;
+ show("results");
+}
+q.addEventListener("keydown",e=>{if(e.key==="Enter")search()});
+render();
+</script>
+</body>
+</html>
