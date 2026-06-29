@@ -262,62 +262,20 @@ function render(){
  const x=find(id); return `<div class="folder" onclick="openRecord('${id}')">${id}<br><small>${x?x.title:"sealed"}</small></div>`
  }).join("");
 }
-function recordKind(x){
- if(x.role) return "CLASSIFIED PERSONNEL FILE";
- if(x.year) return "CLASSIFIED CASE FILE";
- if(x.type === "Evidence") return "EVIDENCE CUSTODY RECORD";
- if(x.type === "Photo") return "PHOTOGRAPHIC EVIDENCE";
- if(x.type === "Medical") return "MEDICAL EXPOSURE RECORD";
- if(x.type === "Internal Affairs") return "INTERNAL AFFAIRS NOTICE";
- if(x.type === "Financial") return "VAULT / FINANCIAL RECORD";
- return "ARCHIVE RECORD";
-}
-
 function openRecord(id){
  const x=find(id); if(!x){alert("Record not recovered: "+id);return}
  showPage("viewer");
-
  let title=x.name||x.title;
  let level=x.clearance||x.classification||"OFFICIAL";
- let kind=recordKind(x);
-
- let html=`
- <div class="paper">
-   <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
-     <div>
-       <p style="letter-spacing:2px;margin:0 0 8px;font-size:12px">${kind}</p>
-       <h1>${title}</h1>
-     </div>
-     <span class="stamp">${level}</span>
-   </div>
-
-   <hr style="border:0;border-top:1px solid rgba(70,45,20,.35);margin:18px 0">
-
-   <p><b>${x.summary}</b></p>
-   ${x.body ? `<p>${x.body}</p>` : ""}
-
-   <div class="kv">
-     <b>Record ID</b><span>${x.id}</span>
-     ${x.role ? `<b>Role</b><span>${x.role}</span><b>Status</b><span>${x.status}</span>` : ""}
-     ${x.year ? `<b>Year</b><span>${x.year}</span><b>Status</b><span>${x.status}</span>` : ""}
-     ${x.type ? `<b>Record Type</b><span>${x.type}</span><b>Date Filed</b><span>${x.date}</span>` : ""}
-     <b>Clearance</b><span>${level}</span>
-     <b>Archive Status</b><span>Recovered / Indexed</span>
-   </div>
-
-   <h3>Access Log</h3>
-   <div class="kv">
-     <b>Last Opened</b><span>${new Date().toLocaleString()}</span>
-     <b>Opened By</b><span>Operator EMP-0471</span>
-     <b>Session</b><span>Archive OS v0.5</span>
-   </div>
-
-   <h3>Related Records</h3>
-   ${(x.links||[]).map(l=>`<span class="node" onclick="openRecord('${l}')">${l}</span>`).join("") || "<p>No recovered links.</p>"}
-
-   <hr style="border:0;border-top:1px solid rgba(70,45,20,.35);margin:18px 0">
-   <p style="font-size:12px;letter-spacing:1px">BRITISH MAGICAL ARCHIVES · RECOVERY COPY · DO NOT REMOVE FROM ARCHIVE</p>
- </div>`;
+ let html=`<div class="paper"><span class="stamp">${level}</span><h1>${title}</h1><p><b>${x.summary}</b></p>`;
+ if(x.body) html+=`<p>${x.body}</p>`;
+ html+=`<div class="kv"><b>ID</b><span>${x.id}</span>`;
+ if(x.role) html+=`<b>Role</b><span>${x.role}</span><b>Status</b><span>${x.status}</span>`;
+ if(x.year) html+=`<b>Year</b><span>${x.year}</span><b>Status</b><span>${x.status}</span>`;
+ if(x.type) html+=`<b>Type</b><span>${x.type}</span><b>Date</b><span>${x.date}</span>`;
+ html+=`</div><h3>Recovered Links</h3>`;
+ (x.links||[]).forEach(l=>html+=`<span class="node" onclick="openRecord('${l}')">${l}</span>`);
+ html+=`</div>`;
  detail.innerHTML=html;
 }
 function runSearch(){
