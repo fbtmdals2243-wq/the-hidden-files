@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>The Hidden Files — Archive OS v0.2</title>
+<style>
+:root{
+  --bg:#030504;--panel:#0b120f;--panel2:#101815;--gold:#b99355;
+  --muted:#9f9788;--line:rgba(185,147,85,.28);--green:#16382d;
+  --paper:#d8c6a0;--ink:#20170d;--red:#8f3028;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 40% -10%,#173226,#030504 55%,#000);color:#efe6d2;font-family:Georgia,"Times New Roman",serif}
+button,input{font:inherit}
+.hidden{display:none!important}
+.screen{min-height:100vh}
+.boot{display:grid;place-items:center;padding:28px}
+.bootbox{width:min(760px,92vw);border:1px solid var(--line);background:rgba(5,9,7,.92);padding:32px;box-shadow:0 40px 120px #000}
+.bootbox h1{margin:0;color:var(--gold);font-size:48px;letter-spacing:4px}
+.muted{color:var(--muted)}
+.log{font-family:monospace;background:#020403;border:1px solid #1c5b3c;color:#9efac4;padding:16px;white-space:pre-line;line-height:1.6;margin:22px 0}
+.btn{background:var(--green);border:1px solid var(--gold);color:white;padding:12px 16px;cursor:pointer}
+.btn:hover{filter:brightness(1.15)}
+.login{display:grid;place-items:center;padding:28px}
+.loginbox{width:min(460px,92vw);border:1px solid var(--line);background:rgba(8,12,10,.94);padding:28px}
+.loginbox h2{color:var(--gold);letter-spacing:2px;margin-top:0}
+.field{margin:12px 0}
+.field label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
+.field input{width:100%;background:#020302;border:1px solid var(--line);color:#efe6d2;padding:12px}
+.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+aside{border-right:1px solid var(--line);background:rgba(4,6,5,.92);padding:20px}
+.brand{border:1px solid var(--line);padding:18px;text-align:center;margin-bottom:18px}
+.brand b{font-size:34px;color:var(--gold)}
+.brand h2{font-size:18px;color:var(--gold);letter-spacing:2px}
+nav{display:grid;gap:8px}
+nav button{background:#070b09;border:1px solid var(--line);color:#efe6d2;padding:12px;text-align:left;cursor:pointer}
+nav button.on,nav button:hover{background:var(--green);border-color:var(--gold)}
+main{padding:24px;max-width:1400px}
+.top{display:flex;gap:10px;margin-bottom:18px}
+.search{flex:1;background:#020302;border:1px solid var(--line);color:#efe6d2;padding:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01));padding:18px;margin-bottom:16px;box-shadow:0 18px 50px rgba(0,0,0,.3)}
+.card h1,.card h2,.card h3{color:var(--gold);margin-top:0;text-transform:uppercase;letter-spacing:1px}
+.stat{border:1px solid var(--line);padding:14px;background:rgba(0,0,0,.2)}
+.stat b{font-size:30px;color:var(--gold)}
+.list{display:grid;gap:10px}
+.item{border:1px solid var(--line);background:rgba(0,0,0,.25);padding:13px;cursor:pointer}
+.item:hover{background:rgba(22,56,45,.6)}
+.paper{background:var(--paper);color:var(--ink);border:1px solid #806c45;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.paper h1,.paper h2,.paper h3{color:#2a1c0c}
+.stamp{display:inline-block;color:var(--red);border:2px solid var(--red);padding:5px 10px;transform:rotate(-3deg);font-weight:bold}
+.kv{display:grid;grid-template-columns:160px 1fr;gap:8px;margin-top:16px}
+.kv b{color:#674516}
+.node{display:inline-block;border:1px solid var(--line);padding:8px 10px;margin:5px;background:rgba(0,0,0,.24);cursor:pointer}
+.paper .node{border-color:#7e5a2a;color:#43280c;background:rgba(255,255,255,.16)}
+.page{display:none}
+.page.on{display:block}
+.terminal{font-family:monospace;background:#020403;color:#9efac4;border:1px solid #1c5b3c;padding:16px;white-space:pre-line;line-height:1.55}
+.foldergrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.folder{border:1px solid var(--line);min-height:120px;display:grid;place-items:center;text-align:center;background:linear-gradient(135deg,rgba(216,198,160,.12),rgba(0,0,0,.22));cursor:pointer}
+.folder:hover{background:rgba(22,56,45,.55)}
+.timeline{border-left:2px solid var(--gold);padding-left:18px}
+.timeline p{margin:0 0 18px}
+@media(max-width:850px){.app{grid-template-columns:1fr}aside{position:relative}.grid,.grid3{grid-template-columns:1fr}}
+
+.related-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+ gap:10px;
+ margin-top:10px;
+}
+
+.graph{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+ gap:12px;
+ margin-top:12px;
+}
+.graph-node{
+ border:1px solid var(--line);
+ background:rgba(0,0,0,.28);
+ padding:14px;
+ text-align:center;
+ cursor:pointer;
+ position:relative;
+}
+.graph-node:hover{
+ background:rgba(22,56,45,.7);
+ border-color:var(--gold);
+}
+.graph-node b{
+ color:var(--gold);
+}
+.graph-line{
+ color:var(--muted);
+ font-size:12px;
+ margin-top:6px;
+}
+</style>
+</head>
+<body>
+
+<section id="boot" class="screen boot">
+  <div class="bootbox">
+    <h1>THE HIDDEN FILES</h1>
+    <p class="muted">Secure Archive System · Recovery Build v0.2</p>
+    <div id="bootlog" class="log">Initializing Archive OS...</div>
+    <button id="bootBtn" class="btn hidden" onclick="showLogin()">CONTINUE</button>
+  </div>
+</section>
+
+<section id="login" class="screen login hidden">
+  <div class="loginbox">
+    <h2>AUTHORIZATION REQUIRED</h2>
+    <p class="muted">British Magical Archives / Restricted Access</p>
+    <div class="field"><label>Operator ID</label><input value="EMP-0471"></div>
+    <div class="field"><label>Passphrase</label><input value="BOX17" type="password"></div>
+    <button class="btn" onclick="enterArchive()">LOGIN</button>
+  </div>
+</section>
+
+<section id="app" class="app hidden">
+  <aside>
+    <div class="brand"><b>HF</b><h2>ARCHIVE OS</h2><p class="muted">v0.2 / LEVEL V</p></div>
+    <nav>
+      <button class="on" onclick="showPage('dashboard',this)">Dashboard</button>
+      <button onclick="showPage('personnel',this)">Personnel</button>
+      <button onclick="showPage('cases',this)">Cases</button>
+      <button onclick="showPage('evidence',this)">Evidence</button>
+      <button onclick="showPage('timeline',this)">Timeline</button>
+      <button onclick="showPage('explorer',this)">Explorer</button>
+      <button onclick="showPage('box17',this)">Box 17</button>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="top">
+      <input id="q" class="search" placeholder="Search archive: Ryu, Lethe, Traitor, Box 17...">
+      <button class="btn" onclick="runSearch()">SEARCH</button>
+    </div>
+
+    <section id="dashboard" class="page on">
+      <div class="grid">
+        <div class="card">
+          <h1>Recovered Archive</h1>
+          <div class="grid3">
+            <div class="stat"><b>8</b><br>Personnel</div>
+            <div class="stat"><b>5</b><br>Cases</div>
+            <div class="stat"><b>17</b><br>Records</div>
+          </div>
+        </div>
+        <div class="terminal">SYSTEM ONLINE
+CORE SUBJECT: EMP-0471
+RESTORATION: 44%
+ACTIVE COLLECTION: BOX 17
+WARNING: CASE-T00017 SEALED</div>
+      </div>
+      <div class="card">
+        <h2>Recommended Investigation Trail</h2>
+        <span class="node" onclick="openRecord('EMP-0471')">EMP-0471</span>
+        <span class="node" onclick="openRecord('CASE-A23791')">CASE-A23791</span>
+        <span class="node" onclick="openRecord('EVD-A23791-01')">EVD-A23791-01</span>
+        <span class="node" onclick="openRecord('CASE-T00017')">CASE-T00017</span>
+        <span class="node" onclick="openRecord('CASE-ZERO')">CASE-ZERO</span>
+      </div>
+    
+      <div class="card">
+        <h2>Intelligence Graph</h2>
+        <p class="muted">Recovered relationship map generated from linked archive records.</p>
+        <div class="graph">
+          <div class="graph-node" onclick="openRecord('EMP-0471')"><b>EMP-0471</b><div class="graph-line">Core Subject</div></div>
+          <div class="graph-node" onclick="openRecord('CASE-A23791')"><b>CASE-A23791</b><div class="graph-line">Lethe Origin</div></div>
+          <div class="graph-node" onclick="openRecord('CASE-T00017')"><b>CASE-T00017</b><div class="graph-line">Sealed Betrayal</div></div>
+          <div class="graph-node" onclick="openRecord('PHOTO-2027-022')"><b>PHOTO-2027-022</b><div class="graph-line">Photographic Evidence</div></div>
+          <div class="graph-node" onclick="openRecord('BOX17-INDEX')"><b>BOX17-INDEX</b><div class="graph-line">Recovered Box</div></div>
+          <div class="graph-node" onclick="openRecord('IA-2028-001')"><b>IA-2028-001</b><div class="graph-line">Internal Affairs</div></div>
+          <div class="graph-node" onclick="openRecord('CASE-ZERO')"><b>CASE-ZERO</b><div class="graph-line">Root File</div></div>
+        </div>
+      </div>
+</section>
+
+    <section id="personnel" class="page"><div class="card"><h1>Personnel</h1><div id="personnelList" class="list">
+<div class="item" onclick="openRecord('EMP-0471')"><b>EMP-0471 · Ryu TaeO</b><br><span class="muted">Senior Auror · LEVEL V</span></div>
+<div class="item" onclick="openRecord('EMP-0312')"><b>EMP-0312 · Noah Byrne</b><br><span class="muted">Captain · LEVEL V</span></div>
+<div class="item" onclick="openRecord('EMP-0844')"><b>EMP-0844 · Mara Venn</b><br><span class="muted">Internal Affairs Investigator · EYES ONLY</span></div>
+<div class="item" onclick="openRecord('EMP-1021')"><b>EMP-1021 · Theo March</b><br><span class="muted">Junior Auror · SEALED</span></div>
+</div></div></section>
+    <section id="cases" class="page"><div class="card"><h1>Case Files</h1><div id="caseList" class="list">
+<div class="item" onclick="openRecord('CASE-A23791')"><b>CASE-A23791 · The Crown of Lethe</b><br><span class="muted">Closed · LEVEL V · Memory artefact investigation</span></div>
+<div class="item" onclick="openRecord('CASE-M00918')"><b>CASE-M00918 · The Black Mirror Case</b><br><span class="muted">Restricted · EYES ONLY · Mirror anomaly</span></div>
+<div class="item" onclick="openRecord('CASE-G718K')"><b>CASE-G718K · The Seventh Vault</b><br><span class="muted">Dormant · LEVEL V · Gringotts anomaly</span></div>
+<div class="item" onclick="openRecord('CASE-T00017')"><b>🔒 CASE-T00017 · The Traitor File</b><br><span class="muted">Sealed · EYES ONLY · Internal betrayal inquiry</span></div>
+</div></div></section>
+    <section id="evidence" class="page"><div class="card"><h1>Evidence Locker</h1><div id="evidenceList" class="list">
+<div class="item" onclick="openRecord('EVD-A23791-01')"><b>EVD-A23791-01 · Gold Circlet with Runic Seam</b><br><span class="muted">Primary artefact · CASE-A23791 · LEVEL V</span></div>
+<div class="item" onclick="openRecord('PHOTO-2027-022')"><b>PHOTO-2027-022 · SID Training Room Photograph</b><br><span class="muted">Recovered photograph · CASE-T00017 · CONFIDENTIAL</span></div>
+<div class="item" onclick="openRecord('WND-88201')"><b>WND-88201 · Wand Registry</b><br><span class="muted">Equipment record · EMP-0471 · OFFICIAL</span></div>
+<div class="item" onclick="openRecord('GV-718-K')"><b>GV-718-K · Gringotts Vault Registry</b><br><span class="muted">Financial record · CASE-G718K · CONFIDENTIAL</span></div>
+<div class="item" onclick="openRecord('BOX17-INDEX')"><b>BOX17-INDEX · Box 17 Index</b><br><span class="muted">Recovered archive box · LEVEL V</span></div>
+<div class="item" onclick="openRecord('IA-2028-001')"><b>🔒 IA-2028-001 · Internal Affairs Notice</b><br><span class="muted">Sealed evidence transfer inquiry · EYES ONLY</span></div>
+</div></div></section>
+    <section id="timeline" class="page"><div class="paper"><h1>Timeline</h1><div class="timeline" id="timelineList"></div></div></section>
+    <section id="explorer" class="page">
+      <div class="card">
+        <h1>Archive Explorer</h1>
+        <p class="muted">Browse recovered folders from the British Magical Archives.</p>
+        <div id="archiveExplorer" class="foldergrid"></div>
+      </div>
+    </section>
+    <section id="box17" class="page"><div class="card"><h1>Box 17</h1><p class="muted">Recovered physical traces linked to EMP-0471.</p><div id="boxGrid" class="foldergrid"></div></div></section>
+    <section id="viewer" class="page"><div id="detail"></div></section>
+  </main>
+</section>
+
+<script>
+const db = {
+ people:[
+  {id:"EMP-0471",name:"Ryu TaeO",role:"Senior Auror",clearance:"LEVEL V",status:"ACTIVE",summary:"Evidence-driven Senior Auror assigned to Special Investigations. Known for restraint, quiet field command, and refusal to close a case without proof.",links:["CASE-A23791","CASE-T00017","WND-88201","BOX17-INDEX"]},
+  {id:"EMP-0312",name:"Noah Byrne",role:"Captain",clearance:"LEVEL V",status:"ACTIVE",summary:"SID Captain. Values clean evidence over clean headlines.",links:["EMP-0471","CASE-A23791"]},
+  {id:"EMP-0844",name:"Mara Venn",role:"Internal Affairs Investigator",clearance:"EYES ONLY",status:"ACTIVE",summary:"Assigned to the sealed betrayal inquiry.",links:["CASE-T00017","IA-2028-001"]},
+  {id:"EMP-1021",name:"Theo March",role:"Junior Auror",clearance:"SEALED",status:"UNKNOWN",summary:"Junior Auror connected to the sealed betrayal inquiry. Full profile unavailable.",links:["CASE-T00017","PHOTO-2027-022"]}
+ ],
+ cases:[
+  {id:"CASE-A23791",title:"The Crown of Lethe",year:"2025",classification:"LEVEL V",status:"Closed",summary:"A memory-stealing crown recovered after witness-memory anomalies across three districts.",links:["EMP-0471","EVD-A23791-01","DP-2025-044"]},
+  {id:"CASE-M00918",title:"The Black Mirror Case",year:"2026",classification:"EYES ONLY",status:"Restricted",summary:"Mirror network reflecting rooms that did not exist in the current building plan.",links:["EMP-0471","MED-2026-004"]},
+  {id:"CASE-T00017",title:"The Traitor File",type:"Case",year:"2028",classification:"LEVEL VI",status:"SEALED",summary:"Internal security investigation into unauthorized disclosure of classified archive material.",body:`INTERNAL SECURITY DIVISION
+
+CASE SUMMARY
+Evidence suggests that classified archive material was accessed, copied, and transferred outside approved Ministry channels.
+
+The original inquiry was sealed after three witness statements disappeared from the record. A later audit connected the missing statements to Box 17.
+
+PERSONS OF INTEREST
+• EMP-0471 — Lead investigator. Cleared, but repeatedly referenced in sealed correspondence.
+• EMP-1021 — Junior Auror. Last confirmed handler of the missing evidence packet.
+• IA-2028-001 — Internal Affairs notice authorizing seizure of related files.
+• █████████ — Name removed by order of the Wizengamot Security Chair.
+
+ATTACHED EVIDENCE
+• PHOTO-2027-022 — Training room photograph.
+• WND-88201 — Wand registry copy.
+• GV-718-K — Gringotts vault registry.
+• BOX17-INDEX — Recovered box inventory.
+
+INVESTIGATOR NOTES
+Several archive entries appear to have been altered after the case was closed.
+
+The phrase "Lethe remembers what the Ministry forgets" appears in three separate documents.
+
+Further review authorized under LEVEL VI clearance only.`,links:["EMP-0471","EMP-1021","IA-2028-001","PHOTO-2027-022","WND-88201","GV-718-K","BOX17-INDEX"]},
+  {id:"CASE-ZERO",title:"The First Hidden File",type:"Case",year:"2029",classification:"LEVEL Ω",status:"NEWLY RECOVERED",summary:"Root archive entry connected to the origin of the breach.",body:`ROOT ARCHIVE ENTRY
+
+THIS FILE WAS NOT CREATED BY THE MINISTRY.
+
+It appeared after valid Level VI access was granted to CASE-T00017.
+
+ORIGIN
+The earliest trace predates Box 17, the Internal Affairs inquiry, and the recovered photograph.
+
+The record refers to an archive beneath the official archive:
+a hidden index designed to remember what was erased.
+
+PRIMARY PHRASE
+"Lethe remembers what the Ministry forgets."
+
+SUBJECTS REFERENCED
+• EMP-0471
+• CASE-T00017
+• BOX17-INDEX
+• IA-2028-001
+• █████████
+
+FINAL NOTE
+If this file is visible, the archive is no longer sealed.
+
+Further recovery will expose the first deletion.`,links:["CASE-T00017","EMP-0471","BOX17-INDEX","IA-2028-001","PHOTO-2027-022"]},
+  {id:"CASE-G718K",title:"The Seventh Vault",year:"2025",classification:"LEVEL V",status:"Dormant",summary:"Gringotts vault access anomaly linked to an artefact inventory that predates its owner.",links:["GV-718-K"]}
+ ],
+ records:[
+  {id:"WND-88201",title:"Wand Registry",type:"Equipment",date:"2012-08-22",classification:"OFFICIAL",summary:"Ebony, dragon heartstring, 12¾ inches, unyielding.",body:"The wand showed unusually strong response to defensive and containment spells.",links:["EMP-0471"]},
+  {id:"EVD-A23791-01",title:"Gold Circlet with Runic Seam",type:"Evidence",date:"2025-10-14",classification:"LEVEL V",summary:"Primary artefact in the Lethe case.",body:"Surface appears gold but reacts as bone under detection charms. Handling prohibited without memory anchoring.",links:["CASE-A23791"]},
+  {id:"DP-2025-044",title:"Special Auror Promoted After Cursed Artefact Case",type:"Press",date:"2025-10-18",classification:"PUBLIC",summary:"Daily Prophet coverage of the Lethe promotion.",body:"Sources describe Ryu TaeO as calm to the point of unsettling.",links:["CASE-A23791","EMP-0471"]},
+  {id:"MED-2026-004",title:"Memory Hazard Exposure Note",type:"Medical",date:"2026-02-11",classification:"RESTRICTED",summary:"Medical note after Black Mirror exposure.",body:"Patient refused extended leave. Healer note: body stable; mind over-controlled.",links:["EMP-0471","CASE-M00918"]},
+  {id:"IA-2028-001",title:"Internal Affairs Notice",type:"Internal Affairs",date:"2028-09-03",classification:"EYES ONLY",summary:"Sealed inquiry concerning unauthorized evidence transfer.",body:"Named personnel: EMP-0471 and EMP-1021. Handwritten addition: Do not let TaeO read the second page yet.",links:["CASE-T00017","EMP-1021"]},
+  {id:"PHOTO-2027-022",title:"SID Training Room Photograph",type:"Photo",date:"2027-03-14",classification:"CONFIDENTIAL",summary:"Recovered photograph showing EMP-0471 and EMP-1021.",body:"Back of photograph reads: He learns fast. Too fast.",links:["EMP-0471","EMP-1021","CASE-T00017"]},
+  {id:"BOX17-INDEX",title:"Box 17 Index",type:"Archive",date:"2048-11-17",classification:"LEVEL V",summary:"Index of recovered Box 17 materials.",body:"Contents include folded Hogwarts envelope, cracked ID badge case, sealed owl mail bundle, wand registry copy, black notebook, and one photograph envelope marked DO NOT CATALOGUE.",links:["EMP-0471","PHOTO-2027-022"]},
+  {id:"GV-718-K",title:"Gringotts Vault Registry",type:"Financial",date:"2012-08-22",classification:"CONFIDENTIAL",summary:"Vault record later protected after the Seventh Vault anomaly.",body:"Initial access created for a Muggle-born student support transfer.",links:["CASE-G718K","EMP-0471"]}
+ ]
+};
+
+const lockedRecords = new Set(["CASE-T00017","IA-2028-001","CASE-ZERO"]);
+const unlockedRecords = new Set();
+
+function saveProgress(){
+ try{
+   localStorage.setItem("hiddenfiles-unlocked", JSON.stringify([...unlockedRecords]));
+ }catch(e){}
+}
+
+function loadProgress(){
+ try{
+   const raw = localStorage.getItem("hiddenfiles-unlocked");
+   if(raw) JSON.parse(raw).forEach(id=>unlockedRecords.add(id));
+ }catch(e){}
+}
+
+function isLocked(id){
+ return lockedRecords.has(id) && !unlockedRecords.has(id);
+}
+
+function unlockRecord(id){
+ const code = prompt("ENTER CLEARANCE CODE");
+ if(!code) return;
+ if(code.trim().toUpperCase()==="BOX17"){
+   unlockedRecords.add(id);
+   saveProgress();
+   alert("CLEARANCE GRANTED");
+   openRecord(id);
+ } else {
+   alert("ACCESS DENIED");
+ }
+}
+
+const all = () => [...db.people,...db.cases,...db.records];
+const find = id => all().find(x=>x.id===id);
+
+const lines=[
+"Initializing Archive OS...",
+"Loading personnel database...",
+"Loading case files...",
+"Decrypting Box 17 index...",
+"Checking operator clearance...",
+"Access channel prepared."
+];
+let i=0;
+const bootlog=document.getElementById("bootlog");
+const timer=setInterval(()=>{
+ i++;
+ bootlog.textContent=lines.slice(0,i).join("\\n");
+ if(i>=lines.length){clearInterval(timer);document.getElementById("bootBtn").classList.remove("hidden")}
+},520);
+
+function showLogin(){boot.classList.add("hidden");login.classList.remove("hidden")}
+function enterArchive(){login.classList.add("hidden");app.classList.remove("hidden")}
+function showPage(id,btn){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("on"));
+ document.getElementById(id).classList.add("on");
+ document.querySelectorAll("nav button").forEach(b=>b.classList.remove("on"));
+ if(btn) btn.classList.add("on");
+}
+function item(title,sub,id){
+ const d=document.createElement("div");
+ d.className="item";
+ d.innerHTML=`<b>${title}</b><br><span class="muted">${sub}</span>`;
+ d.onclick=()=>openRecord(id);
+ return d;
+}
+function renderExplorerFolder(name){
+ const folders={
+  "Personnel Files": db.people.map(x=>x.id),
+  "Case Files": db.cases.map(x=>x.id),
+  "Evidence Storage": db.records.filter(x=>x.type==="Evidence").map(x=>x.id),
+  "Medical Records": db.records.filter(x=>x.type==="Medical").map(x=>x.id),
+  "Internal Affairs": db.records.filter(x=>x.type==="Internal Affairs").map(x=>x.id),
+  "Box 17": ["BOX17-INDEX","WND-88201","PHOTO-2027-022","IA-2028-001","GV-718-K"],
+  "Financial Records": db.records.filter(x=>x.type==="Financial").map(x=>x.id),
+  "Photographs": db.records.filter(x=>x.type==="Photo").map(x=>x.id)
+ };
+ const ids = folders[name] || [];
+ archiveExplorer.innerHTML = `
+  <div class="folder" onclick="renderExplorer()">⬅<br>Back<br><small>Archive Root</small></div>
+  ${ids.map(id=>{
+    const x=find(id);
+    return `<div class="folder" onclick="openRecord('${id}')">${isLocked(id) ? "🔒" : "📄"}<br>${id}<br><small>${x ? (x.name||x.title) : "sealed"}</small></div>`;
+  }).join("")}
+ `;
+}
+
+function renderExplorer(){
+ const folders=[
+  ["Personnel Files","Personnel records and employment dossiers"],
+  ["Case Files","Investigations and classified case reports"],
+  ["Evidence Storage","Recovered artefacts and forensic objects"],
+  ["Medical Records","Exposure notes and healer reports"],
+  ["Internal Affairs","Sealed inquiries and misconduct records"],
+  ["Box 17","Recovered physical archive box"],
+  ["Financial Records","Vault and payment records"],
+  ["Photographs","Recovered photographic evidence"]
+ ];
+ archiveExplorer.innerHTML=folders.map(f=>`<div class="folder" onclick="renderExplorerFolder('${f[0]}')">📁<br>${f[0]}<br><small>${f[1]}</small></div>`).join("");
+}
+
+
+function unlockArchive(){
+    const code = prompt("ENTER ARCHIVE CLEARANCE CODE");
+    if(!code) return;
+    if(code.trim().toUpperCase()==="BOX17"){
+        unlockedDocs.add("CASE-T00017");
+        unlockedDocs.add("IA-2028-001");
+        alert("CLEARANCE LEVEL VI GRANTED");
+        render();
+    }else{
+        alert("ACCESS DENIED");
+    }
+}
+
+function render(){
+ personnelList.innerHTML="";
+ db.people.forEach(x=>personnelList.appendChild(item(`${x.id} · ${x.name}`,`${x.role} · ${x.clearance}`,x.id)));
+ caseList.innerHTML="";
+ db.cases.forEach(x=>caseList.appendChild(item(`${x.id} · ${x.title}`,`${x.year} · ${x.classification} · ${x.status}`,x.id)));
+ evidenceList.innerHTML="";
+ db.records.forEach(x=>evidenceList.appendChild(item(`${x.id} · ${x.title}`,`${x.type} · ${x.classification}`,x.id)));
+ timelineList.innerHTML=[
+ ["2001","Ryu TaeO born in London.","EMP-0471"],
+ ["2012","Wand registry and vault record created.","WND-88201"],
+ ["2025","The Crown of Lethe case closed.","CASE-A23791"],
+ ["2028","The Traitor File sealed.","CASE-T00017"],
+ ["2048","Box 17 recovered.","BOX17-INDEX"]
+ ].map(x=>`<p><b>${x[0]}</b><br>${x[1]} <span class="node" onclick="openRecord('${x[2]}')">${x[2]}</span></p>`).join("");
+ renderExplorer();
+ boxGrid.innerHTML=["BOX17-INDEX","WND-88201","PHOTO-2027-022","IA-2028-001","GV-718-K"].map(id=>{
+ const x=find(id); return `<div class="folder" onclick="openRecord('${id}')">${id}<br><small>${x?x.title:"sealed"}</small></div>`
+ }).join("");
+}
+function recordKind(x){
+ if(x.role) return "CLASSIFIED PERSONNEL FILE";
+ if(x.year) return "CLASSIFIED CASE FILE";
+ if(x.type === "Evidence") return "EVIDENCE CUSTODY RECORD";
+ if(x.type === "Photo") return "PHOTOGRAPHIC EVIDENCE";
+ if(x.type === "Medical") return "MEDICAL EXPOSURE RECORD";
+ if(x.type === "Internal Affairs") return "INTERNAL AFFAIRS NOTICE";
+ if(x.type === "Financial") return "VAULT / FINANCIAL RECORD";
+ return "ARCHIVE RECORD";
+}
+
+function iconFor(id){
+ if(id.startsWith("EMP-")) return "👤";
+ if(id.startsWith("CASE-")) return isLocked(id) ? "🔒" : "📁";
+ if(id.startsWith("PHOTO-")) return "📷";
+ if(id.startsWith("EVD-")) return "🧪";
+ if(id.startsWith("WND-")) return "🪄";
+ if(id.startsWith("GV-")) return "🏦";
+ if(id.startsWith("BOX")) return "📦";
+ if(id.startsWith("IA-")) return isLocked(id) ? "🔒" : "🕵️";
+ if(id.startsWith("MED-")) return "⚕️";
+ return "📄";
+}
+
+function openRecord(id){
+ const x=find(id); if(!x){alert("Record not recovered: "+id);return}
+ if(isLocked(id)){
+   showPage("viewer");
+   detail.innerHTML = `<div class="card">
+     <h1>ACCESS DENIED</h1>
+     <p class="muted">This record is sealed under Level VI clearance.</p>
+     <div class="terminal">RECORD: ${id}
+STATUS: SEALED
+REQUIRED CLEARANCE: LEVEL VI
+HINT: BOX 17</div>
+     <button class="btn" onclick="unlockRecord('${id}')">ENTER CLEARANCE CODE</button>
+   </div>`;
+   return;
+ }
+ showPage("viewer");
+
+ if(id==="EMP-0471"){
+   detail.innerHTML = `
+   <div class="paper">
+     <span class="stamp">LEVEL V</span>
+     <h1>EMP-0471</h1>
+     <div style="margin:25px 0;text-align:center;">
+<img src="assets/photos/emp0471_id.png"
+style="
+width:360px;
+max-width:100%;
+border:8px solid #2b2015;
+box-shadow:0 0 20px rgba(0,0,0,.45);
+">
+</div>
+     <h2>RYU TAEO</h2>
+     <p><b>Senior Auror · Special Investigations Division</b></p>
+
+     <div class="kv">
+       <b>Status</b><span>ACTIVE</span>
+       <b>Clearance</b><span>LEVEL V</span>
+       <b>Department</b><span>British Magical Archives / SID Liaison</span>
+       <b>Wand</b><span>Ebony · Dragon Heartstring · 12¾ inches</span>
+       <b>Specialization</b><span>Memory artefacts, sealed records, containment evidence</span>
+       <b>Known Phrase</b><span>"No case closes without proof."</span>
+     </div>
+
+     <h3>Field Profile</h3>
+     <pre style="white-space:pre-wrap;line-height:1.65;background:rgba(0,0,0,.08);border:1px solid rgba(70,45,20,.35);padding:16px">EMP-0471 is repeatedly connected to recovered archive materials involving memory alteration, unauthorized evidence movement, and sealed post-inquiry corrections.
+
+Operational notes describe the subject as restrained, evidence-driven, and unusually resistant to memory-based influence.
+
+Multiple recovered records suggest that EMP-0471 was not the origin of the breach, but may have been the only investigator who noticed the pattern.</pre>
+
+     <h3>Known Associates</h3>
+     <div class="related-grid">
+       <div class="item" onclick="openRecord('EMP-0312')"><b>👤 EMP-0312</b><br><span class="muted">Captain Noah Byrne</span></div>
+       <div class="item" onclick="openRecord('EMP-1021')"><b>👤 EMP-1021</b><br><span class="muted">Junior Auror Theo March</span></div>
+       <div class="item" onclick="openRecord('EMP-0844')"><b>👤 EMP-0844</b><br><span class="muted">Internal Affairs Investigator</span></div>
+     </div>
+
+     <h3>Linked Records</h3>
+     <div class="related-grid">
+       ${(x.links||[]).map(l=>`<div class="item" onclick="openRecord('${l}')"><b>${iconFor(l)} ${l}</b><br><span class="muted">linked archive record</span></div>`).join("")}
+     </div>
+   </div>`;
+   return;
+ }
+
+ if(id==="PHOTO-2027-022"){
+   detail.innerHTML = `
+   <div class="paper">
+     <span class="stamp">${x.classification}</span>
+     <h1>${x.id}</h1>
+     <h2>${x.title}</h2>
+
+     <div style="border:2px solid rgba(70,45,20,.45);background:#111;padding:18px;margin:18px 0;text-align:center;color:#ddd">
+       <img src="assets/photos/photo-2027-022.png" style="width:100%;max-height:520px;object-fit:cover;display:block;border:2px solid rgba(70,45,20,.4);box-shadow:0 0 25px rgba(0,0,0,.35);">
+       <p class="muted" style="margin-top:12px">Recovered photographic evidence · SID Training Room</p>
+     </div>
+
+     <div class="kv">
+       <b>Date</b><span>${x.date}</span>
+       <b>Type</b><span>${x.type}</span>
+       <b>Classification</b><span>${x.classification}</span>
+       <b>Status</b><span>Recovered / Indexed</span>
+     </div>
+
+     <h3>Photographic Notes</h3>
+     <p>${x.body || x.summary}</p>
+
+     <h3>Related Records</h3>
+     <div class="related-grid">
+       ${(x.links||[]).map(l=>`<div class="item" onclick="openRecord('${l}')"><b>${iconFor(l)} ${l}</b><br><span class="muted">linked archive record</span></div>`).join("")}
+     </div>
+   </div>`;
+   return;
+ }
+
+ if(id==="CASE-T00017"){
+   if(!unlockedRecords.has("CASE-ZERO")){
+     unlockedRecords.add("CASE-ZERO");
+     saveProgress();
+   }
+   setTimeout(()=>alert("NEW FILE RECOVERED: CASE-ZERO"),300);
+ }
+
+ if(x.year){
+   detail.innerHTML = `
+   <div class="paper">
+     <span class="stamp">${x.classification}</span>
+     <h1>${x.id}</h1>
+     <h2>${x.title}</h2>
+     <p><b>${x.summary}</b></p>
+
+     <div class="kv">
+       <b>Status</b><span>${x.status}</span>
+       <b>Year</b><span>${x.year}</span>
+       <b>Classification</b><span>${x.classification}</span>
+       <b>Archive Status</b><span>Recovered / Indexed</span>
+     </div>
+
+     ${x.body ? `
+     <h3>Case File Body</h3>
+     <pre style="white-space:pre-wrap;line-height:1.65;background:rgba(0,0,0,.08);border:1px solid rgba(70,45,20,.35);padding:16px">${x.body}</pre>
+     ` : ""}
+
+     <h3>Evidence</h3>
+     <span class="node" onclick="openRecord('EVD-A23791-01')">EVD-A23791-01</span>
+     <span class="node" onclick="openRecord('PHOTO-2027-022')">PHOTO-2027-022</span>
+     <span class="node" onclick="openRecord('BOX17-INDEX')">BOX17-INDEX</span>
+     <span class="node" onclick="openRecord('IA-2028-001')">IA-2028-001</span>
+
+     <h3>Related Personnel</h3>
+     <span class="node" onclick="openRecord('EMP-0471')">EMP-0471</span>
+     <span class="node" onclick="openRecord('EMP-0312')">EMP-0312</span>
+     <span class="node" onclick="openRecord('EMP-1021')">EMP-1021</span>
+
+     <h3>Related Records</h3>
+     ${(x.links||[]).map(l=>`<span class="node" onclick="openRecord('${l}')">${l}</span>`).join("")}
+   </div>`;
+   return;
+ }
+
+ let title=x.name||x.title;
+ let level=x.clearance||x.classification||"OFFICIAL";
+ let kind=recordKind(x);
+
+ let html=`
+ <div class="paper">
+   <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+     <div>
+       <p style="letter-spacing:2px;margin:0 0 8px;font-size:12px">${kind}</p>
+       <h1>${title}</h1>
+     </div>
+     <span class="stamp">${level}</span>
+   </div>
+
+   <hr style="border:0;border-top:1px solid rgba(70,45,20,.35);margin:18px 0">
+
+   <p><b>${x.summary}</b></p>
+   ${x.body ? `<p>${x.body}</p>` : ""}
+
+   <div class="kv">
+     <b>Record ID</b><span>${x.id}</span>
+     ${x.role ? `<b>Role</b><span>${x.role}</span><b>Status</b><span>${x.status}</span>` : ""}
+     ${x.year ? `<b>Year</b><span>${x.year}</span><b>Status</b><span>${x.status}</span>` : ""}
+     ${x.type ? `<b>Record Type</b><span>${x.type}</span><b>Date Filed</b><span>${x.date}</span>` : ""}
+     <b>Clearance</b><span>${level}</span>
+     <b>Archive Status</b><span>Recovered / Indexed</span>
+   </div>
+
+   <h3>Access Log</h3>
+   <div class="kv">
+     <b>Last Opened</b><span>${new Date().toLocaleString()}</span>
+     <b>Opened By</b><span>Operator EMP-0471</span>
+     <b>Session</b><span>Archive OS v0.5</span>
+   </div>
+
+   <h3>Related Records</h3>
+   <div class="related-grid">
+   ${(x.links||[]).map(l=>`<div class="item" onclick="openRecord('${l}')"><b>${iconFor(l)} ${l}</b><br><span class="muted">linked archive record</span></div>`).join("") || "<p>No recovered links.</p>"}
+   </div>
+
+   <hr style="border:0;border-top:1px solid rgba(70,45,20,.35);margin:18px 0">
+   <p style="font-size:12px;letter-spacing:1px">BRITISH MAGICAL ARCHIVES · RECOVERY COPY · DO NOT REMOVE FROM ARCHIVE</p>
+ </div>`;
+ 
+detail.innerHTML=html;
+
+}
+function runSearch(){
+ const q=document.getElementById("q").value.toLowerCase().trim();
+ if(!q)return;
+ const results=all().filter(x=>JSON.stringify(x).toLowerCase().includes(q));
+ showPage("viewer");
+ detail.innerHTML=`<div class="card"><h1>Search Results</h1><div class="list">${
+  results.length?results.map(x=>`<div class="item" onclick="openRecord('${x.id}')"><b>${x.id} · ${x.name||x.title}</b><br><span class="muted">${x.clearance||x.classification||x.status}</span></div>`).join(""):"<p class='muted'>No recovered records found.</p>"
+ }</div></div>`;
+}
+q.addEventListener("keydown",e=>{if(e.key==="Enter")runSearch()});
+loadProgress();
+render();
+</script>
+</body>
+</html>

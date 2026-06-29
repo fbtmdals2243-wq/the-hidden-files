@@ -98,134 +98,6 @@ main{padding:24px;max-width:1400px}
  font-size:12px;
  margin-top:6px;
 }
-.paper{
-  position:relative;
-  overflow:hidden;
-
-  background:
-    radial-gradient(circle at 20% 30%, rgba(255,255,255,.22), transparent 35%),
-    radial-gradient(circle at 80% 70%, rgba(0,0,0,.04), transparent 40%),
-    linear-gradient(#e8d9b7,#dfcda7);
-
-  color:#2b2015;
-
-  padding:34px;
-
-  border:1px solid #8a7455;
-
-  box-shadow:
-      0 10px 40px rgba(0,0,0,.28),
-      inset 0 0 40px rgba(255,255,255,.18),
-      inset 0 0 120px rgba(80,50,20,.08);
-}
-
-.paper::before{
-  content:"";
-  position:absolute;
-  left:12px;
-  right:12px;
-  top:12px;
-  bottom:12px;
-  border:1px solid rgba(70,45,20,.25);
-  pointer-events:none;
-}
-
-.paper::after{
-  content:"";
-  position:absolute;
-  left:-80px;
-  top:-80px;
-  width:260px;
-  height:260px;
-  background:radial-gradient(circle, rgba(120,90,50,.10), transparent 70%);
-  pointer-events:none;
-}
-/* Coffee stain */
-
-.paper .coffee{
-position:absolute;
-
-width:170px;
-height:170px;
-
-border:7px solid rgba(90,45,20,.12);
-border-radius:50%;
-
-top:90px;
-right:120px;
-
-pointer-events:none;
-
-transform:rotate(-18deg);
-}
-
-.paper .coffee::after{
-content:"";
-
-position:absolute;
-
-left:18px;
-top:18px;
-
-width:105px;
-height:105px;
-
-border:5px solid rgba(90,45,20,.07);
-border-radius:50%;
-}
-.photo-modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.88);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-  padding:30px;
-}
-
-.photo-modal.hidden{
-  display:none;
-}
-
-.photo-modal img{
-  max-width:92vw;
-  max-height:88vh;
-  border:10px solid #111;
-  box-shadow:0 0 40px rgba(0,0,0,.8);
-}
-#endingOverlay{
-position:fixed;
-inset:0;
-background:#000;
-color:#d9c59b;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-font-family:Georgia,serif;
-z-index:99999;
-opacity:0;
-pointer-events:none;
-transition:opacity 2s;
-}
-
-#endingOverlay.show{
-opacity:1;
-pointer-events:auto;
-}
-
-#endingOverlay h1{
-font-size:54px;
-letter-spacing:8px;
-margin-bottom:18px;
-}
-
-#endingOverlay p{
-font-size:20px;
-letter-spacing:3px;
-opacity:.85;
-}
 </style>
 </head>
 <body>
@@ -259,7 +131,7 @@ opacity:.85;
 
 <section id="app" class="app hidden">
   <aside>
-    <div class="brand"><b>HF</b><h2>ARCHIVE OS</h2><p class="muted">VERSION 1.0 / LEVEL V VERIFIED</p></div>
+    <div class="brand"><b>HF</b><h2>ARCHIVE OS</h2><p class="muted">v0.2 / LEVEL V</p></div>
     <nav>
       <button class="on" onclick="showPage('dashboard',this)">Dashboard</button>
       <button onclick="showPage('personnel',this)">Personnel</button>
@@ -280,34 +152,19 @@ opacity:.85;
     <section id="dashboard" class="page on">
       <div class="grid">
         <div class="card">
-          <h1>Archive Recovery Console</h1>
+          <h1>Recovered Archive</h1>
           <div class="grid3">
             <div class="stat"><b>8</b><br>Personnel</div>
             <div class="stat"><b>5</b><br>Cases</div>
             <div class="stat"><b>17</b><br>Records</div>
           </div>
         </div>
-        <div class="terminal">BRITISH MAGICAL ARCHIVES
-SYSTEM STATUS: ONLINE
-OPERATOR: EMP-0471
-CLEARANCE: LEVEL V VERIFIED
+        <div class="terminal">SYSTEM ONLINE
+CORE SUBJECT: EMP-0471
 RESTORATION: <span id="recoveryPercent">44%</span>
 ACTIVE COLLECTION: BOX 17
-HIDDEN RECORDS: CASE-ZERO / CASE-OMEGA</div>
+WARNING: CASE-T00017 SEALED</div>
       </div>
-
-      <div class="card">
-        <h2>Version 1.0 Release Status</h2>
-        <div class="grid3">
-          <div class="stat"><b>ONLINE</b><br>System Status</div>
-          <div class="stat"><b>22</b><br>Recovered Files</div>
-          <div class="stat"><b>2</b><br>Hidden Files</div>
-        </div>
-        <div class="terminal" style="margin-top:14px">ARCHIVE INTEGRITY: VERIFIED
-FINAL RESTORATION CHANNEL: ACTIVE
-RELEASE BUILD: HF-ARCHIVE-OS-1.0</div>
-      </div>
-
       <div class="card">
         <h2>Recommended Investigation Trail</h2>
         <span class="node" onclick="playSound('click');openRecord('EMP-0471')">EMP-0471</span>
@@ -427,24 +284,6 @@ FINAL NOTE
 If this file is visible, the archive is no longer sealed.
 
 Further recovery will expose the first deletion.`,links:["CASE-T00017","EMP-0471","BOX17-INDEX","IA-2028-001","PHOTO-2027-022"]},
-  {id:"CASE-OMEGA",title:"The Final Recovery",type:"Case",year:"2048",classification:"LEVEL Ω",status:"FINAL",summary:"Final archive entry recovered after the root file was opened.",body:`FINAL ARCHIVE ENTRY
-
-RECOVERY STATUS: COMPLETE
-
-You were never investigating the archive.
-
-The archive was investigating you.
-
-All missing records have been restored.
-All sealed files have been indexed.
-All erased names remain protected.
-
-FINAL PHRASE
-"The archive remembers what the Ministry forgets."
-
-END OF RECOVERY
-
-HF ARCHIVE OS CLOSED.`,links:["CASE-ZERO","CASE-T00017","EMP-0471","BOX17-INDEX","IA-2028-001"]},
   {id:"CASE-G718K",title:"The Seventh Vault",year:"2025",classification:"LEVEL V",status:"Dormant",summary:"Gringotts vault access anomaly linked to an artefact inventory that predates its owner.",links:["GV-718-K"]}
  ],
  records:[
@@ -459,7 +298,7 @@ HF ARCHIVE OS CLOSED.`,links:["CASE-ZERO","CASE-T00017","EMP-0471","BOX17-INDEX"
  ]
 };
 
-const lockedRecords = new Set(["CASE-T00017","IA-2028-001","CASE-ZERO","CASE-OMEGA"]);
+const lockedRecords = new Set(["CASE-T00017","IA-2028-001","CASE-ZERO"]);
 const unlockedRecords = new Set();
 
 function saveProgress(){
@@ -766,22 +605,7 @@ function iconFor(id){
  if(id.startsWith("MED-")) return "⚕️";
  return "📄";
 }
-function openPhotoModal(src){
-  playSound("click");
-  photoModalImg.src = src;
-  photoModal.classList.remove("hidden");
-}
 
-function closePhotoModal(){
-  photoModal.classList.add("hidden");
-  photoModalImg.src = "";
-}
-
-document.addEventListener("keydown", function(e){
-  if(e.key === "Escape"){
-    closePhotoModal();
-  }
-});
 function openRecord(id){
   markRecovered(id);
  const x=find(id); if(!x){alert("Record not recovered: "+id);return}
@@ -847,564 +671,43 @@ Multiple recovered records suggest that EMP-0471 was not the origin of the breac
    </div>`;
    return;
  }
-if(id==="BOX17-INDEX"){
+
+ if(id==="PHOTO-2027-022"){
    detail.innerHTML = `
    <div class="paper">
-     <span class="stamp">LEVEL V</span>
-     <h1>BOX 17</h1>
-     <h2>Recovered Archive Index</h2>
-     <p><b>Physical archive box recovered and catalogued under EMP-0471 investigation trail.</b></p>
+     <span class="stamp">${x.classification}</span>
+     <h1>${x.id}</h1>
+     <h2>${x.title}</h2>
 
-     <div style="
-       border:2px solid rgba(70,45,20,.45);
-       padding:20px;
-       margin:24px 0;
-       background:rgba(255,248,235,.55);
-     ">
-       <h3 style="margin-top:0">Index Contents</h3>
-
-       <div class="kv">
-         <b>☑ BOX17-INDEX</b><span>Primary inventory card</span>
-         <b>☑ WND-88201</b><span>Wand registry copy</span>
-         <b>☑ PHOTO-2027-022</b><span>Recovered photographic evidence</span>
-         <b>☑ IA-2028-001</b><span>Internal Affairs notice</span>
-         <b>☑ GV-718-K</b><span>Gringotts vault registry</span>
-         <b>☑ CASE-T00017</b><span>Sealed betrayal inquiry</span>
-         <b>☑ CASE-ZERO</b><span>Hidden root archive entry</span>
-       </div>
+     <div style="border:2px solid rgba(70,45,20,.45);background:#111;padding:18px;margin:18px 0;text-align:center;color:#ddd">
+       <img src="assets/photos/photo-2027-022.png" style="width:100%;max-height:520px;object-fit:cover;display:block;border:2px solid rgba(70,45,20,.4);box-shadow:0 0 25px rgba(0,0,0,.35);">
+       <p class="muted" style="margin-top:12px">Recovered photographic evidence · SID Training Room</p>
      </div>
 
-     <h3>Recovery Progress</h3>
-     <div style="
-       border:1px solid rgba(70,45,20,.35);
-       height:24px;
-       background:rgba(0,0,0,.12);
-       margin:10px 0 18px;
-       overflow:hidden;
-     ">
-       <div style="
-         width:92%;
-         height:100%;
-         background:linear-gradient(90deg,#8f3028,#c09a57);
-       "></div>
-     </div>
-     <p><b>92%</b> of Box 17 materials recovered and indexed.</p>
-
-     <h3>Archivist Note</h3>
-     <div style="
-       margin:22px 0;
-       padding:18px;
-       border-left:5px solid #8f3028;
-       background:rgba(255,248,235,.6);
-       font-family:'Brush Script MT','Comic Sans MS',cursive;
-       font-size:24px;
-       color:#6b2d1d;
-       transform:rotate(-1deg);
-     ">
-       The box was not hidden to protect evidence.<br>
-       It was hidden to preserve it.<br>
-       <span style="font-size:19px">— Archive Recovery Copy</span>
+     <div class="kv">
+       <b>Date</b><span>${x.date}</span>
+       <b>Type</b><span>${x.type}</span>
+       <b>Classification</b><span>${x.classification}</span>
+       <b>Status</b><span>Recovered / Indexed</span>
      </div>
 
-     <h3>Open Indexed Records</h3>
-     <span class="node" onclick="playSound('click');openRecord('EMP-0471')">EMP-0471</span>
-     <span class="node" onclick="playSound('click');openRecord('WND-88201')">WND-88201</span>
-     <span class="node" onclick="playSound('click');openRecord('PHOTO-2027-022')">PHOTO-2027-022</span>
-     <span class="node" onclick="playSound('click');openRecord('IA-2028-001')">IA-2028-001</span>
-     <span class="node" onclick="playSound('click');openRecord('GV-718-K')">GV-718-K</span>
-     <span class="node" onclick="playSound('click');openRecord('CASE-T00017')">CASE-T00017</span>
-     <span class="node" onclick="playSound('click');openRecord('CASE-ZERO')">CASE-ZERO</span>
-
-     <hr style="border:0;border-top:1px solid rgba(70,45,20,.35);margin:24px 0">
-     <p style="font-size:12px;letter-spacing:1px;text-align:center">
-       BRITISH MAGICAL ARCHIVES · BOX 17 · RECOVERY INDEX
-     </p>
-   </div>`;
-   return;
-}
-if(id==="PHOTO-2027-022"){
-   detail.innerHTML = `
-   <div class="paper">
-     <span class="stamp">CONFIDENTIAL</span>
-     <h1>PHOTO-2027-022</h1>
-     <h2>SID Training Room Photograph</h2>
-
-     <div style="
-       display:flex;
-       gap:28px;
-       align-items:flex-start;
-       flex-wrap:wrap;
-       margin:26px 0;
-     ">
-       <div style="
-         width:430px;
-         max-width:100%;
-         background:#f4ead0;
-         padding:18px 18px 52px;
-         border:1px solid #9b875c;
-         box-shadow:0 18px 38px rgba(0,0,0,.28);
-         transform:rotate(-1.5deg);
-       ">
-         <img onclick="openPhotoModal('assets/photos/photo-2027-022.png')" src="assets/photos/photo-2027-022.png" style="
-cursor:zoom-in;
-           width:100%;
-           display:block;
-           border:10px solid #181818;
-           box-sizing:border-box;
-         ">
-         <div style="
-           margin-top:14px;
-           font-family:'Brush Script MT','Comic Sans MS',cursive;
-           font-size:24px;
-           color:#5b3921;
-         ">
-           He learns fast. Too fast.
-         </div>
-       </div>
-
-       <div style="
-         flex:1;
-         min-width:260px;
-         border:1px solid rgba(70,45,20,.35);
-         background:rgba(255,248,235,.55);
-         padding:18px;
-       ">
-         <h3 style="margin-top:0">Evidence Tag</h3>
-         <div class="kv">
-           <b>Record</b><span>PHOTO-2027-022</span>
-           <b>Date</b><span>2027-03-14</span>
-           <b>Location</b><span>SID Training Room</span>
-           <b>Recovered By</b><span>EMP-0471</span>
-           <b>Classification</b><span>CONFIDENTIAL</span>
-           <b>Status</b><span>Recovered / Indexed</span>
-         </div>
-
-         <h3>Photographic Notes</h3>
-         <p>Recovered image linked to early Special Investigations Division training logs.</p>
-         <p>Back of photograph reads: <i>He learns fast. Too fast.</i></p>
-
-         <h3>Analysis</h3>
-         <pre style="white-space:pre-wrap;line-height:1.6;background:rgba(0,0,0,.08);border:1px solid rgba(70,45,20,.35);padding:14px">Image appears to predate the Box 17 recovery trail.
-
-Cross-reference suggests later Internal Affairs material was indexed against this photograph after the original investigation closed.</pre>
-       </div>
-     </div>
+     <h3>Photographic Notes</h3>
+     <p>${x.body || x.summary}</p>
 
      <h3>Related Records</h3>
-     <span class="node" onclick="playSound('click');openRecord('EMP-0471')">EMP-0471</span>
-     <span class="node" onclick="playSound('click');openRecord('CASE-T00017')">CASE-T00017</span>
-     <span class="node" onclick="playSound('click');openRecord('BOX17-INDEX')">BOX17-INDEX</span>
+     <div class="related-grid">
+       ${(x.links||[]).map(l=>`<div class="item" onclick="playSound('click');openRecord('${l}')"><b>${iconFor(l)} ${l}</b><br><span class="muted">linked archive record</span></div>`).join("")}
+     </div>
    </div>`;
    return;
  }
-if(id==="IA-2028-001"){
-detail.innerHTML=`
-<div class="paper">
 
-<span class="stamp">CONFIDENTIAL</span>
-
-<div style="
-border:3px double #4d3622;
-padding:28px;
-margin:18px 0 26px;
-">
-
-<div style="text-align:center">
-
-<div style="font-size:13px;letter-spacing:4px">
-MINISTRY OF MAGIC
-</div>
-
-<h2 style="margin:8px 0">
-INTERNAL AFFAIRS DIVISION
-</h2>
-
-<p style="letter-spacing:2px">
-CONFIDENTIAL MEMORANDUM
-</p>
-
-</div>
-
-<div class="kv" style="margin-top:24px">
-
-<b>Reference</b><span>IA-2028-001</span>
-
-<b>Date</b><span>18 October 2028</span>
-
-<b>From</b><span>Internal Affairs Division</span>
-
-<b>To</b><span>Archive Security Office</span>
-
-<b>Security</b><span>EYES ONLY</span>
-
-<b>Status</b><span>Recovered Copy</span>
-
-</div>
-
-</div>
-
-<h3>SUBJECT</h3>
-
-<div style="
-border:1px solid rgba(70,45,20,.35);
-padding:22px;
-background:rgba(255,248,235,.5);
-line-height:1.8;
-">
-
-<b>Unauthorized Archive Alteration Investigation</b>
-
-<p>
-
-Routine inspection identified multiple archive records that had been modified after official case closure.
-
-Personnel connected to CASE-T00017 are to remain under observation.
-
-Recovered copies mentioning BOX 17 or LETHE are to be transferred directly to Special Investigations Division.
-
-</p>
-
-<p>
-
-Second attachment has been removed by order of the Wizengamot Security Chair.
-
-</p>
-
-</div>
-
-<div style="
-display:flex;
-justify-content:space-between;
-align-items:flex-end;
-margin:36px 0;
-">
-
-<div>
-
-<div style="
-font-family:cursive;
-font-size:34px;
-color:#6d2d1e;
-">
-A. Blackwood
-</div>
-
-Director of Internal Affairs
-
-</div>
-
-<div style="
-border:3px solid #9c3428;
-padding:18px;
-font-weight:bold;
-color:#9c3428;
-transform:rotate(-10deg);
-">
-OFFICIAL<br>SEAL
-</div>
-
-</div>
-
-<div style="
-margin:20px 0;
-padding:18px;
-border-left:5px solid #8f3028;
-background:rgba(255,248,235,.6);
-font-family:'Brush Script MT','Comic Sans MS',cursive;
-font-size:24px;
-color:#6b2d1d;
-transform:rotate(-2deg);
-">
-Second page missing.<br>
-Do not distribute.<br>
-— IA Archive
-</div>
-
-<h3>Attachments</h3>
-
-<span class="node" onclick="playSound('click');openRecord('CASE-T00017')">CASE-T00017</span>
-<span class="node" onclick="playSound('click');openRecord('PHOTO-2027-022')">PHOTO-2027-022</span>
-<span class="node" onclick="playSound('click');openRecord('BOX17-INDEX')">BOX17-INDEX</span>
-<span class="node" onclick="playSound('click');openRecord('EMP-0471')">EMP-0471</span>
-
-</div>
-`;
-return;
-}
-if(id==="CASE-OMEGA"){
-   detail.innerHTML = `
-   <div class="paper" style="
-     min-height:75vh;
-     background:
-       radial-gradient(circle at center, rgba(143,48,40,.22), transparent 35%),
-       linear-gradient(#1a0b08,#050202);
-     color:#f0d8bd;
-     border:2px solid #8f3028;
-     box-shadow:0 0 60px rgba(143,48,40,.35);
-   ">
-     <div style="text-align:center;margin-top:40px">
-       <div style="letter-spacing:6px;font-size:13px;color:#c09a57">FINAL ROOT ARCHIVE</div>
-       <h1 style="font-size:56px;color:#f0d8bd;margin:18px 0">CASE-OMEGA</h1>
-       <h2 style="color:#c09a57">THE FINAL RECOVERY</h2>
-       <p style="color:#f0b0a0;letter-spacing:2px">ARCHIVE STATUS: COMPLETE</p>
-     </div>
-
-     <div class="terminal" style="
-       margin:34px auto;
-       max-width:760px;
-       background:#060202;
-       color:#f0b0a0;
-       border-color:#8f3028;
-     ">RECOVERY COMPLETE
-ROOT FILE VERIFIED
-ALL HIDDEN RECORDS INDEXED
-FINAL ARCHIVE CHANNEL OPEN</div>
-
-     <div style="
-       max-width:780px;
-       margin:36px auto;
-       font-size:22px;
-       line-height:1.8;
-       text-align:center;
-     ">
-       <p>You were never investigating the archive.</p>
-       <p><b>The archive was investigating you.</b></p>
-       <p>All missing records have been restored.</p>
-       <p>All sealed files have been indexed.</p>
-       <p>The hidden archive remains open only to those who remember.</p>
-     </div>
-
-     <div style="
-       margin:34px auto;
-       max-width:740px;
-       padding:22px;
-       border:1px solid rgba(240,176,160,.35);
-       background:rgba(255,255,255,.04);
-       text-align:center;
-       letter-spacing:2px;
-     ">
-       THE ARCHIVE REMEMBERS WHAT THE MINISTRY FORGETS
-     </div>
-
-     <h3 style="color:#c09a57;text-align:center">Final Links</h3>
-     <div style="text-align:center">
-       <span class="node" onclick="playSound('click');openRecord('EMP-0471')">EMP-0471</span>
-       <span class="node" onclick="playSound('click');openRecord('CASE-ZERO')">CASE-ZERO</span>
-       <span class="node" onclick="playSound('click');openRecord('CASE-T00017')">CASE-T00017</span>
-       <span class="node" onclick="playSound('click');openRecord('BOX17-INDEX')">BOX17-INDEX</span>
-     </div>
-
-     <hr style="border:0;border-top:1px solid rgba(240,176,160,.25);margin:40px 0">
-     <p style="text-align:center;font-size:12px;letter-spacing:3px;color:#c09a57">
-       HF ARCHIVE OS · FINAL RESTORATION COMPLETE
-     </p>
-   </div>`;
-   playSound("omega");
-
-setTimeout(()=>{
-  const ending = document.getElementById("endingOverlay");
-  if(ending){
-    ending.classList.add("show");
-  }
-},5000);
-
-return;
-}
-if(id==="CASE-ZERO"){
-   detail.innerHTML = `
-   <div class="paper" style="
-     background:
-       radial-gradient(circle at 50% 20%, rgba(143,48,40,.22), transparent 32%),
-       linear-gradient(#d9c59b,#bfa875);
-     border:2px solid #2b160d;
-   ">
-     <span class="stamp">LEVEL Ω</span>
-
-     <div style="
-       text-align:center;
-       border:3px double #2b160d;
-       padding:24px;
-       margin:18px 0 26px;
-     ">
-       <div style="letter-spacing:5px;font-size:12px">ROOT ARCHIVE ENTRY</div>
-       <h1 style="font-size:42px;margin:12px 0 4px">CASE-ZERO</h1>
-       <h2 style="margin:0">THE FIRST HIDDEN FILE</h2>
-       <p style="color:#8f3028;font-weight:bold;letter-spacing:2px">UNAUTHORIZED RECOVERY COPY</p>
-     </div>
-
-     <div class="terminal" style="
-       color:#f0b0a0;
-       border-color:#8f3028;
-       background:#120504;
-       margin:24px 0;
-     ">WARNING:
-THIS FILE WAS NOT CREATED BY THE MINISTRY.
-
-SOURCE: UNKNOWN
-ARCHIVE DEPTH: BELOW OFFICIAL INDEX
-RECOVERY STATUS: UNSTABLE</div>
-
-     <h3>Recovered Body</h3>
-     <pre style="
-       white-space:pre-wrap;
-       line-height:1.75;
-       background:rgba(0,0,0,.12);
-       border:1px solid rgba(70,45,20,.45);
-       padding:20px;
-     ">ROOT ARCHIVE ENTRY
-
-THIS FILE WAS NOT CREATED BY THE MINISTRY.
-
-It appeared after valid Level VI access was granted to CASE-T00017.
-
-ORIGIN
-The earliest trace predates Box 17, the Internal Affairs inquiry, and the recovered photograph.
-
-The record refers to an archive beneath the official archive:
-a hidden index designed to remember what was erased.
-
-PRIMARY PHRASE
-"Lethe remembers what the Ministry forgets."
-
-SUBJECTS REFERENCED
-• EMP-0471
-• CASE-T00017
-• BOX17-INDEX
-• IA-2028-001
-• █████████
-
-FINAL NOTE
-If this file is visible, the archive is no longer sealed.
-
-Further recovery will expose the first deletion.</pre>
-
-     <div style="
-       margin:28px 0;
-       padding:20px 24px;
-       border-left:6px solid #8f3028;
-       background:rgba(255,248,235,.55);
-       font-family:'Brush Script MT','Comic Sans MS',cursive;
-       font-size:26px;
-       color:#5d1d17;
-       transform:rotate(-1.5deg);
-       box-shadow:0 10px 24px rgba(0,0,0,.18);
-     ">
-       This file was never missing.<br>
-       It was waiting for the correct investigator.<br>
-       <span style="font-size:20px">— Unknown Archivist</span>
-     </div>
-
-     <h3>Root Links</h3>
-     <span class="node" onclick="playSound('click');openRecord('EMP-0471')">EMP-0471</span>
-     <span class="node" onclick="playSound('click');openRecord('CASE-T00017')">CASE-T00017</span>
-     <span class="node" onclick="playSound('click');openRecord('BOX17-INDEX')">BOX17-INDEX</span>
-     <span class="node" onclick="playSound('click');openRecord('IA-2028-001')">IA-2028-001</span>
-     <span class="node" onclick="playSound('click');openRecord('PHOTO-2027-022')">PHOTO-2027-022</span>
-
-     <hr style="border:0;border-top:1px solid rgba(70,45,20,.45);margin:26px 0">
-     <p style="font-size:12px;letter-spacing:2px;text-align:center;color:#5d1d17">
-       THE ARCHIVE REMEMBERS WHAT THE MINISTRY FORGETS
-     </p>
-   </div>`;
-   if(!unlockedRecords.has("CASE-OMEGA")){
-    unlockedRecords.add("CASE-OMEGA");
-    saveProgress();
-
-    setTimeout(()=>{
-        alert(
-`ARCHIVE RECOVERY COMPLETE
-
-NEW ROOT FILE DETECTED
-
-CASE-OMEGA`
-        );
-    },500);
-}
-   return;
-}
-if(id==="CASE-T00017"){
+ if(id==="CASE-T00017"){
    if(!unlockedRecords.has("CASE-ZERO")){
      unlockedRecords.add("CASE-ZERO");
      saveProgress();
    }
    setTimeout(()=>alert("NEW FILE RECOVERED: CASE-ZERO"),300);
-
-   detail.innerHTML = `
-   <div class="paper" style="position:relative;overflow:hidden">
-    <div class="coffee"></div>
-     <div style="position:absolute;top:30px;right:-70px;transform:rotate(35deg);font-size:44px;color:rgba(143,48,40,.18);font-weight:bold;letter-spacing:4px">
-       TOP SECRET
-     </div>
-
-     <div style="text-align:center;border:3px double #3a2712;padding:18px;margin-bottom:20px">
-       <div style="font-size:13px;letter-spacing:3px">BRITISH MAGICAL ARCHIVES</div>
-       <h1 style="margin:12px 0 4px">CASE-T00017</h1>
-       <h2 style="margin:0">THE TRAITOR FILE</h2>
-       <div style="margin-top:10px;color:#8f3028;font-weight:bold;letter-spacing:2px">LEVEL VI · EYES ONLY</div>
-     </div>
-
-     <div style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px">
-       <span class="stamp">TOP SECRET</span>
-       <span class="stamp">SEALED</span>
-       <span class="stamp">LEVEL VI</span>
-     </div>
-
-     <div class="kv">
-       <b>Status</b><span>${x.status}</span>
-       <b>Year</b><span>${x.year}</span>
-       <b>Classification</b><span>${x.classification}</span>
-       <b>Archive Status</b><span>Recovered / Indexed</span>
-       <b>Origin</b><span>Internal Security Division</span>
-       <b>Recovery Source</b><span>Box 17 / Hidden Index</span>
-     </div>
-
-     <h3>Restricted Case Summary</h3>
-     <pre style="white-space:pre-wrap;line-height:1.75;background:rgba(0,0,0,.08);border:1px solid rgba(70,45,20,.35);padding:18px">${x.body}</pre>
-
-     <h3>Redacted Addendum</h3>
-     <div style="border:1px solid rgba(70,45,20,.35);padding:16px;background:rgba(255,255,255,.18);line-height:1.7">
-       <p><b>Filed By:</b> ███████████████</p>
-       <p><b>Witness Statement:</b> Removed by Wizengamot Security Chair.</p>
-       <p><b>Recovered Phrase:</b> "Lethe remembers what the Ministry forgets."</p>
-       <p><b>Handwritten Note:</b> <i>Do not trust Internal Affairs until the second page is found.</i></p>
-     </div>
-<div style="
-margin:28px 0;
-padding:18px 22px;
-border-left:5px solid #8f3028;
-background:rgba(255,248,235,.58);
-font-family:'Brush Script MT','Comic Sans MS',cursive;
-font-size:25px;
-line-height:1.45;
-color:#6b2d1d;
-transform:rotate(-1.5deg);
-box-shadow:0 8px 18px rgba(0,0,0,.12);
-">
-Do not trust Internal Affairs.<br>
-The second page was removed before indexing.<br>
-<span style="font-size:20px">— R.T.</span>
-</div>
-     <h3>Attached Evidence</h3>
-     <span class="node" onclick="playSound('click');openRecord('PHOTO-2027-022')">PHOTO-2027-022</span>
-     <span class="node" onclick="playSound('click');openRecord('WND-88201')">WND-88201</span>
-     <span class="node" onclick="playSound('click');openRecord('GV-718-K')">GV-718-K</span>
-     <span class="node" onclick="playSound('click');openRecord('BOX17-INDEX')">BOX17-INDEX</span>
-     <span class="node" onclick="playSound('click');openRecord('IA-2028-001')">IA-2028-001</span>
-
-     <h3>Persons of Interest</h3>
-     <span class="node" onclick="playSound('click');openRecord('EMP-0471')">EMP-0471</span>
-     <span class="node" onclick="playSound('click');openRecord('EMP-1021')">EMP-1021</span>
-     <span class="node" onclick="playSound('click');openRecord('EMP-0844')">EMP-0844</span>
-
-     <h3>Hidden Index Links</h3>
-     ${(x.links||[]).map(l=>`<span class="node" onclick="playSound('click');openRecord('${l}')">${iconFor(l)} ${l}</span>`).join("")}
-
-     <hr style="border:0;border-top:1px solid rgba(70,45,20,.35);margin:22px 0">
-     <p style="font-size:12px;letter-spacing:1px;text-align:center">
-       BRITISH MAGICAL ARCHIVES · INTERNAL SECURITY DIVISION · RECOVERY COPY
-     </p>
-   </div>`;
-   return;
  }
 
  if(x.year){
@@ -1506,15 +809,5 @@ loadRecovery();
 render();
 updateRecovery();
 </script>
-<div id="photoModal" class="photo-modal hidden" onclick="closePhotoModal()">
-  <img id="photoModalImg" src="">
-</div>
-<div id="endingOverlay">
-
-<h1>HF ARCHIVE CLOSED</h1>
-
-<p>THE ARCHIVE REMEMBERS.</p>
-
-</div>
 </body>
 </html>
