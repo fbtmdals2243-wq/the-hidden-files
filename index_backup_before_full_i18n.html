@@ -3,41 +3,41 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>The Hidden Files — Archive OS v1.0.0</title>
+<title>The Hidden Files — Archive OS v0.2</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <section id="boot" class="screen boot">
   <div class="bootbox">
-    <h1 data-i18n="bootTitle">THE HIDDEN FILES</h1>
-    <p class="muted" data-i18n="bootSubtitle">Secure Archive System · Recovery Build v1.0.0</p>
+    <h1>THE HIDDEN FILES</h1>
+    <p class="muted">Secure Archive System · Recovery Build v0.2</p>
     <div id="bootlog" class="log">Initializing Archive OS...</div>
-    <button id="bootBtn" class="btn hidden" onclick="showLogin()" data-i18n="continueBtn">CONTINUE</button>
+    <button id="bootBtn" class="btn hidden" onclick="showLogin()">CONTINUE</button>
   </div>
 </section>
 
 <section id="login" class="screen login hidden">
   <div class="loginbox">
-    <h2 data-i18n="loginTitle">AUTHORIZATION REQUIRED</h2>
-    <p class="muted" data-i18n="loginSubtitle">British Magical Archives / Restricted Access</p>
-    <div class="field"><label data-i18n="operatorId">Operator ID</label><input id="operatorId" value="EMP-0471"></div>
-    <div class="field"><label data-i18n="passphrase">Passphrase</label><input id="passphrase" value="BOX17" type="password"></div>
-    <button class="btn" onclick="enterArchive()" data-i18n="loginBtn">LOGIN</button><div id="loginStatus" class="log hidden" style="margin-top:16px"></div>
+    <h2>AUTHORIZATION REQUIRED</h2>
+    <p class="muted">British Magical Archives / Restricted Access</p>
+    <div class="field"><label>Operator ID</label><input id="operatorId" value="EMP-0471"></div>
+    <div class="field"><label>Passphrase</label><input id="passphrase" value="BOX17" type="password"></div>
+    <button class="btn" onclick="enterArchive()">LOGIN</button><div id="loginStatus" class="log hidden" style="margin-top:16px"></div>
   </div>
 </section>
 
 <section id="archiveBoot" class="screen boot hidden">
   <div class="bootbox">
-    <h1 data-i18n="accessGranted">ARCHIVE ACCESS GRANTED</h1>
-    <p class="muted" data-i18n="accessSubtitle">British Magical Archives · Secure Recovery Channel</p>
+    <h1>ARCHIVE ACCESS GRANTED</h1>
+    <p class="muted">British Magical Archives · Secure Recovery Channel</p>
     <div id="archiveBootLog" class="log">Preparing archive session...</div>
   </div>
 </section>
 
 <section id="app" class="app hidden">
   <aside>
-    <div class="brand"><b>HF</b><h2>ARCHIVE OS</h2><p class="muted">VERSION v1.0.0 / LEVEL V VERIFIED</p></div>
+    <div class="brand"><b>HF</b><h2>ARCHIVE OS</h2><p class="muted">VERSION 1.0 / LEVEL V VERIFIED</p></div>
     <nav>
       <button class="on" onclick="showPage('dashboard',this)" data-i18n="navDashboard">Dashboard</button>
       <button onclick="showPage('personnel',this)" data-i18n="navPersonnel">Personnel</button>
@@ -47,14 +47,6 @@
       <button onclick="showPage('explorer',this)" data-i18n="navExplorer">Explorer</button>
       <button onclick="showPage('box17',this)" data-i18n="navBox17">Box 17</button>
     </nav>
-    <hr style="margin:18px 0;border-color:rgba(185,147,85,.2)">
-
-<button
-    class="btn"
-    onclick="resetArchive()"
-    data-i18n="resetArchive">
-    RESET ARCHIVE
-</button>
   </aside>
 
   <main>
@@ -94,7 +86,7 @@ HIDDEN RECORDS: CASE-ZERO / CASE-OMEGA</div>
         </div>
         <div class="terminal" style="margin-top:14px">ARCHIVE INTEGRITY: VERIFIED
 FINAL RESTORATION CHANNEL: ACTIVE
-RELEASE BUILD: HF-ARCHIVE-OS-v1.0.0</div>
+RELEASE BUILD: HF-ARCHIVE-OS-1.0</div>
       </div>
 
       <div class="card">
@@ -106,7 +98,7 @@ RELEASE BUILD: HF-ARCHIVE-OS-v1.0.0</div>
         <span class="node" onclick="playSound('click');openRecord('CASE-ZERO')">CASE-ZERO</span>
       </div>
     
-      <div class="card"><h2 data-i18n="board">Intelligence Board</h2>
+      <div class="card"><h2 data-i18n="board">Intelligence Board</h2><h2>Intelligence Board</h2>
         <p class="muted" data-i18n="boardDesc">Pinned relationship board reconstructed from recovered archive links.</p>
 
         <div class="investigation-board">
@@ -161,19 +153,19 @@ RELEASE BUILD: HF-ARCHIVE-OS-v1.0.0</div>
       </div>
 </section>
 
-    <section id="personnel" class="page"><div class="card"><h1 data-i18n="personnelTitle">Personnel</h1><div id="personnelList" class="list">
+    <section id="personnel" class="page"><div class="card"><h1>Personnel</h1><div id="personnelList" class="list">
 <div class="item" onclick="playSound('click');openRecord('EMP-0471')"><b>EMP-0471 · Ryu TaeO</b><br><span class="muted">Senior Auror · LEVEL V</span></div>
 <div class="item" onclick="playSound('click');openRecord('EMP-0312')"><b>EMP-0312 · Noah Byrne</b><br><span class="muted">Captain · LEVEL V</span></div>
 <div class="item" onclick="playSound('click');openRecord('EMP-0844')"><b>EMP-0844 · Mara Venn</b><br><span class="muted">Internal Affairs Investigator · EYES ONLY</span></div>
 <div class="item" onclick="playSound('click');openRecord('EMP-1021')"><b>EMP-1021 · Theo March</b><br><span class="muted">Junior Auror · SEALED</span></div>
 </div></div></section>
-    <section id="cases" class="page"><div class="card"><h1 data-i18n="casesTitle">Case Files</h1><div id="caseList" class="list">
+    <section id="cases" class="page"><div class="card"><h1>Case Files</h1><div id="caseList" class="list">
 <div class="item" onclick="playSound('click');openRecord('CASE-A23791')"><b>CASE-A23791 · The Crown of Lethe</b><br><span class="muted">Closed · LEVEL V · Memory artefact investigation</span></div>
 <div class="item" onclick="playSound('click');openRecord('CASE-M00918')"><b>CASE-M00918 · The Black Mirror Case</b><br><span class="muted">Restricted · EYES ONLY · Mirror anomaly</span></div>
 <div class="item" onclick="playSound('click');openRecord('CASE-G718K')"><b>CASE-G718K · The Seventh Vault</b><br><span class="muted">Dormant · LEVEL V · Gringotts anomaly</span></div>
 <div class="item" onclick="playSound('click');openRecord('CASE-T00017')"><b>🔒 CASE-T00017 · The Traitor File</b><br><span class="muted">Sealed · EYES ONLY · Internal betrayal inquiry</span></div>
 </div></div></section>
-    <section id="evidence" class="page"><div class="card"><h1 data-i18n="evidenceTitle">Evidence Locker</h1><div id="evidenceList" class="list">
+    <section id="evidence" class="page"><div class="card"><h1>Evidence Locker</h1><div id="evidenceList" class="list">
 <div class="item" onclick="playSound('click');openRecord('EVD-A23791-01')"><b>EVD-A23791-01 · Gold Circlet with Runic Seam</b><br><span class="muted">Primary artefact · CASE-A23791 · LEVEL V</span></div>
 <div class="item" onclick="playSound('click');openRecord('PHOTO-2027-022')"><b>PHOTO-2027-022 · SID Training Room Photograph</b><br><span class="muted">Recovered photograph · CASE-T00017 · CONFIDENTIAL</span></div>
 <div class="item" onclick="playSound('click');openRecord('WND-88201')"><b>WND-88201 · Wand Registry</b><br><span class="muted">Equipment record · EMP-0471 · OFFICIAL</span></div>
@@ -181,18 +173,18 @@ RELEASE BUILD: HF-ARCHIVE-OS-v1.0.0</div>
 <div class="item" onclick="playSound('click');openRecord('BOX17-INDEX')"><b>BOX17-INDEX · Box 17 Index</b><br><span class="muted">Recovered archive box · LEVEL V</span></div>
 <div class="item" onclick="playSound('click');openRecord('IA-2028-001')"><b>🔒 IA-2028-001 · Internal Affairs Notice</b><br><span class="muted">Sealed evidence transfer inquiry · EYES ONLY</span></div>
 </div></div></section>
-    <section id="timeline" class="page"><div class="paper"><h1 data-i18n="timelineTitle">Timeline</h1><div class="timeline" id="timelineList"></div></div></section>
+    <section id="timeline" class="page"><div class="paper"><h1>Timeline</h1><div class="timeline" id="timelineList"></div></div></section>
     <section id="explorer" class="page">
       <div class="card">
-        <h1 data-i18n="explorerTitle">Archive Explorer</h1>
-        <p class="muted" data-i18n="explorerDesc">Browse recovered folders from the British Magical Archives.</p>
+        <h1>Archive Explorer</h1>
+        <p class="muted">Browse recovered folders from the British Magical Archives.</p>
         <div id="archiveExplorer" class="foldergrid"></div>
       </div>
     </section>
-    <section id="box17" class="page"><div class="card"><h1 data-i18n="box17Title">Box 17</h1><p class="muted" data-i18n="box17Desc">Recovered physical traces linked to EMP-0471.</p><div id="boxGrid" class="foldergrid"></div></div></section>
+    <section id="box17" class="page"><div class="card"><h1>Box 17</h1><p class="muted">Recovered physical traces linked to EMP-0471.</p><div id="boxGrid" class="foldergrid"></div></div></section>
     <section id="searchResults" class="page">
   <div class="card">
-    <h1 data-i18n="searchResultsTitle">Search Results</h1>
+    <h1>Search Results</h1>
 
     <p class="muted" id="searchSummary">
       0 records found.
@@ -212,9 +204,9 @@ RELEASE BUILD: HF-ARCHIVE-OS-v1.0.0</div>
 </div>
 <div id="endingOverlay">
 
-<h1 data-i18n="archiveClosed">HF ARCHIVE CLOSED</h1>
+<h1>HF ARCHIVE CLOSED</h1>
 
-<p data-i18n="archiveRemembers">THE ARCHIVE REMEMBERS.</p>
+<p>THE ARCHIVE REMEMBERS.</p>
 
 </div>
 

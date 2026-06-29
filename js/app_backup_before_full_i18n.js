@@ -1203,25 +1203,8 @@ function runSearch(){
 
   showPage("searchResults");
 
-  const lang = localStorage.getItem("hiddenfiles-lang") || "en";
-
-if(results.length===0){
-  if(lang==="ko"){
-    searchSummary.textContent = "검색 결과가 없습니다.";
-  }else if(lang==="jp"){
-    searchSummary.textContent = "検索結果はありません。";
-  }else{
-    searchSummary.textContent = `No records found for "${query}".`;
-  }
-}else{
-  if(lang==="ko"){
-    searchSummary.textContent = `검색 결과 ${results.length}건: "${query}"`;
-  }else if(lang==="jp"){
-    searchSummary.textContent = `${results.length}件見つかりました: "${query}"`;
-  }else{
-    searchSummary.textContent = `${results.length} record${results.length === 1 ? "" : "s"} found for "${query}".`;
-  }
-}
+  searchSummary.textContent =
+    `${results.length} record${results.length === 1 ? "" : "s"} found for "${query}".`;
 
   searchResultList.innerHTML = results.length
     ? results.map(x => `
@@ -1237,166 +1220,53 @@ if(results.length===0){
 }
 q.addEventListener("keydown",e=>{if(e.key==="Enter")runSearch()});
 const translations = {
-  en:{
-    // Search
-    searchBtn:"SEARCH",
-    placeholder:"Search archive: Ryu, Lethe, Traitor, Box 17...",
-    searchResultsTitle:"Search Results",
-
-    // Boot
-    bootTitle:"THE HIDDEN FILES",
-    bootSubtitle:"Secure Archive System · Recovery Build v1.0.0",
-    continueBtn:"CONTINUE",
-
-    // Login
-    loginTitle:"AUTHORIZATION REQUIRED",
-    loginSubtitle:"British Magical Archives / Restricted Access",
-    operatorId:"Operator ID",
-    passphrase:"Passphrase",
-    loginBtn:"LOGIN",
-
-    // Archive Boot
-    accessGranted:"ARCHIVE ACCESS GRANTED",
-    accessSubtitle:"British Magical Archives · Secure Recovery Channel",
-
-    // Navigation
-    navDashboard:"Dashboard",
-    navPersonnel:"Personnel",
-    navCases:"Cases",
-    navEvidence:"Evidence",
-    navTimeline:"Timeline",
-    navExplorer:"Explorer",
-    navBox17:"Box 17",
-
-    // Dashboard
-    archiveConsole:"Archive Recovery Console",
-    releaseStatus:"Version 1.0 Release Status",
-    trail:"Recommended Investigation Trail",
-    board:"Intelligence Board",
-    boardDesc:"Pinned relationship board reconstructed from recovered archive links.",
-
-    // Pages
-    personnelTitle:"Personnel",
-    casesTitle:"Case Files",
-    evidenceTitle:"Evidence Locker",
-    timelineTitle:"Timeline",
-    explorerTitle:"Archive Explorer",
-    explorerDesc:"Browse recovered folders from the British Magical Archives.",
-    box17Title:"Box 17",
-    box17Desc:"Recovered physical traces linked to EMP-0471.",
-
-    // Ending
-    archiveClosed:"HF ARCHIVE CLOSED",
-archiveRemembers:"THE ARCHIVE REMEMBERS.",
-resetArchive:"RESET ARCHIVE"
+  en: {
+    searchBtn: "SEARCH",
+    placeholder: "Search archive: Ryu, Lethe, Traitor, Box 17...",
+    navDashboard: "Dashboard",
+    navPersonnel: "Personnel",
+    navCases: "Cases",
+    navEvidence: "Evidence",
+    navTimeline: "Timeline",
+    navExplorer: "Explorer",
+    navBox17: "Box 17",
+    archiveConsole: "Archive Recovery Console",
+    releaseStatus: "Version 1.0 Release Status",
+    trail: "Recommended Investigation Trail",
+    board: "Intelligence Board",
+    boardDesc: "Pinned relationship board reconstructed from recovered archive links."
   },
-
-  ko:{
-    // Search
-    searchBtn:"검색",
-    placeholder:"아카이브 검색: Ryu, Lethe, Traitor, Box 17...",
-    searchResultsTitle:"검색 결과",
-
-    // Boot
-    bootTitle:"THE HIDDEN FILES",
-    bootSubtitle:"보안 아카이브 시스템 · 복구 빌드 v1.0.0",
-    continueBtn:"계속",
-
-    // Login
-    loginTitle:"접근 권한 필요",
-    loginSubtitle:"영국 마법부 기록보관소 / 제한 구역",
-    operatorId:"조사관 ID",
-    passphrase:"암호",
-    loginBtn:"로그인",
-
-    // Archive Boot
-    accessGranted:"아카이브 접근 승인",
-    accessSubtitle:"영국 마법부 기록보관소 · 복구 채널",
-
-    // Navigation
-    navDashboard:"대시보드",
-    navPersonnel:"인물 기록",
-    navCases:"사건 파일",
-    navEvidence:"증거 보관소",
-    navTimeline:"타임라인",
-    navExplorer:"탐색기",
-    navBox17:"Box 17",
-
-    // Dashboard
-    archiveConsole:"아카이브 복구 콘솔",
-    releaseStatus:"버전 1.0 배포 상태",
-    trail:"추천 조사 경로",
-    board:"정보 관계도",
-    boardDesc:"복구된 기록을 기반으로 재구성된 조사 관계도입니다.",
-
-    // Pages
-    personnelTitle:"인물 기록",
-    casesTitle:"사건 파일",
-    evidenceTitle:"증거 보관소",
-    timelineTitle:"타임라인",
-    explorerTitle:"아카이브 탐색기",
-    explorerDesc:"복구된 영국 마법부 기록을 탐색합니다.",
-    box17Title:"Box 17",
-    box17Desc:"EMP-0471과 관련된 복구 기록.",
-
-    // Ending
-    archiveClosed:"아카이브 종료",
-archiveRemembers:"아카이브는 모든 것을 기억한다.",
-resetArchive:"아카이브 초기화"
+  ko: {
+    searchBtn: "검색",
+    placeholder: "아카이브 검색: Ryu, Lethe, Traitor, Box 17...",
+    navDashboard: "대시보드",
+    navPersonnel: "인물 기록",
+    navCases: "사건 파일",
+    navEvidence: "증거 보관소",
+    navTimeline: "타임라인",
+    navExplorer: "탐색기",
+    navBox17: "Box 17",
+    archiveConsole: "아카이브 복구 콘솔",
+    releaseStatus: "버전 1.0 배포 상태",
+    trail: "추천 조사 경로",
+    board: "정보 관계 보드",
+    boardDesc: "복구된 아카이브 링크를 기반으로 재구성된 관계 보드입니다."
   },
-
-  jp:{
-    // Search
-    searchBtn:"検索",
-    placeholder:"アーカイブ検索: Ryu, Lethe, Traitor, Box 17...",
-    searchResultsTitle:"検索結果",
-
-    // Boot
-    bootTitle:"THE HIDDEN FILES",
-    bootSubtitle:"アーカイブ復旧システム v1.0.0",
-    continueBtn:"続行",
-
-    // Login
-    loginTitle:"認証が必要です",
-    loginSubtitle:"英国魔法省アーカイブ / 制限区域",
-    operatorId:"オペレーターID",
-    passphrase:"パスフレーズ",
-    loginBtn:"ログイン",
-
-    // Archive Boot
-    accessGranted:"アーカイブアクセス承認",
-    accessSubtitle:"英国魔法省アーカイブ・復旧チャンネル",
-
-    // Navigation
-    navDashboard:"ダッシュボード",
-    navPersonnel:"人物記録",
-    navCases:"事件ファイル",
-    navEvidence:"証拠保管庫",
-    navTimeline:"タイムライン",
-    navExplorer:"エクスプローラー",
-    navBox17:"Box 17",
-
-    // Dashboard
-    archiveConsole:"アーカイブ復旧コンソール",
-    releaseStatus:"バージョン1.0 リリース状態",
-    trail:"推奨調査ルート",
-    board:"情報関係ボード",
-    boardDesc:"復旧された記録から再構築された関係図です。",
-
-    // Pages
-    personnelTitle:"人物記録",
-    casesTitle:"事件ファイル",
-    evidenceTitle:"証拠保管庫",
-    timelineTitle:"タイムライン",
-    explorerTitle:"アーカイブエクスプローラー",
-    explorerDesc:"復旧された英国魔法省アーカイブを閲覧します。",
-    box17Title:"Box 17",
-    box17Desc:"EMP-0471に関連する復旧記録。",
-
-    // Ending
-    archiveClosed:"アーカイブ終了",
-archiveRemembers:"アーカイブはすべてを記憶している。",
-resetArchive:"アーカイブ初期化"
+  jp: {
+    searchBtn: "検索",
+    placeholder: "アーカイブ検索: Ryu, Lethe, Traitor, Box 17...",
+    navDashboard: "ダッシュボード",
+    navPersonnel: "人物記録",
+    navCases: "事件ファイル",
+    navEvidence: "証拠保管庫",
+    navTimeline: "タイムライン",
+    navExplorer: "エクスプローラー",
+    navBox17: "Box 17",
+    archiveConsole: "アーカイブ復旧コンソール",
+    releaseStatus: "バージョン1.0 リリース状態",
+    trail: "推奨調査ルート",
+    board: "情報関係ボード",
+    boardDesc: "復旧されたアーカイブリンクをもとに再構築された関係ボードです。"
   }
 };
 
@@ -1404,10 +1274,6 @@ function setLang(lang){
   localStorage.setItem("hiddenfiles-lang", lang);
 
   document.querySelectorAll("[data-i18n]").forEach(el=>{
-    const summary = document.getElementById("searchSummary");
-if(summary && lang==="ko") summary.textContent="검색어를 입력하세요.";
-if(summary && lang==="jp") summary.textContent="検索語を入力してください。";
-if(summary && lang==="en") summary.textContent="Enter a search term.";
     const key = el.dataset.i18n;
     if(translations[lang] && translations[lang][key]){
       el.textContent = translations[lang][key];
@@ -1419,26 +1285,7 @@ if(summary && lang==="en") summary.textContent="Enter a search term.";
     q.placeholder = translations[lang].placeholder;
   }
 }
-function resetArchive(){
-  const lang = localStorage.getItem("hiddenfiles-lang") || "en";
 
-  const message =
-    lang === "ko" ? "모든 진행 상황을 초기화하시겠습니까?" :
-    lang === "jp" ? "すべての進行状況を初期化しますか？" :
-    "Reset all archive progress?";
-
-  if(!confirm(message)) return;
-
-  const keepLang = localStorage.getItem("hiddenfiles-lang");
-
-  localStorage.clear();
-
-  if(keepLang){
-    localStorage.setItem("hiddenfiles-lang", keepLang);
-  }
-
-  location.reload();
-}
 const savedLang = localStorage.getItem("hiddenfiles-lang") || "en";
 setLang(savedLang);
 loadProgress();

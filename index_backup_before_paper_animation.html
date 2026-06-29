@@ -1,3 +1,458 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>The Hidden Files — Archive OS v0.2</title>
+<style>
+:root{
+  --bg:#030504;--panel:#0b120f;--panel2:#101815;--gold:#b99355;
+  --muted:#9f9788;--line:rgba(185,147,85,.28);--green:#16382d;
+  --paper:#d8c6a0;--ink:#20170d;--red:#8f3028;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 40% -10%,#173226,#030504 55%,#000);color:#efe6d2;font-family:Georgia,"Times New Roman",serif}
+button,input{font:inherit}
+.hidden{display:none!important}
+.screen{min-height:100vh}
+.boot{display:grid;place-items:center;padding:28px}
+.bootbox{width:min(760px,92vw);border:1px solid var(--line);background:rgba(5,9,7,.92);padding:32px;box-shadow:0 40px 120px #000}
+.bootbox h1{margin:0;color:var(--gold);font-size:48px;letter-spacing:4px}
+.muted{color:var(--muted)}
+.log{font-family:monospace;background:#020403;border:1px solid #1c5b3c;color:#9efac4;padding:16px;white-space:pre-line;line-height:1.6;margin:22px 0}
+.btn{background:var(--green);border:1px solid var(--gold);color:white;padding:12px 16px;cursor:pointer}
+.btn:hover{filter:brightness(1.15)}
+.login{display:grid;place-items:center;padding:28px}
+.loginbox{width:min(460px,92vw);border:1px solid var(--line);background:rgba(8,12,10,.94);padding:28px}
+.loginbox h2{color:var(--gold);letter-spacing:2px;margin-top:0}
+.field{margin:12px 0}
+.field label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
+.field input{width:100%;background:#020302;border:1px solid var(--line);color:#efe6d2;padding:12px}
+.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+aside{border-right:1px solid var(--line);background:rgba(4,6,5,.92);padding:20px}
+.brand{border:1px solid var(--line);padding:18px;text-align:center;margin-bottom:18px}
+.brand b{font-size:34px;color:var(--gold)}
+.brand h2{font-size:18px;color:var(--gold);letter-spacing:2px}
+nav{display:grid;gap:8px}
+nav button{background:#070b09;border:1px solid var(--line);color:#efe6d2;padding:12px;text-align:left;cursor:pointer}
+nav button.on,nav button:hover{background:var(--green);border-color:var(--gold)}
+main{padding:24px;max-width:1400px}
+.top{display:flex;gap:10px;margin-bottom:18px}
+.search{flex:1;background:#020302;border:1px solid var(--line);color:#efe6d2;padding:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01));padding:18px;margin-bottom:16px;box-shadow:0 18px 50px rgba(0,0,0,.3)}
+.card h1,.card h2,.card h3{color:var(--gold);margin-top:0;text-transform:uppercase;letter-spacing:1px}
+.stat{border:1px solid var(--line);padding:14px;background:rgba(0,0,0,.2)}
+.stat b{font-size:30px;color:var(--gold)}
+.list{display:grid;gap:10px}
+.item{border:1px solid var(--line);background:rgba(0,0,0,.25);padding:13px;cursor:pointer}
+.item:hover{background:rgba(22,56,45,.6)}
+.paper{background:var(--paper);color:var(--ink);border:1px solid #806c45;padding:24px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.paper h1,.paper h2,.paper h3{color:#2a1c0c}
+.stamp{display:inline-block;color:var(--red);border:2px solid var(--red);padding:5px 10px;transform:rotate(-3deg);font-weight:bold}
+.kv{display:grid;grid-template-columns:160px 1fr;gap:8px;margin-top:16px}
+.kv b{color:#674516}
+.node{display:inline-block;border:1px solid var(--line);padding:8px 10px;margin:5px;background:rgba(0,0,0,.24);cursor:pointer}
+.paper .node{border-color:#7e5a2a;color:#43280c;background:rgba(255,255,255,.16)}
+.page{display:none}
+.page.on{display:block}
+.terminal{font-family:monospace;background:#020403;color:#9efac4;border:1px solid #1c5b3c;padding:16px;white-space:pre-line;line-height:1.55}
+.foldergrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.folder{border:1px solid var(--line);min-height:120px;display:grid;place-items:center;text-align:center;background:linear-gradient(135deg,rgba(216,198,160,.12),rgba(0,0,0,.22));cursor:pointer}
+.folder:hover{background:rgba(22,56,45,.55)}
+.timeline{border-left:2px solid var(--gold);padding-left:18px}
+.timeline p{margin:0 0 18px}
+@media(max-width:850px){.app{grid-template-columns:1fr}aside{position:relative}.grid,.grid3{grid-template-columns:1fr}}
+
+.related-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+ gap:10px;
+ margin-top:10px;
+}
+
+.graph{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+ gap:12px;
+ margin-top:12px;
+}
+.graph-node{
+ border:1px solid var(--line);
+ background:rgba(0,0,0,.28);
+ padding:14px;
+ text-align:center;
+ cursor:pointer;
+ position:relative;
+}
+.graph-node:hover{
+ background:rgba(22,56,45,.7);
+ border-color:var(--gold);
+}
+.graph-node b{
+ color:var(--gold);
+}
+.graph-line{
+ color:var(--muted);
+ font-size:12px;
+ margin-top:6px;
+}
+.paper{
+  position:relative;
+  overflow:hidden;
+
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,.22), transparent 35%),
+    radial-gradient(circle at 80% 70%, rgba(0,0,0,.04), transparent 40%),
+    linear-gradient(#e8d9b7,#dfcda7);
+
+  color:#2b2015;
+
+  padding:34px;
+
+  border:1px solid #8a7455;
+
+  box-shadow:
+      0 10px 40px rgba(0,0,0,.28),
+      inset 0 0 40px rgba(255,255,255,.18),
+      inset 0 0 120px rgba(80,50,20,.08);
+}
+
+.paper::before{
+  content:"";
+  position:absolute;
+  left:12px;
+  right:12px;
+  top:12px;
+  bottom:12px;
+  border:1px solid rgba(70,45,20,.25);
+  pointer-events:none;
+}
+
+.paper::after{
+  content:"";
+  position:absolute;
+  left:-80px;
+  top:-80px;
+  width:260px;
+  height:260px;
+  background:radial-gradient(circle, rgba(120,90,50,.10), transparent 70%);
+  pointer-events:none;
+}
+/* Coffee stain */
+
+.paper .coffee{
+position:absolute;
+
+width:170px;
+height:170px;
+
+border:7px solid rgba(90,45,20,.12);
+border-radius:50%;
+
+top:90px;
+right:120px;
+
+pointer-events:none;
+
+transform:rotate(-18deg);
+}
+
+.paper .coffee::after{
+content:"";
+
+position:absolute;
+
+left:18px;
+top:18px;
+
+width:105px;
+height:105px;
+
+border:5px solid rgba(90,45,20,.07);
+border-radius:50%;
+}
+.photo-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.88);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  padding:30px;
+}
+
+.photo-modal.hidden{
+  display:none;
+}
+
+.photo-modal img{
+  max-width:92vw;
+  max-height:88vh;
+  border:10px solid #111;
+  box-shadow:0 0 40px rgba(0,0,0,.8);
+}
+#endingOverlay{
+position:fixed;
+inset:0;
+background:#000;
+color:#d9c59b;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+font-family:Georgia,serif;
+z-index:99999;
+opacity:0;
+pointer-events:none;
+transition:opacity 2s;
+}
+
+#endingOverlay.show{
+opacity:1;
+pointer-events:auto;
+}
+
+#endingOverlay h1{
+font-size:54px;
+letter-spacing:8px;
+margin-bottom:18px;
+}
+
+#endingOverlay p{
+font-size:20px;
+letter-spacing:3px;
+opacity:.85;
+}
+
+/* CRT monitor effect */
+#app::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9998;
+  background:
+    linear-gradient(rgba(255,255,255,.025) 50%, rgba(0,0,0,.08) 50%),
+    linear-gradient(90deg, rgba(255,0,0,.015), rgba(0,255,0,.01), rgba(0,0,255,.015));
+  background-size:100% 4px, 6px 100%;
+  mix-blend-mode:screen;
+  opacity:.22;
+}
+
+#app::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9997;
+  background:radial-gradient(circle at center, transparent 55%, rgba(0,0,0,.35) 100%);
+  animation:crtFlicker 4s infinite;
+}
+
+@keyframes crtFlicker{
+  0%,100%{opacity:.18}
+  50%{opacity:.28}
+  52%{opacity:.12}
+  54%{opacity:.24}
+}
+
+
+/* STRONG CRT monitor effect */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:99998;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.055) 0px,
+      rgba(255,255,255,.055) 1px,
+      rgba(0,0,0,.12) 2px,
+      rgba(0,0,0,.12) 4px
+    );
+  opacity:.28;
+  mix-blend-mode:overlay;
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:99997;
+  background:
+    radial-gradient(circle at center, transparent 48%, rgba(0,0,0,.42) 100%);
+  animation:crtPulse 2.8s infinite;
+}
+
+@keyframes crtPulse{
+  0%,100%{opacity:.28}
+  50%{opacity:.45}
+  52%{opacity:.20}
+  55%{opacity:.38}
+}
+
+
+/* VISIBLE CRT DEBUG EFFECT */
+.crt-lines{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:999999;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,.045) 0px,
+    rgba(255,255,255,.045) 1px,
+    transparent 1px,
+    transparent 6px
+  );
+  opacity:.22;
+}
+\n</style>
+</head>
+<body>
+
+<section id="boot" class="screen boot">
+  <div class="bootbox">
+    <h1>THE HIDDEN FILES</h1>
+    <p class="muted">Secure Archive System · Recovery Build v0.2</p>
+    <div id="bootlog" class="log">Initializing Archive OS...</div>
+    <button id="bootBtn" class="btn hidden" onclick="showLogin()">CONTINUE</button>
+  </div>
+</section>
+
+<section id="login" class="screen login hidden">
+  <div class="loginbox">
+    <h2>AUTHORIZATION REQUIRED</h2>
+    <p class="muted">British Magical Archives / Restricted Access</p>
+    <div class="field"><label>Operator ID</label><input id="operatorId" value="EMP-0471"></div>
+    <div class="field"><label>Passphrase</label><input id="passphrase" value="BOX17" type="password"></div>
+    <button class="btn" onclick="enterArchive()">LOGIN</button><div id="loginStatus" class="log hidden" style="margin-top:16px"></div>
+  </div>
+</section>
+
+<section id="archiveBoot" class="screen boot hidden">
+  <div class="bootbox">
+    <h1>ARCHIVE ACCESS GRANTED</h1>
+    <p class="muted">British Magical Archives · Secure Recovery Channel</p>
+    <div id="archiveBootLog" class="log">Preparing archive session...</div>
+  </div>
+</section>
+
+<section id="app" class="app hidden">
+  <aside>
+    <div class="brand"><b>HF</b><h2>ARCHIVE OS</h2><p class="muted">VERSION 1.0 / LEVEL V VERIFIED</p></div>
+    <nav>
+      <button class="on" onclick="showPage('dashboard',this)">Dashboard</button>
+      <button onclick="showPage('personnel',this)">Personnel</button>
+      <button onclick="showPage('cases',this)">Cases</button>
+      <button onclick="showPage('evidence',this)">Evidence</button>
+      <button onclick="showPage('timeline',this)">Timeline</button>
+      <button onclick="showPage('explorer',this)">Explorer</button>
+      <button onclick="showPage('box17',this)">Box 17</button>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="top">
+      <input id="q" class="search" placeholder="Search archive: Ryu, Lethe, Traitor, Box 17...">
+      <button class="btn" onclick="runSearch()">SEARCH</button>
+    </div>
+
+    <section id="dashboard" class="page on">
+      <div class="grid">
+        <div class="card">
+          <h1>Archive Recovery Console</h1>
+          <div class="grid3">
+            <div class="stat"><b>8</b><br>Personnel</div>
+            <div class="stat"><b>5</b><br>Cases</div>
+            <div class="stat"><b>17</b><br>Records</div>
+          </div>
+        </div>
+        <div class="terminal">BRITISH MAGICAL ARCHIVES
+SYSTEM STATUS: ONLINE
+OPERATOR: EMP-0471
+CLEARANCE: LEVEL V VERIFIED
+RESTORATION: <span id="recoveryPercent">44%</span>
+ACTIVE COLLECTION: BOX 17
+HIDDEN RECORDS: CASE-ZERO / CASE-OMEGA</div>
+      </div>
+
+      <div class="card">
+        <h2>Version 1.0 Release Status</h2>
+        <div class="grid3">
+          <div class="stat"><b>ONLINE</b><br>System Status</div>
+          <div class="stat"><b>22</b><br>Recovered Files</div>
+          <div class="stat"><b>2</b><br>Hidden Files</div>
+        </div>
+        <div class="terminal" style="margin-top:14px">ARCHIVE INTEGRITY: VERIFIED
+FINAL RESTORATION CHANNEL: ACTIVE
+RELEASE BUILD: HF-ARCHIVE-OS-1.0</div>
+      </div>
+
+      <div class="card">
+        <h2>Recommended Investigation Trail</h2>
+        <span class="node" onclick="playSound('click');openRecord('EMP-0471')">EMP-0471</span>
+        <span class="node" onclick="playSound('click');openRecord('CASE-A23791')">CASE-A23791</span>
+        <span class="node" onclick="playSound('click');openRecord('EVD-A23791-01')">EVD-A23791-01</span>
+        <span class="node" onclick="playSound('click');openRecord('CASE-T00017')">CASE-T00017</span>
+        <span class="node" onclick="playSound('click');openRecord('CASE-ZERO')">CASE-ZERO</span>
+      </div>
+    
+      <div class="card">
+        <h2>Intelligence Graph</h2>
+        <p class="muted">Recovered relationship map generated from linked archive records.</p>
+        <div class="graph">
+          <div class="graph-node" onclick="playSound('click');openRecord('EMP-0471')"><b>EMP-0471</b><div class="graph-line">Core Subject</div></div>
+          <div class="graph-node" onclick="playSound('click');openRecord('CASE-A23791')"><b>CASE-A23791</b><div class="graph-line">Lethe Origin</div></div>
+          <div class="graph-node" onclick="playSound('click');openRecord('CASE-T00017')"><b>CASE-T00017</b><div class="graph-line">Sealed Betrayal</div></div>
+          <div class="graph-node" onclick="playSound('click');openRecord('PHOTO-2027-022')"><b>PHOTO-2027-022</b><div class="graph-line">Photographic Evidence</div></div>
+          <div class="graph-node" onclick="playSound('click');openRecord('BOX17-INDEX')"><b>BOX17-INDEX</b><div class="graph-line">Recovered Box</div></div>
+          <div class="graph-node" onclick="playSound('click');openRecord('IA-2028-001')"><b>IA-2028-001</b><div class="graph-line">Internal Affairs</div></div>
+          <div class="graph-node" onclick="playSound('click');openRecord('CASE-ZERO')"><b>CASE-ZERO</b><div class="graph-line">Root File</div></div>
+        </div>
+      </div>
+</section>
+
+    <section id="personnel" class="page"><div class="card"><h1>Personnel</h1><div id="personnelList" class="list">
+<div class="item" onclick="playSound('click');openRecord('EMP-0471')"><b>EMP-0471 · Ryu TaeO</b><br><span class="muted">Senior Auror · LEVEL V</span></div>
+<div class="item" onclick="playSound('click');openRecord('EMP-0312')"><b>EMP-0312 · Noah Byrne</b><br><span class="muted">Captain · LEVEL V</span></div>
+<div class="item" onclick="playSound('click');openRecord('EMP-0844')"><b>EMP-0844 · Mara Venn</b><br><span class="muted">Internal Affairs Investigator · EYES ONLY</span></div>
+<div class="item" onclick="playSound('click');openRecord('EMP-1021')"><b>EMP-1021 · Theo March</b><br><span class="muted">Junior Auror · SEALED</span></div>
+</div></div></section>
+    <section id="cases" class="page"><div class="card"><h1>Case Files</h1><div id="caseList" class="list">
+<div class="item" onclick="playSound('click');openRecord('CASE-A23791')"><b>CASE-A23791 · The Crown of Lethe</b><br><span class="muted">Closed · LEVEL V · Memory artefact investigation</span></div>
+<div class="item" onclick="playSound('click');openRecord('CASE-M00918')"><b>CASE-M00918 · The Black Mirror Case</b><br><span class="muted">Restricted · EYES ONLY · Mirror anomaly</span></div>
+<div class="item" onclick="playSound('click');openRecord('CASE-G718K')"><b>CASE-G718K · The Seventh Vault</b><br><span class="muted">Dormant · LEVEL V · Gringotts anomaly</span></div>
+<div class="item" onclick="playSound('click');openRecord('CASE-T00017')"><b>🔒 CASE-T00017 · The Traitor File</b><br><span class="muted">Sealed · EYES ONLY · Internal betrayal inquiry</span></div>
+</div></div></section>
+    <section id="evidence" class="page"><div class="card"><h1>Evidence Locker</h1><div id="evidenceList" class="list">
+<div class="item" onclick="playSound('click');openRecord('EVD-A23791-01')"><b>EVD-A23791-01 · Gold Circlet with Runic Seam</b><br><span class="muted">Primary artefact · CASE-A23791 · LEVEL V</span></div>
+<div class="item" onclick="playSound('click');openRecord('PHOTO-2027-022')"><b>PHOTO-2027-022 · SID Training Room Photograph</b><br><span class="muted">Recovered photograph · CASE-T00017 · CONFIDENTIAL</span></div>
+<div class="item" onclick="playSound('click');openRecord('WND-88201')"><b>WND-88201 · Wand Registry</b><br><span class="muted">Equipment record · EMP-0471 · OFFICIAL</span></div>
+<div class="item" onclick="playSound('click');openRecord('GV-718-K')"><b>GV-718-K · Gringotts Vault Registry</b><br><span class="muted">Financial record · CASE-G718K · CONFIDENTIAL</span></div>
+<div class="item" onclick="playSound('click');openRecord('BOX17-INDEX')"><b>BOX17-INDEX · Box 17 Index</b><br><span class="muted">Recovered archive box · LEVEL V</span></div>
+<div class="item" onclick="playSound('click');openRecord('IA-2028-001')"><b>🔒 IA-2028-001 · Internal Affairs Notice</b><br><span class="muted">Sealed evidence transfer inquiry · EYES ONLY</span></div>
+</div></div></section>
+    <section id="timeline" class="page"><div class="paper"><h1>Timeline</h1><div class="timeline" id="timelineList"></div></div></section>
+    <section id="explorer" class="page">
+      <div class="card">
+        <h1>Archive Explorer</h1>
+        <p class="muted">Browse recovered folders from the British Magical Archives.</p>
+        <div id="archiveExplorer" class="foldergrid"></div>
+      </div>
+    </section>
+    <section id="box17" class="page"><div class="card"><h1>Box 17</h1><p class="muted">Recovered physical traces linked to EMP-0471.</p><div id="boxGrid" class="foldergrid"></div></div></section>
+    <section id="viewer" class="page"><div id="detail"></div></section>
+  </main>
+</section>
+
+<script>
 const db = {
  people:[
   {id:"EMP-0471",name:"Ryu TaeO",role:"Senior Auror",clearance:"LEVEL V",status:"ACTIVE",summary:"Evidence-driven Senior Auror assigned to Special Investigations. Known for restraint, quiet field command, and refusal to close a case without proof.",links:["CASE-A23791","CASE-T00017","WND-88201","BOX17-INDEX"]},
@@ -391,31 +846,25 @@ function typeOmegaTerminal() {
   const terminal = document.getElementById("omegaTerminal");
   if(!terminal) return;
 
-  const text =
-`RECOVERY COMPLETE
-ROOT FILE VERIFIED
-ALL HIDDEN RECORDS INDEXED
-FINAL ARCHIVE CHANNEL OPEN`;
+  const lines = [
+    "RECOVERY COMPLETE",
+    "ROOT FILE VERIFIED",
+    "ALL HIDDEN RECORDS INDEXED",
+    "FINAL ARCHIVE CHANNEL OPEN"
+  ];
 
   terminal.textContent = "";
+  let line = 0;
 
-  let i = 0;
-
-  function typeChar(){
-    if(i >= text.length) return;
-
-    terminal.textContent += text[i];
-
-    if(text[i] !== "\n" && i % 3 === 0){
-      playSound("click");
-    }
-
-    i++;
-
-    setTimeout(typeChar,35);
+  function nextLine(){
+    if(line >= lines.length) return;
+    terminal.textContent += lines[line] + "\n";
+    playSound("click");
+    line++;
+    setTimeout(nextLine,700);
   }
 
-  typeChar();
+  nextLine();
 }
 
 function iconFor(id){
@@ -446,28 +895,6 @@ document.addEventListener("keydown", function(e){
     closePhotoModal();
   }
 });
-
-function animateOpenedDocument(){
-  setTimeout(()=>{
-    const el = document.querySelector("#detail .paper, #detail .card");
-    if(!el) return;
-    el.classList.remove("reveal-open");
-    void el.offsetWidth;
-    el.classList.add("reveal-open");
-  },30);
-}
-
-const detailObserver = new MutationObserver(()=>{
-  animateOpenedDocument();
-});
-
-window.addEventListener("DOMContentLoaded",()=>{
-  const target=document.getElementById("detail");
-  if(target){
-    detailObserver.observe(target,{childList:true});
-  }
-});
-
 function openRecord(id){
   markRecovered(id);
  const x=find(id); if(!x){alert("Record not recovered: "+id);return}
@@ -1181,267 +1608,29 @@ detail.innerHTML=html;
 
 }
 function runSearch(){
-  const query = document.getElementById("q").value.toLowerCase().trim();
-  if(!query) return;
-
-  const results = all().filter(x => {
-    const haystack = [
-      x.id,
-      x.name,
-      x.title,
-      x.role,
-      x.type,
-      x.classification,
-      x.status,
-      x.summary,
-      x.body,
-      ...(x.links || [])
-    ].join(" ").toLowerCase();
-
-    return haystack.includes(query);
-  });
-
-  showPage("searchResults");
-
-  const lang = localStorage.getItem("hiddenfiles-lang") || "en";
-
-if(results.length===0){
-  if(lang==="ko"){
-    searchSummary.textContent = "검색 결과가 없습니다.";
-  }else if(lang==="jp"){
-    searchSummary.textContent = "検索結果はありません。";
-  }else{
-    searchSummary.textContent = `No records found for "${query}".`;
-  }
-}else{
-  if(lang==="ko"){
-    searchSummary.textContent = `검색 결과 ${results.length}건: "${query}"`;
-  }else if(lang==="jp"){
-    searchSummary.textContent = `${results.length}件見つかりました: "${query}"`;
-  }else{
-    searchSummary.textContent = `${results.length} record${results.length === 1 ? "" : "s"} found for "${query}".`;
-  }
-}
-
-  searchResultList.innerHTML = results.length
-    ? results.map(x => `
-      <div class="item" onclick="playSound('click');openRecord('${x.id}')">
-        <b>${iconFor(x.id)} ${x.id} · ${x.name || x.title}</b><br>
-        <span class="muted">
-          ${x.role || x.type || "Case"} · ${x.clearance || x.classification || x.status}
-        </span><br>
-        <span>${x.summary || ""}</span>
-      </div>
-    `).join("")
-    : `<p class="muted">No recovered records found.</p>`;
+ const q=document.getElementById("q").value.toLowerCase().trim();
+ if(!q)return;
+ const results=all().filter(x=>JSON.stringify(x).toLowerCase().includes(q));
+ showPage("viewer");
+ detail.innerHTML=`<div class="card"><h1>Search Results</h1><div class="list">${
+  results.length?results.map(x=>`<div class="item" onclick="playSound('click');openRecord('${x.id}')"><b>${x.id} · ${x.name||x.title}</b><br><span class="muted">${x.clearance||x.classification||x.status}</span></div>`).join(""):"<p class='muted'>No recovered records found.</p>"
+ }</div></div>`;
 }
 q.addEventListener("keydown",e=>{if(e.key==="Enter")runSearch()});
-const translations = {
-  en:{
-    // Search
-    searchBtn:"SEARCH",
-    placeholder:"Search archive: Ryu, Lethe, Traitor, Box 17...",
-    searchResultsTitle:"Search Results",
-
-    // Boot
-    bootTitle:"THE HIDDEN FILES",
-    bootSubtitle:"Secure Archive System · Recovery Build v1.0.0",
-    continueBtn:"CONTINUE",
-
-    // Login
-    loginTitle:"AUTHORIZATION REQUIRED",
-    loginSubtitle:"British Magical Archives / Restricted Access",
-    operatorId:"Operator ID",
-    passphrase:"Passphrase",
-    loginBtn:"LOGIN",
-
-    // Archive Boot
-    accessGranted:"ARCHIVE ACCESS GRANTED",
-    accessSubtitle:"British Magical Archives · Secure Recovery Channel",
-
-    // Navigation
-    navDashboard:"Dashboard",
-    navPersonnel:"Personnel",
-    navCases:"Cases",
-    navEvidence:"Evidence",
-    navTimeline:"Timeline",
-    navExplorer:"Explorer",
-    navBox17:"Box 17",
-
-    // Dashboard
-    archiveConsole:"Archive Recovery Console",
-    releaseStatus:"Version 1.0 Release Status",
-    trail:"Recommended Investigation Trail",
-    board:"Intelligence Board",
-    boardDesc:"Pinned relationship board reconstructed from recovered archive links.",
-
-    // Pages
-    personnelTitle:"Personnel",
-    casesTitle:"Case Files",
-    evidenceTitle:"Evidence Locker",
-    timelineTitle:"Timeline",
-    explorerTitle:"Archive Explorer",
-    explorerDesc:"Browse recovered folders from the British Magical Archives.",
-    box17Title:"Box 17",
-    box17Desc:"Recovered physical traces linked to EMP-0471.",
-
-    // Ending
-    archiveClosed:"HF ARCHIVE CLOSED",
-archiveRemembers:"THE ARCHIVE REMEMBERS.",
-resetArchive:"RESET ARCHIVE"
-  },
-
-  ko:{
-    // Search
-    searchBtn:"검색",
-    placeholder:"아카이브 검색: Ryu, Lethe, Traitor, Box 17...",
-    searchResultsTitle:"검색 결과",
-
-    // Boot
-    bootTitle:"THE HIDDEN FILES",
-    bootSubtitle:"보안 아카이브 시스템 · 복구 빌드 v1.0.0",
-    continueBtn:"계속",
-
-    // Login
-    loginTitle:"접근 권한 필요",
-    loginSubtitle:"영국 마법부 기록보관소 / 제한 구역",
-    operatorId:"조사관 ID",
-    passphrase:"암호",
-    loginBtn:"로그인",
-
-    // Archive Boot
-    accessGranted:"아카이브 접근 승인",
-    accessSubtitle:"영국 마법부 기록보관소 · 복구 채널",
-
-    // Navigation
-    navDashboard:"대시보드",
-    navPersonnel:"인물 기록",
-    navCases:"사건 파일",
-    navEvidence:"증거 보관소",
-    navTimeline:"타임라인",
-    navExplorer:"탐색기",
-    navBox17:"Box 17",
-
-    // Dashboard
-    archiveConsole:"아카이브 복구 콘솔",
-    releaseStatus:"버전 1.0 배포 상태",
-    trail:"추천 조사 경로",
-    board:"정보 관계도",
-    boardDesc:"복구된 기록을 기반으로 재구성된 조사 관계도입니다.",
-
-    // Pages
-    personnelTitle:"인물 기록",
-    casesTitle:"사건 파일",
-    evidenceTitle:"증거 보관소",
-    timelineTitle:"타임라인",
-    explorerTitle:"아카이브 탐색기",
-    explorerDesc:"복구된 영국 마법부 기록을 탐색합니다.",
-    box17Title:"Box 17",
-    box17Desc:"EMP-0471과 관련된 복구 기록.",
-
-    // Ending
-    archiveClosed:"아카이브 종료",
-archiveRemembers:"아카이브는 모든 것을 기억한다.",
-resetArchive:"아카이브 초기화"
-  },
-
-  jp:{
-    // Search
-    searchBtn:"検索",
-    placeholder:"アーカイブ検索: Ryu, Lethe, Traitor, Box 17...",
-    searchResultsTitle:"検索結果",
-
-    // Boot
-    bootTitle:"THE HIDDEN FILES",
-    bootSubtitle:"アーカイブ復旧システム v1.0.0",
-    continueBtn:"続行",
-
-    // Login
-    loginTitle:"認証が必要です",
-    loginSubtitle:"英国魔法省アーカイブ / 制限区域",
-    operatorId:"オペレーターID",
-    passphrase:"パスフレーズ",
-    loginBtn:"ログイン",
-
-    // Archive Boot
-    accessGranted:"アーカイブアクセス承認",
-    accessSubtitle:"英国魔法省アーカイブ・復旧チャンネル",
-
-    // Navigation
-    navDashboard:"ダッシュボード",
-    navPersonnel:"人物記録",
-    navCases:"事件ファイル",
-    navEvidence:"証拠保管庫",
-    navTimeline:"タイムライン",
-    navExplorer:"エクスプローラー",
-    navBox17:"Box 17",
-
-    // Dashboard
-    archiveConsole:"アーカイブ復旧コンソール",
-    releaseStatus:"バージョン1.0 リリース状態",
-    trail:"推奨調査ルート",
-    board:"情報関係ボード",
-    boardDesc:"復旧された記録から再構築された関係図です。",
-
-    // Pages
-    personnelTitle:"人物記録",
-    casesTitle:"事件ファイル",
-    evidenceTitle:"証拠保管庫",
-    timelineTitle:"タイムライン",
-    explorerTitle:"アーカイブエクスプローラー",
-    explorerDesc:"復旧された英国魔法省アーカイブを閲覧します。",
-    box17Title:"Box 17",
-    box17Desc:"EMP-0471に関連する復旧記録。",
-
-    // Ending
-    archiveClosed:"アーカイブ終了",
-archiveRemembers:"アーカイブはすべてを記憶している。",
-resetArchive:"アーカイブ初期化"
-  }
-};
-
-function setLang(lang){
-  localStorage.setItem("hiddenfiles-lang", lang);
-
-  document.querySelectorAll("[data-i18n]").forEach(el=>{
-    const summary = document.getElementById("searchSummary");
-if(summary && lang==="ko") summary.textContent="검색어를 입력하세요.";
-if(summary && lang==="jp") summary.textContent="検索語を入力してください。";
-if(summary && lang==="en") summary.textContent="Enter a search term.";
-    const key = el.dataset.i18n;
-    if(translations[lang] && translations[lang][key]){
-      el.textContent = translations[lang][key];
-    }
-  });
-
-  const q = document.getElementById("q");
-  if(q && translations[lang]){
-    q.placeholder = translations[lang].placeholder;
-  }
-}
-function resetArchive(){
-  const lang = localStorage.getItem("hiddenfiles-lang") || "en";
-
-  const message =
-    lang === "ko" ? "모든 진행 상황을 초기화하시겠습니까?" :
-    lang === "jp" ? "すべての進行状況を初期化しますか？" :
-    "Reset all archive progress?";
-
-  if(!confirm(message)) return;
-
-  const keepLang = localStorage.getItem("hiddenfiles-lang");
-
-  localStorage.clear();
-
-  if(keepLang){
-    localStorage.setItem("hiddenfiles-lang", keepLang);
-  }
-
-  location.reload();
-}
-const savedLang = localStorage.getItem("hiddenfiles-lang") || "en";
-setLang(savedLang);
 loadProgress();
 loadRecovery();
 render();
 updateRecovery();
+</script>
+<div id="photoModal" class="photo-modal hidden" onclick="closePhotoModal()">
+  <img id="photoModalImg" src="">
+</div>
+<div id="endingOverlay">
+
+<h1>HF ARCHIVE CLOSED</h1>
+
+<p>THE ARCHIVE REMEMBERS.</p>
+
+</div>
+<div class="crt-lines"></div>\n</body>
+</html>

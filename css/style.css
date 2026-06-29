@@ -421,3 +421,9 @@ body::after{
   margin:-20px auto 8px;
   box-shadow:0 2px 6px rgba(0,0,0,.5);
 }
+mark{
+  background:rgba(185,147,85,.45);
+  color:#fff3c4;
+  padding:0 3px;
+  border-bottom:1px solid var(--gold);
+}
