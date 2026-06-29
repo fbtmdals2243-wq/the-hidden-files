@@ -71,9 +71,9 @@
         <div class="card">
           <h1 data-i18n="archiveConsole">Archive Recovery Console</h1>
           <div class="grid3">
-            <div class="stat"><b>8</b><br>Personnel</div>
-            <div class="stat"><b>5</b><br>Cases</div>
-            <div class="stat"><b>17</b><br>Records</div>
+            <div class="stat"><b>4</b><br>Personnel</div>
+<div class="stat"><b>6</b><br>Cases</div>
+<div class="stat"><b>18</b><br>Records</div>
           </div>
         </div>
         <div class="terminal">BRITISH MAGICAL ARCHIVES
@@ -89,7 +89,7 @@ HIDDEN RECORDS: CASE-ZERO / CASE-OMEGA</div>
         <h2 data-i18n="releaseStatus">Version 1.0 Release Status</h2>
         <div class="grid3">
           <div class="stat"><b>ONLINE</b><br>System Status</div>
-          <div class="stat"><b>22</b><br>Recovered Files</div>
+          <div class="stat"><b>18</b><br>Recovered Files</div>
           <div class="stat"><b>2</b><br>Hidden Files</div>
         </div>
         <div class="terminal" style="margin-top:14px">ARCHIVE INTEGRITY: VERIFIED
@@ -109,56 +109,59 @@ RELEASE BUILD: HF-ARCHIVE-OS-v1.0.0</div>
       <div class="card"><h2 data-i18n="board">Intelligence Board</h2>
         <p class="muted" data-i18n="boardDesc">Pinned relationship board reconstructed from recovered archive links.</p>
 
-        <div class="investigation-board">
-          <div class="board-line" style="left:50%;top:105px;width:215px;transform:rotate(28deg)"></div>
-          <div class="board-line" style="left:50%;top:105px;width:215px;transform:rotate(152deg)"></div>
-          <div class="board-line" style="left:28%;top:245px;width:250px;transform:rotate(18deg)"></div>
-          <div class="board-line" style="left:58%;top:245px;width:180px;transform:rotate(35deg)"></div>
-          <div class="board-line" style="left:45%;top:345px;width:190px;transform:rotate(62deg)"></div>
+       <div class="investigation-board">
 
-          <div class="board-node" style="left:50%;top:28px;translate:-50% 0" onclick="playSound('click');openRecord('EMP-0471')">
-            <div class="board-pin"></div>
-            <b>EMP-0471</b>
-            <small>Core Subject</small>
-          </div>
+  <div class="board-string" style="left:45%;top:96px;width:270px;transform:rotate(24deg)"></div>
+  <div class="board-string" style="left:31%;top:108px;width:260px;transform:rotate(150deg)"></div>
+  <div class="board-string" style="left:23%;top:245px;width:260px;transform:rotate(16deg)"></div>
+  <div class="board-string" style="left:55%;top:240px;width:220px;transform:rotate(33deg)"></div>
+  <div class="board-string" style="left:47%;top:350px;width:220px;transform:rotate(62deg)"></div>
+  <div class="board-string" style="left:31%;top:410px;width:280px;transform:rotate(-14deg)"></div>
+  <div class="board-string" style="left:55%;top:390px;width:250px;transform:rotate(-38deg)"></div>
 
-          <div class="board-node" style="left:15%;top:160px" onclick="playSound('click');openRecord('CASE-A23791')">
-            <div class="board-pin"></div>
-            <b>CASE-A23791</b>
-            <small>Lethe Origin</small>
-          </div>
+  <div class="board-photo" style="left:7%;top:315px;transform:rotate(-6deg)" onclick="playSound('click');openRecord('PHOTO-2027-022')">
+    <div class="board-pin"></div>
+    <div class="photo-frame">PHOTO<br>2027-022</div>
+    <small>Recovered Photograph</small>
+  </div>
 
-          <div class="board-node" style="right:15%;top:160px" onclick="playSound('click');openRecord('CASE-T00017')">
-            <div class="board-pin"></div>
-            <b>CASE-T00017</b>
-            <small>Sealed Betrayal</small>
-          </div>
+  <div class="board-note main-note" style="left:44%;top:35px;transform:rotate(2deg)" onclick="playSound('click');openRecord('EMP-0471')">
+    <div class="board-pin"></div>
+    <b>EMP-0471</b>
+    <small>Core Subject</small>
+  </div>
 
-          <div class="board-node" style="left:8%;top:330px" onclick="playSound('click');openRecord('PHOTO-2027-022')">
-            <div class="board-pin"></div>
-            <b>PHOTO-2027-022</b>
-            <small>Recovered Photo</small>
-          </div>
+  <div class="board-note" style="left:17%;top:170px;transform:rotate(-4deg)" onclick="playSound('click');openRecord('CASE-A23791')">
+    <div class="board-pin"></div>
+    <b>CASE-A23791</b>
+    <small>Lethe Origin</small>
+  </div>
 
-          <div class="board-node" style="left:42%;top:330px" onclick="playSound('click');openRecord('BOX17-INDEX')">
-            <div class="board-pin"></div>
-            <b>BOX17-INDEX</b>
-            <small>Archive Box</small>
-          </div>
+  <div class="board-note red-note" style="right:13%;top:155px;transform:rotate(5deg)" onclick="playSound('click');openRecord('CASE-T00017')">
+    <div class="board-pin"></div>
+    <b>CASE-T00017</b>
+    <small>Sealed Betrayal</small>
+  </div>
 
-          <div class="board-node" style="right:8%;top:330px" onclick="playSound('click');openRecord('IA-2028-001')">
-            <div class="board-pin"></div>
-            <b>IA-2028-001</b>
-            <small>Internal Affairs</small>
-          </div>
+  <div class="board-note" style="left:40%;top:318px;transform:rotate(1deg)" onclick="playSound('click');openRecord('BOX17-INDEX')">
+    <div class="board-pin"></div>
+    <b>BOX17-INDEX</b>
+    <small>Recovered Box</small>
+  </div>
 
-          <div class="board-node" style="left:50%;top:455px;translate:-50% 0;background:#1a0b08;color:#f0d8bd;border-color:#8f3028" onclick="playSound('click');openRecord('CASE-ZERO')">
-            <div class="board-pin"></div>
-            <b style="color:#f0b0a0">CASE-ZERO</b>
-            <small style="color:#d9c59b">Root File</small>
-          </div>
-        </div>
-      </div>
+  <div class="board-note ia-note" style="right:8%;top:330px;transform:rotate(-3deg)" onclick="playSound('click');openRecord('IA-2028-001')">
+    <div class="board-pin"></div>
+    <b>IA-2028-001</b>
+    <small>Internal Affairs</small>
+  </div>
+
+  <div class="board-note zero-note" style="left:50%;top:455px;transform:translateX(-50%) rotate(2deg)" onclick="playSound('click');openRecord('CASE-ZERO')">
+    <div class="board-pin"></div>
+    <b>CASE-ZERO</b>
+    <small>Root File</small>
+  </div>
+
+</div>
 </section>
 
     <section id="personnel" class="page"><div class="card"><h1 data-i18n="personnelTitle">Personnel</h1><div id="personnelList" class="list">
