@@ -435,22 +435,7 @@ HINT: BOX 17</div>
    <hr style="border:0;border-top:1px solid rgba(70,45,20,.35);margin:18px 0">
    <p style="font-size:12px;letter-spacing:1px">BRITISH MAGICAL ARCHIVES · RECOVERY COPY · DO NOT REMOVE FROM ARCHIVE</p>
  </div>`;
- 
-let t='<div class="timeline"><h3>Investigation Timeline</h3>';
-
-timelineEvents.forEach(e=>{
-if(e[2]===id){
-t+=`<div class="event">
-<div class="year">${e[0]}</div>
-<b>${e[1]}</b>
-</div>`;
-}
-});
-
-t+='</div>';
-
-detail.innerHTML=html+t;
-
+ detail.innerHTML=html;
 }
 function runSearch(){
  const q=document.getElementById("q").value.toLowerCase().trim();

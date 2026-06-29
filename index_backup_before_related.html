@@ -64,13 +64,6 @@ main{padding:24px;max-width:1400px}
 .timeline{border-left:2px solid var(--gold);padding-left:18px}
 .timeline p{margin:0 0 18px}
 @media(max-width:850px){.app{grid-template-columns:1fr}aside{position:relative}.grid,.grid3{grid-template-columns:1fr}}
-
-.related-grid{
- display:grid;
- grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
- gap:10px;
- margin-top:10px;
-}
 </style>
 </head>
 <body>
@@ -330,19 +323,6 @@ function recordKind(x){
  return "ARCHIVE RECORD";
 }
 
-function iconFor(id){
- if(id.startsWith("EMP-")) return "👤";
- if(id.startsWith("CASE-")) return isLocked(id) ? "🔒" : "📁";
- if(id.startsWith("PHOTO-")) return "📷";
- if(id.startsWith("EVD-")) return "🧪";
- if(id.startsWith("WND-")) return "🪄";
- if(id.startsWith("GV-")) return "🏦";
- if(id.startsWith("BOX")) return "📦";
- if(id.startsWith("IA-")) return isLocked(id) ? "🔒" : "🕵️";
- if(id.startsWith("MED-")) return "⚕️";
- return "📄";
-}
-
 function openRecord(id){
  const x=find(id); if(!x){alert("Record not recovered: "+id);return}
  if(isLocked(id)){
@@ -428,29 +408,12 @@ HINT: BOX 17</div>
    </div>
 
    <h3>Related Records</h3>
-   <div class="related-grid">
-   ${(x.links||[]).map(l=>`<div class="item" onclick="openRecord('${l}')"><b>${iconFor(l)} ${l}</b><br><span class="muted">linked archive record</span></div>`).join("") || "<p>No recovered links.</p>"}
-   </div>
+   ${(x.links||[]).map(l=>`<span class="node" onclick="openRecord('${l}')">${l}</span>`).join("") || "<p>No recovered links.</p>"}
 
    <hr style="border:0;border-top:1px solid rgba(70,45,20,.35);margin:18px 0">
    <p style="font-size:12px;letter-spacing:1px">BRITISH MAGICAL ARCHIVES · RECOVERY COPY · DO NOT REMOVE FROM ARCHIVE</p>
  </div>`;
- 
-let t='<div class="timeline"><h3>Investigation Timeline</h3>';
-
-timelineEvents.forEach(e=>{
-if(e[2]===id){
-t+=`<div class="event">
-<div class="year">${e[0]}</div>
-<b>${e[1]}</b>
-</div>`;
-}
-});
-
-t+='</div>';
-
-detail.innerHTML=html+t;
-
+ detail.innerHTML=html;
 }
 function runSearch(){
  const q=document.getElementById("q").value.toLowerCase().trim();
