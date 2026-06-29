@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fbtmdals2243-wq.github.io/the-hidden-files/sitemap.xml
