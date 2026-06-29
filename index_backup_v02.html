@@ -96,7 +96,6 @@ main{padding:24px;max-width:1400px}
       <button onclick="showPage('cases',this)">Cases</button>
       <button onclick="showPage('evidence',this)">Evidence</button>
       <button onclick="showPage('timeline',this)">Timeline</button>
-      <button onclick="showPage('explorer',this)">Explorer</button>
       <button onclick="showPage('box17',this)">Box 17</button>
     </nav>
   </aside>
@@ -136,13 +135,6 @@ WARNING: CASE-T00017 SEALED</div>
     <section id="cases" class="page"><div class="card"><h1>Case Files</h1><div id="caseList" class="list"></div></div></section>
     <section id="evidence" class="page"><div class="card"><h1>Evidence</h1><div id="evidenceList" class="list"></div></div></section>
     <section id="timeline" class="page"><div class="paper"><h1>Timeline</h1><div class="timeline" id="timelineList"></div></div></section>
-    <section id="explorer" class="page">
-      <div class="card">
-        <h1>Archive Explorer</h1>
-        <p class="muted">Browse recovered folders from the British Magical Archives.</p>
-        <div id="archiveExplorer" class="foldergrid"></div>
-      </div>
-    </section>
     <section id="box17" class="page"><div class="card"><h1>Box 17</h1><p class="muted">Recovered physical traces linked to EMP-0471.</p><div id="boxGrid" class="foldergrid"></div></div></section>
     <section id="viewer" class="page"><div id="detail"></div></section>
   </main>
@@ -208,20 +200,6 @@ function item(title,sub,id){
  d.onclick=()=>openRecord(id);
  return d;
 }
-function renderExplorer(){
- const folders=[
-  ["Personnel Files","EMP-0471"],
-  ["Case Files","CASE-A23791"],
-  ["Evidence Storage","EVD-A23791-01"],
-  ["Medical Records","MED-2026-004"],
-  ["Internal Affairs","IA-2028-001"],
-  ["Box 17","BOX17-INDEX"],
-  ["Financial Records","GV-718-K"],
-  ["Photographs","PHOTO-2027-022"]
- ];
- archiveExplorer.innerHTML=folders.map(f=>`<div class="folder" onclick="openRecord('${f[1]}')">📁<br>${f[0]}<br><small>${f[1]}</small></div>`).join("");
-}
-
 function render(){
  personnelList.innerHTML="";
  db.people.forEach(x=>personnelList.appendChild(item(`${x.id} · ${x.name}`,`${x.role} · ${x.clearance}`,x.id)));
@@ -236,7 +214,6 @@ function render(){
  ["2028","The Traitor File sealed.","CASE-T00017"],
  ["2048","Box 17 recovered.","BOX17-INDEX"]
  ].map(x=>`<p><b>${x[0]}</b><br>${x[1]} <span class="node" onclick="openRecord('${x[2]}')">${x[2]}</span></p>`).join("");
- renderExplorer();
  boxGrid.innerHTML=["BOX17-INDEX","WND-88201","PHOTO-2027-022","IA-2028-001","GV-718-K"].map(id=>{
  const x=find(id); return `<div class="folder" onclick="openRecord('${id}')">${id}<br><small>${x?x.title:"sealed"}</small></div>`
  }).join("");
