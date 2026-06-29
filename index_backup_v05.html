@@ -174,25 +174,6 @@ const db = {
  ]
 };
 
-const lockedRecords = new Set(["CASE-T00017","IA-2028-001"]);
-const unlockedRecords = new Set();
-
-function isLocked(id){
- return lockedRecords.has(id) && !unlockedRecords.has(id);
-}
-
-function unlockRecord(id){
- const code = prompt("ENTER CLEARANCE CODE");
- if(!code) return;
- if(code.trim().toUpperCase()==="BOX17"){
-   unlockedRecords.add(id);
-   alert("CLEARANCE GRANTED");
-   openRecord(id);
- } else {
-   alert("ACCESS DENIED");
- }
-}
-
 const all = () => [...db.people,...db.cases,...db.records];
 const find = id => all().find(x=>x.id===id);
 
@@ -243,7 +224,7 @@ function renderExplorerFolder(name){
   <div class="folder" onclick="renderExplorer()">⬅<br>Back<br><small>Archive Root</small></div>
   ${ids.map(id=>{
     const x=find(id);
-    return `<div class="folder" onclick="openRecord('${id}')">${isLocked(id) ? "🔒" : "📄"}<br>${id}<br><small>${x ? (x.name||x.title) : "sealed"}</small></div>`;
+    return `<div class="folder" onclick="openRecord('${id}')">📄<br>${id}<br><small>${x ? (x.name||x.title) : "sealed"}</small></div>`;
   }).join("")}
  `;
 }
@@ -260,20 +241,6 @@ function renderExplorer(){
   ["Photographs","Recovered photographic evidence"]
  ];
  archiveExplorer.innerHTML=folders.map(f=>`<div class="folder" onclick="renderExplorerFolder('${f[0]}')">📁<br>${f[0]}<br><small>${f[1]}</small></div>`).join("");
-}
-
-
-function unlockArchive(){
-    const code = prompt("ENTER ARCHIVE CLEARANCE CODE");
-    if(!code) return;
-    if(code.trim().toUpperCase()==="BOX17"){
-        unlockedDocs.add("CASE-T00017");
-        unlockedDocs.add("IA-2028-001");
-        alert("CLEARANCE LEVEL VI GRANTED");
-        render();
-    }else{
-        alert("ACCESS DENIED");
-    }
 }
 
 function render(){
@@ -308,19 +275,6 @@ function recordKind(x){
 
 function openRecord(id){
  const x=find(id); if(!x){alert("Record not recovered: "+id);return}
- if(isLocked(id)){
-   showPage("viewer");
-   detail.innerHTML = `<div class="card">
-     <h1>ACCESS DENIED</h1>
-     <p class="muted">This record is sealed under Level VI clearance.</p>
-     <div class="terminal">RECORD: ${id}
-STATUS: SEALED
-REQUIRED CLEARANCE: LEVEL VI
-HINT: BOX 17</div>
-     <button class="btn" onclick="unlockRecord('${id}')">ENTER CLEARANCE CODE</button>
-   </div>`;
-   return;
- }
  showPage("viewer");
 
  let title=x.name||x.title;
