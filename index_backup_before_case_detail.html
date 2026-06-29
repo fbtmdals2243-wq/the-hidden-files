@@ -340,38 +340,6 @@ HINT: BOX 17</div>
  }
  showPage("viewer");
 
- if(x.year){
-   detail.innerHTML = `
-   <div class="paper">
-     <span class="stamp">${x.classification}</span>
-     <h1>${x.id}</h1>
-     <h2>${x.title}</h2>
-     <p><b>${x.summary}</b></p>
-
-     <div class="kv">
-       <b>Status</b><span>${x.status}</span>
-       <b>Year</b><span>${x.year}</span>
-       <b>Classification</b><span>${x.classification}</span>
-       <b>Archive Status</b><span>Recovered / Indexed</span>
-     </div>
-
-     <h3>Evidence</h3>
-     <span class="node" onclick="openRecord('EVD-A23791-01')">EVD-A23791-01</span>
-     <span class="node" onclick="openRecord('PHOTO-2027-022')">PHOTO-2027-022</span>
-     <span class="node" onclick="openRecord('BOX17-INDEX')">BOX17-INDEX</span>
-     <span class="node" onclick="openRecord('IA-2028-001')">IA-2028-001</span>
-
-     <h3>Related Personnel</h3>
-     <span class="node" onclick="openRecord('EMP-0471')">EMP-0471</span>
-     <span class="node" onclick="openRecord('EMP-0312')">EMP-0312</span>
-     <span class="node" onclick="openRecord('EMP-1021')">EMP-1021</span>
-
-     <h3>Related Records</h3>
-     ${(x.links||[]).map(l=>`<span class="node" onclick="openRecord('${l}')">${l}</span>`).join("")}
-   </div>`;
-   return;
- }
-
  let title=x.name||x.title;
  let level=x.clearance||x.classification||"OFFICIAL";
  let kind=recordKind(x);
