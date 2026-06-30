@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>British Ministry of Magic Portal</title>
+
+<style>
+:root{
+  --bg:#030504;
+  --panel:#0b120f;
+  --gold:#b99355;
+  --muted:#9f9788;
+  --line:rgba(185,147,85,.32);
+  --green:#16382d;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 40% -10%, #173226, #030504 55%, #000);
+  color:#efe6d2;
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+.screen{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:28px;
+}
+
+.panel{
+  width:min(820px,92vw);
+  border:1px solid var(--line);
+  background:rgba(5,9,7,.94);
+  padding:36px;
+  box-shadow:0 40px 120px #000;
+}
+
+.ministry-seal{
+  text-align:center;
+  color:var(--gold);
+  letter-spacing:5px;
+  font-size:13px;
+  margin-bottom:18px;
+}
+
+h1{
+  color:var(--gold);
+  font-size:44px;
+  letter-spacing:3px;
+  text-align:center;
+  margin:0 0 12px;
+}
+
+h2{
+  color:#d8c59b;
+  text-align:center;
+  letter-spacing:2px;
+  font-weight:normal;
+  margin:0 0 26px;
+}
+
+p{
+  line-height:1.7;
+  color:#efe6d2;
+}
+
+.muted{
+  color:var(--muted);
+}
+
+.notice{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.04);
+  padding:22px;
+  margin:28px 0;
+}
+
+.btn{
+  background:var(--green);
+  border:1px solid var(--gold);
+  color:white;
+  padding:13px 18px;
+  cursor:pointer;
+  font:inherit;
+  letter-spacing:1px;
+}
+
+.btn:hover{
+  filter:brightness(1.15);
+}
+
+.center{
+  text-align:center;
+}
+
+.terminal{
+  font-family:monospace;
+  background:#020403;
+  border:1px solid #1c5b3c;
+  color:#9efac4;
+  padding:16px;
+  white-space:pre-line;
+  line-height:1.6;
+  margin-top:24px;
+}
+</style>
+</head>
+
+<body>
+
+<section class="screen">
+  <div class="panel">
+    <div class="ministry-seal">BRITISH MINISTRY OF MAGIC</div>
+
+    <h1>Recruitment Division</h1>
+    <h2>Magical Personnel Intake Office</h2>
+
+    <div class="notice">
+      <p>
+        The Ministry is currently accepting new candidates for internal appointment.
+      </p>
+
+      <p>
+        All applicants must complete a Magical Identity Assessment before receiving
+        official employee clearance.
+      </p>
+
+      <p class="muted">
+        This process will evaluate magical aptitude, ethical judgment, decision-making,
+        psychological tendency, and departmental compatibility.
+      </p>
+    </div>
+
+    <div class="terminal">APPLICATION STATUS: OPEN
+ASSESSMENT TYPE: MAGICAL IDENTITY
+ESTIMATED TIME: 10 MINUTES
+CLEARANCE ISSUANCE: PENDING</div>
+
+    <div class="center" style="margin-top:30px">
+      <button class="btn" onclick="beginApplication()">BEGIN APPLICATION</button>
+    </div>
+  </div>
+</section>
+
+<script>
+function beginApplication(){
+  alert("Application system will open in the next step.");
+}
+</script>
+
+</body>
+</html>
