@@ -84,7 +84,45 @@ function nextInterviewQuestion(){
 }
 
 function finishInterview(){
-  const identity = MinistryIdentityEngine.generateIdentity();
-  localStorage.setItem("ministryIdentity", JSON.stringify(identity));
-  showIdentityPreview(identity);
+  showProcessingScreen();
+}
+function showProcessingScreen(){
+  app.innerHTML = `
+    <section class="panel">
+      <div class="seal">MINISTRY PERSONNEL OFFICE</div>
+
+      <h1>Generating Personnel Record</h1>
+      <h2>Please remain seated.</h2>
+
+      <div class="terminal" id="processingLog">Initializing personnel analysis...</div>
+    </section>
+  `;
+
+  const logs = [
+    "Reviewing interview responses...",
+    "Calculating magical temperament...",
+    "Comparing historical Ministry profiles...",
+    "Consulting wand registry...",
+    "Detecting Patronus resonance...",
+    "Assigning department compatibility...",
+    "Generating employee identification..."
+  ];
+
+  let i = 0;
+  const log = document.getElementById("processingLog");
+
+  const timer = setInterval(()=>{
+    log.textContent += "\n" + logs[i];
+    i++;
+
+    if(i >= logs.length){
+      clearInterval(timer);
+
+      setTimeout(()=>{
+        const identity = MinistryIdentityEngine.generateIdentity();
+        localStorage.setItem("ministryIdentity", JSON.stringify(identity));
+        showIdentityPreview(identity);
+      }, 900);
+    }
+  }, 650);
 }

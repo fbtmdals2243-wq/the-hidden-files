@@ -215,13 +215,26 @@ function showIdentityPreview(identity){
           <div class="id-photo">OFFICIAL<br>PORTRAIT</div>
 
           <div class="id-info">
-            <p><b>Name</b><span>${name}</span></p>
-            <p><b>Employee ID</b><span>${employeeId}</span></p>
-            <p><b>Department</b><span>${identity.department}</span></p>
-            <p><b>Clearance</b><span>LEVEL I</span></p>
-            <p><b>House</b><span>${identity.house}</span></p>
-            <p><b>Patronus</b><span>${identity.patronus}</span></p>
-          </div>
+
+<p><b>Name</b><span>${name}</span></p>
+
+<p><b>Employee ID</b><span>${employeeId}</span></p>
+
+<p><b>Department</b><span>${identity.department}</span></p>
+
+<p><b>Rank</b><span>Junior Officer</span></p>
+
+<p><b>Clearance</b><span>LEVEL I</span></p>
+
+<p><b>House</b><span>${identity.house}</span></p>
+
+<p><b>Patronus</b><span>${identity.patronus}</span></p>
+
+<p><b>Status</b><span>ACTIVE</span></p>
+
+<p><b>Issue Date</b><span>${new Date().toLocaleDateString()}</span></p>
+
+</div>
         </div>
 
         <div class="id-footer">
@@ -239,6 +252,9 @@ STATUS: EMPLOYEE RECORD GENERATED
 PORTAL ACCESS: PENDING</div>
 
       <div class="center">
+      <button class="btn" onclick="enterPortal()">
+ENTER MINISTRY PORTAL
+</button>
         <button class="btn" onclick="downloadEmployeeId()">DOWNLOAD EMPLOYEE ID</button>
 <button class="btn" onclick="showRecruitment()">RETURN TO RECRUITMENT</button>
       </div>
@@ -248,4 +264,45 @@ PORTAL ACCESS: PENDING</div>
 showRecruitment();
 function downloadEmployeeId(){
   alert("Employee ID download feature will be added in the next step.");
+}
+function enterPortal(){
+    showPortalAuthentication();
+}
+
+function showPortalAuthentication(){
+    app.innerHTML = `
+        <section class="panel">
+            <div class="seal">MINISTRY SECURITY NETWORK</div>
+
+            <h1>Authenticating...</h1>
+
+            <div class="terminal" id="authLog">
+Verifying Employee Record...
+            </div>
+        </section>
+    `;
+
+    const messages = [
+        "Checking Ministry Personnel Database...",
+        "Employee Record Located.",
+        "Clearance Level I Confirmed.",
+        "Archive Division Access Granted.",
+        "Opening Ministry Portal..."
+    ];
+
+    let i = 0;
+    const log = document.getElementById("authLog");
+
+    const timer = setInterval(() => {
+        log.textContent += "\n" + messages[i];
+        i++;
+
+        if(i >= messages.length){
+            clearInterval(timer);
+
+            setTimeout(() => {
+    showDashboard();
+}, 1000);
+        }
+    }, 700);
 }
