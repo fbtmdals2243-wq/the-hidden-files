@@ -124,7 +124,10 @@ CURRENT TASK: ${orientationComplete ? currentTask : "COMPLETE ORIENTATION"}</div
 }
 
 function openOfficeItem(item){
-    
+    if(item === "Employee Profile"){
+  showPersonnelRecord();
+  return;
+}
   if(item === "Today’s Assignment"){
   talkToWhitmore();
   return;
