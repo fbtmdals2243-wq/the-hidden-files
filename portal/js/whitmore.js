@@ -90,3 +90,76 @@ function showOfficeWalkthrough(){
     showOrientationMemo
   );
 }
+function talkToWhitmore(){
+    const mailRead =
+  localStorage.getItem("mailRead_MAIL-002") === "true";
+
+const newsRead =
+  localStorage.getItem("newsRead_NEWS-002") === "true";
+
+const noticeRead =
+  localStorage.getItem("noticeRead_NOTICE-002") === "true";
+
+const allUpdatesReviewed =
+  mailRead && newsRead && noticeRead;
+  const caseStatus = localStorage.getItem("caseStatus_CASE-000");
+if(caseStatus === "Under Review" && allUpdatesReviewed){
+  startDialogue(
+    [
+      {
+        npc: "whitmore",
+        speaker: "Eleanor Whitmore",
+        location: "ARCHIVE DIVISION · OFFICE 3-B",
+        text: "I see you've reviewed the mail, notice board, and the Prophet article."
+      },
+      {
+        npc: "whitmore",
+        speaker: "Eleanor Whitmore",
+        location: "ARCHIVE DIVISION · OFFICE 3-B",
+        text: "Good. A Ministry officer must understand not only the case, but how the Ministry reacts to it."
+      },
+      {
+        npc: "whitmore",
+        speaker: "Eleanor Whitmore",
+        location: "ARCHIVE DIVISION · OFFICE 3-B",
+        text: "For now, wait for the committee's response. Further instructions will arrive soon."
+      }
+    ],
+    function(){
+  localStorage.setItem("caseStatus_CASE-000", "Committee Pending");
+  showDashboard();
+}
+  );
+
+  return;
+}
+  if(caseStatus === "Under Review"){
+    startDialogue(
+      [
+        {
+          npc: "whitmore",
+          speaker: "Eleanor Whitmore",
+          location: "ARCHIVE DIVISION · OFFICE 3-B",
+          text: "I received your report on CASE-000."
+        },
+        {
+          npc: "whitmore",
+          speaker: "Eleanor Whitmore",
+          location: "ARCHIVE DIVISION · OFFICE 3-B",
+          text: "The Archive Division has marked your findings for review."
+        },
+        {
+          npc: "whitmore",
+          speaker: "Eleanor Whitmore",
+          location: "ARCHIVE DIVISION · OFFICE 3-B",
+          text: "For a first assignment, your work was acceptable. Do not let that make you careless."
+        }
+      ],
+      showDashboard
+    );
+
+    return;
+  }
+
+  showWhitmoreIntro();
+}

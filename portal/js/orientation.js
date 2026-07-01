@@ -109,3 +109,48 @@ THE HIDDEN FILES: LIMITED ACCESS AVAILABLE</div>
     </section>
   `;
 }
+function showArchiveCabinet(){
+    const case000Status =
+  localStorage.getItem("caseStatus_CASE-000") || "Available";
+  app.innerHTML = `
+    <section class="panel">
+      <div class="seal">ARCHIVE CABINET · LEVEL I ACCESS</div>
+
+      <h1>Archive Case Index</h1>
+      <h2>Restricted Materials · Junior Officer Clearance</h2>
+
+      <div class="case-list">
+        <button class="case-entry available" onclick="openCase('CASE-000')">
+          <b>CASE-000</b>
+          <span>The Missing Owl</span>
+          <small>Status: ${case000Status} · Classification: Level I</small>
+        </button>
+
+        <button class="case-entry locked">
+          <b>CASE-001</b>
+          <span>Memory Fracture</span>
+          <small>Status: Locked · Clearance Level II Required</small>
+        </button>
+
+        <button class="case-entry locked">
+          <b>CASE-ZERO</b>
+          <span>Restricted Archive Origin</span>
+          <small>Status: Sealed · Clearance Level V Required</small>
+        </button>
+      </div>
+
+      <div class="terminal">ARCHIVE CABINET: UNLOCKED
+ACCESS LEVEL: I
+AVAILABLE CASES: 1
+SEALED RECORDS: 2</div>
+
+      <div class="center">
+        <button class="btn" onclick="showDashboard()">RETURN TO OFFICE</button>
+      </div>
+    </section>
+  `;
+}
+
+function enterHiddenFiles(){
+  window.location.href = "../index.html";
+}
