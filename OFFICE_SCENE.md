@@ -293,3 +293,152 @@ Eventually,
 opening the office should feel like
 
 coming back to work.
+---
+
+# Office Scene 2.0
+
+## Goal
+
+Office 3-B should feel like a real personal workspace, not a dashboard.
+
+The player should interact with physical objects, not menu cards.
+
+---
+
+## Layout
+
+### Background
+
+- Large window at the back
+- London rain outside
+- Dim Ministry lighting
+- Old archive walls
+- Floating dust particles
+- Distant hallway shadows
+
+### Desk
+
+The desk is the center of the screen.
+
+Objects on the desk:
+
+- Employee ID
+- Owl Mail
+- Today's Assignment
+- Daily Prophet
+- Coffee
+- Case File
+- Wand Stand
+
+### Back Wall
+
+Objects behind the desk:
+
+- Archive Cabinet
+- Personnel Cabinet
+- Department Door
+- Notice Board
+- Old Ministry Clock
+
+---
+
+## Interactive Objects
+
+### Employee ID
+
+Opens player profile.
+
+Shows:
+- Name
+- Employee ID
+- House
+- Wand
+- Patronus
+- Clearance
+- Rank
+
+### Owl Mail
+
+Opens messages.
+
+First use:
+- Message from Eleanor Whitmore
+
+### Today's Assignment
+
+Opens current task.
+
+First task:
+- First Day Orientation
+
+### Daily Prophet
+
+Opens world news.
+
+First article:
+- Minor Magical Disturbance Reported in Diagon Alley
+
+### Archive Cabinet
+
+Locked until orientation is complete.
+
+After clearance:
+- The Hidden Files access available
+
+### Coffee
+
+Atmospheric object.
+
+May later provide:
+- daily flavor text
+- mood bonus
+- hidden dialogue trigger
+
+### Window
+
+Shows time and weather.
+
+Future:
+- morning
+- afternoon
+- night
+- rain
+- fog
+- snow
+- seasonal events
+
+---
+
+## Animation Ideas
+
+- Rain moving outside window
+- Coffee steam
+- Owl Mail envelope glow
+- Case file opens slightly on hover
+- Cabinet lock glows when access is granted
+- Ministry clock ticks
+- Dust particles in light
+- Soft fade when entering office
+
+---
+
+## First Day Flow
+
+1. Player enters Office 3-B.
+2. Eleanor Whitmore greets the player.
+3. Whitmore introduces the office.
+4. Today's Assignment becomes highlighted.
+5. Player opens Orientation Memo.
+6. Player completes orientation tasks.
+7. Archive Cabinet unlocks.
+8. The Hidden Files becomes available.
+
+---
+
+## Design Principle
+
+The office is not a menu.
+
+The office is the player's workplace.
+
+Every feature should appear as a physical object in the room.
