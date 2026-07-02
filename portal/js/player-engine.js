@@ -52,6 +52,13 @@ const Player = {
             ? 1
             : 0;
 
-    }
+    },
+    getRank(){
+
+    return localStorage.getItem(
+        "playerRank"
+    ) || "Junior Archive Officer";
+
+},
 
 };

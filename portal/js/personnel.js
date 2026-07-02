@@ -67,7 +67,7 @@ Case History:
 ${completedCaseList}
 
 Current Rank:
-Junior Archive Officer
+${Player.getRank()}
 
 Reputation:
 ${reputation}
