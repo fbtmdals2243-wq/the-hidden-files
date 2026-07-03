@@ -79,7 +79,7 @@ What is your priority?
         text: "Attempt to stabilize the corridor and save everyone.",
         response: "Dangerous optimism. Sometimes that is courage. Sometimes it is arrogance.",
         scores: { courage: 6, independence: 5, resilience: 4 }
-      }
+      },
     ]
   }
 

@@ -61,4 +61,12 @@ const Player = {
 
 },
 
+setRank(rank){
+
+    localStorage.setItem(
+        "playerRank",
+        rank
+    );
+
+},
 };
