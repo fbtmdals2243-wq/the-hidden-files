@@ -69,4 +69,35 @@ setRank(rank){
     );
 
 },
+getClearance(){
+
+    return localStorage.getItem(
+        "playerClearance"
+    ) || "Level I";
+
+},
+
+setClearance(level){
+
+    localStorage.setItem(
+        "playerClearance",
+        level
+    );
+
+},
+hasClearance(requiredLevel){
+  const levels = {
+    "Level I": 1,
+    "Level II": 2,
+    "Level III": 3
+  };
+
+  const currentLevel =
+    levels[this.getClearance()] || 1;
+
+  const required =
+    levels[requiredLevel] || 1;
+
+  return currentLevel >= required;
+},
 };

@@ -69,7 +69,7 @@ if(case000Status === "Solved"){
         <div class="office-status">
           <b>${employeeId}</b><br>
           ${identity.department || "Archive Division"}<br>
-          Clearance Level I
+          Clearance ${Player.getClearance()}
         </div>
       </div>
 

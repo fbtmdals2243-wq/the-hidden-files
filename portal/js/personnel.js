@@ -69,6 +69,9 @@ ${completedCaseList}
 Current Rank:
 ${Player.getRank()}
 
+Clearance:
+${Player.getClearance()}
+
 Reputation:
 ${reputation}
 
@@ -85,14 +88,21 @@ ${careerTimeline.join("\n")}`,
 
       <div class="center">
 
-        <button class="btn"
-          onclick="showDashboard()">
+    <button class="btn"
+      onclick="showPromotionReview()">
 
-          RETURN TO OFFICE
+      BEGIN PROMOTION REVIEW
 
-        </button>
+    </button>
 
-      </div>
+    <button class="btn"
+      onclick="showDashboard()">
+
+      RETURN TO OFFICE
+
+    </button>
+
+</div>
 
     </section>
   `;
