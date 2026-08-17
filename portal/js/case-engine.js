@@ -616,6 +616,7 @@ function submitReport(caseId){
             .value
             .trim();
 
+
     const recommendation =
         document
             .getElementById(
@@ -638,11 +639,9 @@ function submitReport(caseId){
     }
 
 
-    localStorage.setItem(
-        "caseStatus_" + caseId,
-        "Under Review"
-    );
-
+    /* =====================================================
+       SAVE REPORT
+    ===================================================== */
 
     localStorage.setItem(
 
@@ -662,6 +661,198 @@ function submitReport(caseId){
     );
 
 
+    /* =====================================================
+       CASE-001
+    ===================================================== */
+
+    if(
+        caseId ===
+        "CASE-001"
+    ){
+
+        Player.setCaseStatus(
+            "CASE-001",
+            "Solved"
+        );
+
+
+        localStorage.setItem(
+            "caseCompleted_CASE-001",
+            new Date().toISOString()
+        );
+
+
+        app.innerHTML = `
+            <section class="panel">
+
+                <div class="seal">
+                    RESTRICTED CASE REVIEW
+                </div>
+
+                <h1>
+                    Investigation Complete
+                </h1>
+
+                <h2>
+                    CASE-001 · Memory Fracture
+                </h2>
+
+
+                <div class="notice">
+
+                    <p>
+                        Your investigation report has been
+                        accepted into the restricted archive.
+                    </p>
+
+                    <p>
+                        CASE-001 has been transferred
+                        to senior Ministry personnel
+                        for further classified examination.
+                    </p>
+
+                </div>
+
+
+                <div class="terminal">CASE: CASE-001
+TITLE: MEMORY FRACTURE
+REPORT: ACCEPTED
+CASE STATUS: SOLVED
+DAY 2 ASSIGNMENT: COMPLETE</div>
+
+
+                <div class="center">
+
+                    <button
+                        class="btn"
+                        onclick="showDashboard()">
+
+                        RETURN TO OFFICE
+
+                    </button>
+
+                </div>
+
+            </section>
+        `;
+
+
+        return;
+    }
+
+
+    /* =====================================================
+       CASE-002
+    ===================================================== */
+
+    if(
+        caseId ===
+        "CASE-002"
+    ){
+
+        Player.setCaseStatus(
+            "CASE-002",
+            "Solved"
+        );
+
+
+        localStorage.setItem(
+            "caseCompleted_CASE-002",
+            new Date().toISOString()
+        );
+
+
+        app.innerHTML = `
+            <section class="panel">
+
+                <div class="seal">
+                    OFFICE OF THE UNDERSECRETARY
+                </div>
+
+                <h1>
+                    Investigation Complete
+                </h1>
+
+                <h2>
+                    CASE-002 · The Officer Who Never Existed
+                </h2>
+
+
+                <div class="notice">
+
+                    <p>
+                        Your investigation report has been
+                        received by the Office of the Undersecretary.
+                    </p>
+
+                    <p>
+                        The Ministry confirms that
+                        MOM-000117 was once associated
+                        with an authorized employee record.
+                    </p>
+
+                    <p>
+                        The identity connected to that number
+                        was deliberately removed from
+                        standard personnel systems.
+                    </p>
+
+                    <p class="muted">
+                        Further information has been classified.
+                    </p>
+
+                </div>
+
+
+                <div class="terminal">CASE: CASE-002
+SUBJECT: MOM-000117
+
+REPORT: ACCEPTED
+CASE STATUS: SOLVED
+
+KNOWN FACT:
+PERSONNEL IDENTITY WAS REMOVED
+
+UNKNOWN:
+WHO ORDERED THE ORIGINAL ERASURE
+WHY THE CREDENTIAL REMAINS ACTIVE
+WHAT OCCURRED IN SUB-LEVEL 4
+
+DAY 3 ASSIGNMENT: COMPLETE
+
+FURTHER ACCESS: RESTRICTED</div>
+
+
+                <div class="center">
+
+                    <button
+                        class="btn"
+                        onclick="showDashboard()">
+
+                        RETURN TO OFFICE
+
+                    </button>
+
+                </div>
+
+            </section>
+        `;
+
+
+        return;
+    }
+
+
+    /* =====================================================
+       CASE-000 ORIGINAL FLOW
+    ===================================================== */
+
+    Player.setCaseStatus(
+        caseId,
+        "Under Review"
+    );
+
+
     app.innerHTML = `
         <section class="panel">
 
@@ -677,6 +868,7 @@ function submitReport(caseId){
                 ${caseId}
             </h2>
 
+
             <div class="notice">
 
                 <p>
@@ -690,9 +882,11 @@ function submitReport(caseId){
 
             </div>
 
+
             <div class="terminal">REPORT STATUS: SUBMITTED
 CASE: ${caseId}
 ARCHIVE DIVISION REVIEW: PENDING</div>
+
 
             <div class="center">
 
@@ -703,6 +897,7 @@ ARCHIVE DIVISION REVIEW: PENDING</div>
                     RETURN TO CASE
 
                 </button>
+
 
                 <button
                     class="btn"

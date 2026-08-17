@@ -1,22 +1,44 @@
 function showOrientationMemo(){
+
   app.innerHTML = `
     <section class="panel">
-      <div class="seal">OFFICIAL MEMORANDUM</div>
 
-      <h1>First Day Orientation</h1>
-      <h2>Archive Division · Junior Officer</h2>
+      <div class="seal">
+        OFFICIAL MEMORANDUM
+      </div>
+
+      <h1>
+        First Day Orientation
+      </h1>
+
+      <h2>
+        Archive Division · Junior Officer
+      </h2>
+
 
       <div class="notice">
-        <p><b>From:</b> Archive Division Personnel Office</p>
-        <p><b>Priority:</b> High</p>
 
-        <p>Congratulations on your appointment.</p>
+        <p>
+          <b>From:</b>
+          Archive Division Personnel Office
+        </p>
+
+        <p>
+          <b>Priority:</b>
+          High
+        </p>
+
+        <p>
+          Congratulations on your appointment.
+        </p>
 
         <p>
           Before independent archive access can be granted,
           all junior officers must complete First Day Orientation.
         </p>
+
       </div>
+
 
       <div class="terminal">FIRST DAY ORIENTATION
 [ ] Review Employee Profile
@@ -24,19 +46,36 @@ function showOrientationMemo(){
 [ ] Complete Archive Training
 [ ] Receive Archive Clearance</div>
 
+
       <div class="center">
-        <button class="btn" onclick="startOrientation()">
+
+        <button
+          class="btn"
+          onclick="startOrientation()">
+
           BEGIN ORIENTATION
+
         </button>
 
-        <button class="btn" onclick="showDashboard()">
+
+        <button
+          class="btn"
+          onclick="showDashboard()">
+
           RETURN TO OFFICE
+
         </button>
+
       </div>
+
     </section>
   `;
 }
 
+
+/* =========================================================
+   START ORIENTATION
+========================================================= */
 
 function startOrientation(){
 
@@ -49,54 +88,91 @@ function startOrientation(){
 }
 
 
+/* =========================================================
+   ORIENTATION TASKS
+========================================================= */
+
 function showOrientationTask(){
 
   const step =
-    localStorage.getItem("orientationStep")
-    || "profile";
+    localStorage.getItem(
+      "orientationStep"
+    ) || "profile";
+
 
   const tasks = {
 
     profile: [
+
       "Review Employee Profile",
+
       "Confirm your Ministry employee record and magical identity."
+
     ],
+
 
     notice: [
+
       "Read Ministry Notice",
+
       "Review today’s official Ministry notice."
+
     ],
+
 
     training: [
+
       "Complete Archive Training",
+
       "Learn basic procedures for sealed records and restricted files."
+
     ],
 
+
     clearance: [
+
       "Receive Archive Clearance",
+
       "Your Level I archive clearance is ready to be issued."
+
     ]
 
   };
 
+
   const nextMap = {
-    profile: "notice",
-    notice: "training",
-    training: "clearance",
-    clearance: "complete"
+
+    profile:
+      "notice",
+
+    notice:
+      "training",
+
+    training:
+      "clearance",
+
+    clearance:
+      "complete"
+
   };
 
-  const task = tasks[step];
+
+  const task =
+    tasks[step];
+
 
   if(!task){
+
     localStorage.setItem(
       "orientationStep",
       "profile"
     );
 
     showOrientationTask();
+
     return;
   }
+
 
   app.innerHTML = `
     <section class="panel">
@@ -105,17 +181,28 @@ function showOrientationTask(){
         FIRST DAY ORIENTATION
       </div>
 
-      <h1>${task[0]}</h1>
+      <h1>
+        ${task[0]}
+      </h1>
 
-      <h2>Orientation Task</h2>
+      <h2>
+        Orientation Task
+      </h2>
+
 
       <div class="notice">
-        <p>${task[1]}</p>
+
+        <p>
+          ${task[1]}
+        </p>
+
       </div>
+
 
       <div class="terminal">CURRENT TASK: ${task[0]}
 STATUS: IN PROGRESS
 ARCHIVE ACCESS: PENDING</div>
+
 
       <div class="center">
 
@@ -134,38 +221,65 @@ ARCHIVE ACCESS: PENDING</div>
 }
 
 
+/* =========================================================
+   COMPLETE ORIENTATION TASK
+========================================================= */
+
 function completeOrientationTask(next){
 
-  if(next === "complete"){
+  if(
+    next ===
+    "complete"
+  ){
 
     localStorage.setItem(
       "orientationComplete",
       "true"
     );
 
+
     /*
-      신규 직원에게만 Level I을 지급한다.
-      이미 승진해서 Level II 이상인 직원을
-      실수로 Level I으로 내리지 않기 위한 보호장치.
+      신규 직원에게만 Level I 지급.
+      기존 상위 Clearance는 유지한다.
     */
-    if(!localStorage.getItem("playerClearance")){
-      Player.setClearance("Level I");
+
+    if(
+      !localStorage.getItem(
+        "playerClearance"
+      )
+    ){
+
+      Player.setClearance(
+        "Level I"
+      );
     }
 
+
     showArchiveClearanceGranted();
+
     return;
   }
+
 
   localStorage.setItem(
     "orientationStep",
     next
   );
 
+
   showOrientationTask();
 }
 
 
+/* =========================================================
+   CLEARANCE GRANTED
+========================================================= */
+
 function showArchiveClearanceGranted(){
+
+  const clearance =
+    Player.getClearance();
+
 
   app.innerHTML = `
     <section class="panel">
@@ -174,11 +288,14 @@ function showArchiveClearanceGranted(){
         ARCHIVE CLEARANCE UPDATED
       </div>
 
-      <h1>Access Granted</h1>
+      <h1>
+        Access Granted
+      </h1>
 
       <h2>
-        Archive Division Clearance · Level I
+        Archive Division Clearance · ${clearance}
       </h2>
+
 
       <div class="notice">
 
@@ -188,15 +305,17 @@ function showArchiveClearanceGranted(){
 
         <p>
           You are now authorized to access
-          limited Archive Division materials.
+          approved Archive Division materials.
         </p>
 
       </div>
 
+
       <div class="terminal">ORIENTATION: COMPLETE
-CLEARANCE: LEVEL I
+CLEARANCE: ${clearance}
 ARCHIVE CABINET: UNLOCKED
-THE HIDDEN FILES: LIMITED ACCESS AVAILABLE</div>
+THE HIDDEN FILES: ACCESS AVAILABLE</div>
+
 
       <div class="center">
 
@@ -215,13 +334,71 @@ THE HIDDEN FILES: LIMITED ACCESS AVAILABLE</div>
 }
 
 
+/* =========================================================
+   ARCHIVE CABINET
+========================================================= */
+
 function showArchiveCabinet(){
 
   const case000Status =
-    Player.getCaseStatus("CASE-000");
+    Player.getCaseStatus(
+      "CASE-000"
+    );
+
+
+  const case001Status =
+    Player.getCaseStatus(
+      "CASE-001"
+    );
+
 
   const hasLevelII =
-    Player.hasClearance("Level II");
+    Player.hasClearance(
+      "Level II"
+    );
+
+
+  const worldDay =
+    World.getDay();
+
+
+  /*
+    Day 2 Ministry communications
+  */
+
+  const day2MailRead =
+    localStorage.getItem(
+      "mailRead_MAIL-004"
+    ) === "true";
+
+
+  const day2NewsRead =
+    localStorage.getItem(
+      "newsRead_NEWS-003"
+    ) === "true";
+
+
+  const day2NoticeRead =
+    localStorage.getItem(
+      "noticeRead_NOTICE-003"
+    ) === "true";
+
+
+  /*
+    CASE-001 release conditions
+
+    1. Level II
+    2. Day 2 or later
+    3. Day 2 communications reviewed
+  */
+
+  const case001Available =
+    hasLevelII &&
+    worldDay >= 2 &&
+    day2MailRead &&
+    day2NewsRead &&
+    day2NoticeRead;
+
 
   app.innerHTML = `
     <section class="panel">
@@ -230,13 +407,23 @@ function showArchiveCabinet(){
         BRITISH MINISTRY OF MAGIC
       </div>
 
-      <h1>ARCHIVE CABINET</h1>
+      <h1>
+        ARCHIVE CABINET
+      </h1>
 
-      <h2>${Player.getClearance()} ACCESS</h2>
+      <h2>
+        ${Player.getClearance()} ACCESS
+      </h2>
+
 
       <div class="notice">
-        <h3>PUBLIC ARCHIVE</h3>
+
+        <h3>
+          PUBLIC ARCHIVE
+        </h3>
+
       </div>
+
 
       <div class="case-list">
 
@@ -244,9 +431,13 @@ function showArchiveCabinet(){
           class="case-entry available"
           onclick="openCase('CASE-000')">
 
-          <b>CASE-000</b>
+          <b>
+            CASE-000
+          </b>
 
-          <span>The Missing Owl</span>
+          <span>
+            The Missing Owl
+          </span>
 
           <small>
             Status: ${case000Status}
@@ -256,53 +447,100 @@ function showArchiveCabinet(){
 
       </div>
 
+
       <div class="notice">
-        <h3>RESTRICTED ARCHIVE</h3>
+
+        <h3>
+          RESTRICTED ARCHIVE
+        </h3>
+
       </div>
+
 
       <div class="case-list">
 
+
         ${
-          hasLevelII
+          case001Available
 
           ? `
 
-          <button class="case-entry available">
+            <button
+              class="case-entry available"
+              onclick="openCase('CASE-001')">
 
-            <b>CASE-001</b>
+              <b>
+                CASE-001
+              </b>
 
-            <span>Memory Fracture</span>
+              <span>
+                Memory Fracture
+              </span>
 
-            <small>
-              Classification: Level II
-            </small>
+              <small>
+                Status: ${case001Status}
+              </small>
 
-          </button>
-
-          `
-
-          : `
-
-          <button class="case-entry locked">
-
-            <b>CASE-001</b>
-
-            <span>Memory Fracture</span>
-
-            <small>
-              🔒 Clearance Level II Required
-            </small>
-
-          </button>
+            </button>
 
           `
+
+          : hasLevelII && worldDay >= 2
+
+            ? `
+
+              <button
+                class="case-entry locked">
+
+                <b>
+                  CASE-001
+                </b>
+
+                <span>
+                  Memory Fracture
+                </span>
+
+                <small>
+                  ⏳ Review Day 2 Ministry communications
+                </small>
+
+              </button>
+
+            `
+
+            : `
+
+              <button
+                class="case-entry locked">
+
+                <b>
+                  CASE-001
+                </b>
+
+                <span>
+                  Memory Fracture
+                </span>
+
+                <small>
+                  🔒 Clearance Level II Required
+                </small>
+
+              </button>
+
+            `
         }
 
-        <button class="case-entry locked">
 
-          <b>CASE-ZERO</b>
+        <button
+          class="case-entry locked">
 
-          <span>Restricted Archive Origin</span>
+          <b>
+            CASE-ZERO
+          </b>
+
+          <span>
+            Restricted Archive Origin
+          </span>
 
           <small>
             🔒 Clearance Level V Required
@@ -312,14 +550,14 @@ function showArchiveCabinet(){
 
       </div>
 
+
       <div class="terminal">ARCHIVE STATUS: ACTIVE
+WORLD DATE: ${World.getDate()}
 CLEARANCE: ${Player.getClearance()}
 PUBLIC FILES: AVAILABLE
-RESTRICTED FILES: ${
-        hasLevelII
-          ? "LEVEL II ACCESS GRANTED"
-          : "ACCESS DENIED"
-      }</div>
+LEVEL II ACCESS: ${hasLevelII ? "GRANTED" : "DENIED"}
+CASE-001: ${case001Available ? "RELEASED" : "PENDING"}</div>
+
 
       <div class="center">
 

@@ -1,7 +1,7 @@
 function showDashboard(){
 
   /* =====================================================
-     PLAYER DATA
+     PLAYER
   ===================================================== */
 
   const name =
@@ -21,15 +21,18 @@ function showDashboard(){
 
 
   /* =====================================================
-     WORLD DATA
+     WORLD
   ===================================================== */
+
+  const worldDay =
+    World.getDay();
 
   const worldDate =
     World.getDate();
 
 
   /* =====================================================
-     PROGRESS DATA
+     PROGRESS
   ===================================================== */
 
   const orientationComplete =
@@ -43,42 +46,110 @@ function showDashboard(){
       "CASE-000"
     );
 
+  const case001Status =
+    Player.getCaseStatus(
+      "CASE-001"
+    );
+
+  const case002Status =
+    Player.getCaseStatus(
+      "CASE-002"
+    );
+
+  const case003Status =
+    Player.getCaseStatus(
+      "CASE-003"
+    );
+
 
   /* =====================================================
-     READ STATES
+     MAIL READ STATES
   ===================================================== */
 
-  const mailRead =
+  const mail002Read =
     localStorage.getItem(
       "mailRead_MAIL-002"
     ) === "true";
 
-
-  const committeeMailRead =
+  const mail003Read =
     localStorage.getItem(
       "mailRead_MAIL-003"
     ) === "true";
 
-
-  const newsRead =
+  const mail004Read =
     localStorage.getItem(
-      "newsRead_NEWS-002"
+      "mailRead_MAIL-004"
     ) === "true";
 
-
-  const noticeRead =
+  const mail005Read =
     localStorage.getItem(
-      "noticeRead_NOTICE-002"
+      "mailRead_MAIL-005"
+    ) === "true";
+
+  const mail006Read =
+    localStorage.getItem(
+      "mailRead_MAIL-006"
+    ) === "true";
+
+  const mail007Read =
+    localStorage.getItem(
+      "mailRead_MAIL-007"
     ) === "true";
 
 
   /* =====================================================
-     OWL MAIL LABEL
+     NEWS READ STATES
+  ===================================================== */
+
+  const news002Read =
+    localStorage.getItem(
+      "newsRead_NEWS-002"
+    ) === "true";
+
+  const news003Read =
+    localStorage.getItem(
+      "newsRead_NEWS-003"
+    ) === "true";
+
+
+  /* =====================================================
+     NOTICE READ STATES
+  ===================================================== */
+
+  const notice002Read =
+    localStorage.getItem(
+      "noticeRead_NOTICE-002"
+    ) === "true";
+
+  const notice003Read =
+    localStorage.getItem(
+      "noticeRead_NOTICE-003"
+    ) === "true";
+
+
+  const day2CommunicationsComplete =
+    mail004Read &&
+    news003Read &&
+    notice003Read;
+
+
+  /* =====================================================
+     LABELS
   ===================================================== */
 
   let mailLabel =
     "1 unread";
 
+  let newsLabel =
+    "Morning edition";
+
+  let noticeLabel =
+    "Security reminder";
+
+
+  /* =====================================================
+     CASE-000
+  ===================================================== */
 
   if(
     case000Status ===
@@ -86,9 +157,19 @@ function showDashboard(){
   ){
 
     mailLabel =
-      mailRead
+      mail002Read
         ? "Reviewed"
         : "New mail";
+
+    newsLabel =
+      news002Read
+        ? "Reviewed"
+        : "New article";
+
+    noticeLabel =
+      notice002Read
+        ? "Reviewed"
+        : "1 new notice";
   }
 
 
@@ -98,59 +179,116 @@ function showDashboard(){
   ){
 
     mailLabel =
-      committeeMailRead
+      mail003Read
         ? "Reviewed"
         : "Committee mail";
   }
 
 
+  /* =====================================================
+     DAY 2
+  ===================================================== */
+
   if(
-    case000Status ===
-    "Solved"
+    worldDay === 2
+  ){
+
+    mailLabel =
+      mail004Read
+        ? "Reviewed"
+        : "New mail";
+
+    newsLabel =
+      news003Read
+        ? "Reviewed"
+        : "New article";
+
+    noticeLabel =
+      notice003Read
+        ? "Reviewed"
+        : "1 new notice";
+  }
+
+
+  /* =====================================================
+     DAY 3
+  ===================================================== */
+
+  if(
+    worldDay === 3
+  ){
+
+    mailLabel =
+      mail005Read
+        ? "Reviewed"
+        : "Restricted mail";
+
+    newsLabel =
+      "Morning edition";
+
+    noticeLabel =
+      "Security reminder";
+  }
+
+
+  /* =====================================================
+     DAY 4
+  ===================================================== */
+
+  if(
+    worldDay === 4
+  ){
+
+    mailLabel =
+      mail006Read
+        ? "Reviewed"
+        : "Classified mail";
+
+    newsLabel =
+      "Morning edition";
+
+    noticeLabel =
+      "Security reminder";
+  }
+
+
+  /* =====================================================
+     DAY 5
+  ===================================================== */
+
+  if(
+    worldDay === 5
+  ){
+
+    mailLabel =
+      mail007Read
+        ? "Reviewed"
+        : "Review result";
+
+    newsLabel =
+      "Morning edition";
+
+    noticeLabel =
+      "Security reminder";
+  }
+
+
+  /* =====================================================
+     DAY 6+
+  ===================================================== */
+
+  if(
+    worldDay >= 6
   ){
 
     mailLabel =
       "Reviewed";
-  }
-
-
-  /* =====================================================
-     NEWS LABEL
-  ===================================================== */
-
-  let newsLabel =
-    "Morning edition";
-
-
-  if(
-    case000Status ===
-    "Under Review"
-  ){
 
     newsLabel =
-      newsRead
-        ? "Reviewed"
-        : "New article";
-  }
-
-
-  /* =====================================================
-     NOTICE LABEL
-  ===================================================== */
-
-  let noticeLabel =
-    "Security reminder";
-
-
-  if(
-    case000Status ===
-    "Under Review"
-  ){
+      "Morning edition";
 
     noticeLabel =
-      noticeRead
-        ? "Reviewed"
-        : "1 new notice";
+      "Security reminder";
   }
 
 
@@ -159,20 +297,36 @@ function showDashboard(){
   ===================================================== */
 
   let assignmentLabel =
-    orientationComplete
-      ? "Completed"
-      : "Orientation required";
-
+    "Orientation required";
 
   let currentTask =
-    orientationComplete
-      ? "Archive Access Available"
-      : "Complete Orientation";
+    "Complete Orientation";
+
+
+  /* =====================================================
+     DAY 1
+  ===================================================== */
+
+  if(
+    orientationComplete &&
+    worldDay === 1
+  ){
+
+    assignmentLabel =
+      case000Status === "Solved"
+        ? "Assignment completed"
+        : "CASE-000";
+
+    currentTask =
+      case000Status === "Solved"
+        ? "CASE-000 Completed"
+        : "Investigate CASE-000";
+  }
 
 
   if(
-    case000Status ===
-    "Under Review"
+    worldDay === 1 &&
+    case000Status === "Under Review"
   ){
 
     assignmentLabel =
@@ -184,8 +338,8 @@ function showDashboard(){
 
 
   if(
-    case000Status ===
-    "Committee Pending"
+    worldDay === 1 &&
+    case000Status === "Committee Pending"
   ){
 
     assignmentLabel =
@@ -196,26 +350,259 @@ function showDashboard(){
   }
 
 
+  /* =====================================================
+     DAY 2
+  ===================================================== */
+
   if(
-    case000Status ===
-    "Solved"
+    worldDay === 2
   ){
 
-    assignmentLabel =
-      "Assignment completed";
+    if(
+      !day2CommunicationsComplete
+    ){
 
-    currentTask =
-      "CASE-000 Completed";
+      assignmentLabel =
+        "Review communications";
+
+      currentTask =
+        "Review Day 2 Ministry Communications";
+    }
+
+    else if(
+      case001Status !==
+      "Solved"
+    ){
+
+      assignmentLabel =
+        "CASE-001 active";
+
+      currentTask =
+        "Investigate CASE-001 · Memory Fracture";
+    }
+
+    else{
+
+      assignmentLabel =
+        "Assignment completed";
+
+      currentTask =
+        "CASE-001 Completed";
+    }
+
   }
 
 
   /* =====================================================
-     END DAY PERMISSION
+     DAY 3
   ===================================================== */
 
-  const canEndWorkDay =
-    orientationComplete &&
-    case000Status === "Solved";
+  if(
+    worldDay === 3
+  ){
+
+    if(
+      !mail005Read
+    ){
+
+      assignmentLabel =
+        "Restricted briefing";
+
+      currentTask =
+        "Read Undersecretary Briefing";
+    }
+
+    else if(
+      case002Status !==
+      "Solved"
+    ){
+
+      assignmentLabel =
+        "CASE-002 active";
+
+      currentTask =
+        "Investigate CASE-002 · The Officer Who Never Existed";
+    }
+
+    else{
+
+      assignmentLabel =
+        "Assignment completed";
+
+      currentTask =
+        "CASE-002 Completed";
+    }
+
+  }
+
+
+  /* =====================================================
+     DAY 4
+  ===================================================== */
+
+  if(
+    worldDay === 4
+  ){
+
+    if(
+      !mail006Read
+    ){
+
+      assignmentLabel =
+        "Classified directive";
+
+      currentTask =
+        "Read Sub-Level 4 Access Directive";
+    }
+
+    else if(
+      case003Status ===
+      "Under Review"
+    ){
+
+      assignmentLabel =
+        "Report submitted";
+
+      currentTask =
+        "CASE-003 Under Review";
+    }
+
+    else if(
+      case003Status ===
+      "Solved"
+    ){
+
+      assignmentLabel =
+        "Assignment completed";
+
+      currentTask =
+        "CASE-003 Completed";
+    }
+
+    else{
+
+      assignmentLabel =
+        "CASE-003 active";
+
+      currentTask =
+        "Investigate CASE-003 · Sub-Level 4";
+    }
+
+  }
+
+
+  /* =====================================================
+     DAY 5
+  ===================================================== */
+
+  if(
+    worldDay === 5
+  ){
+
+    if(
+      !mail007Read
+    ){
+
+      assignmentLabel =
+        "Review result received";
+
+      currentTask =
+        "Read CASE-003 Review Result";
+    }
+
+    else{
+
+      assignmentLabel =
+        "Review complete";
+
+      currentTask =
+        "CASE-003 Closed · Await Further Authorization";
+    }
+
+  }
+
+
+  /* =====================================================
+     DAY 6+
+  ===================================================== */
+
+  if(
+    worldDay >= 6
+  ){
+
+    assignmentLabel =
+      "Await new assignment";
+
+    currentTask =
+      "Awaiting Classified Assignment";
+  }
+
+
+  /* =====================================================
+     END WORK DAY
+  ===================================================== */
+
+  let canEndWorkDay =
+    false;
+
+
+  if(
+    worldDay === 1 &&
+    case000Status === "Solved"
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  if(
+    worldDay === 2 &&
+    case001Status === "Solved"
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  if(
+    worldDay === 3 &&
+    case002Status === "Solved"
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  if(
+    worldDay === 4 &&
+    (
+      case003Status === "Under Review" ||
+      case003Status === "Solved"
+    )
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  /*
+    Day 5는 CASE-003 심사 결과를
+    실제로 읽어야 종료할 수 있다.
+  */
+
+  if(
+    worldDay === 5 &&
+    mail007Read &&
+    case003Status === "Solved"
+  ){
+
+    canEndWorkDay =
+      true;
+  }
 
 
   /* =====================================================
@@ -257,7 +644,9 @@ function showDashboard(){
 
         <div class="office-status">
 
-          <b>${employeeId}</b>
+          <b>
+            ${employeeId}
+          </b>
 
           <br>
 
@@ -558,7 +947,198 @@ function openOfficeItem(item){
     "Today’s Assignment"
   ){
 
-    talkToWhitmore();
+    const worldDay =
+      World.getDay();
+
+
+    /* DAY 1 */
+
+    if(
+      worldDay === 1
+    ){
+
+      talkToWhitmore();
+
+      return;
+    }
+
+
+    /* DAY 2 */
+
+    if(
+      worldDay === 2
+    ){
+
+      const communicationsComplete =
+
+        localStorage.getItem(
+          "mailRead_MAIL-004"
+        ) === "true"
+
+        &&
+
+        localStorage.getItem(
+          "newsRead_NEWS-003"
+        ) === "true"
+
+        &&
+
+        localStorage.getItem(
+          "noticeRead_NOTICE-003"
+        ) === "true";
+
+
+      if(
+        !communicationsComplete
+      ){
+
+        alert(
+          "Review today's Owl Mail, Daily Prophet, and Notice Board before receiving your restricted assignment."
+        );
+
+        return;
+      }
+
+
+      openCase(
+        "CASE-001"
+      );
+
+      return;
+    }
+
+
+    /* DAY 3 */
+
+    if(
+      worldDay === 3
+    ){
+
+      const briefingRead =
+        localStorage.getItem(
+          "mailRead_MAIL-005"
+        ) === "true";
+
+
+      if(
+        !briefingRead
+      ){
+
+        alert(
+          "Read the restricted Owl Mail from the Office of the Undersecretary first."
+        );
+
+        return;
+      }
+
+
+      openCase(
+        "CASE-002"
+      );
+
+      return;
+    }
+
+
+    /* DAY 4 */
+
+    if(
+      worldDay === 4
+    ){
+
+      const directiveRead =
+        localStorage.getItem(
+          "mailRead_MAIL-006"
+        ) === "true";
+
+
+      if(
+        !directiveRead
+      ){
+
+        alert(
+          "Read the Sub-Level 4 Access Directive in Owl Mail first."
+        );
+
+        return;
+      }
+
+
+      const status =
+        Player.getCaseStatus(
+          "CASE-003"
+        );
+
+
+      if(
+        status ===
+        "Under Review"
+      ){
+
+        alert(
+          "Your CASE-003 report has already been submitted. Await further Ministry instructions."
+        );
+
+        return;
+      }
+
+
+      if(
+        status ===
+        "Solved"
+      ){
+
+        alert(
+          "CASE-003 has already been closed."
+        );
+
+        return;
+      }
+
+
+      openCase(
+        "CASE-003"
+      );
+
+      return;
+    }
+
+
+    /* DAY 5 */
+
+    if(
+      worldDay === 5
+    ){
+
+      const reviewRead =
+        localStorage.getItem(
+          "mailRead_MAIL-007"
+        ) === "true";
+
+
+      if(
+        !reviewRead
+      ){
+
+        alert(
+          "Read the CASE-003 Review Result in Owl Mail."
+        );
+
+        return;
+      }
+
+
+      alert(
+        "CASE-003 is closed. Await further classified authorization."
+      );
+
+      return;
+    }
+
+
+    alert(
+      "No new Ministry assignment has been issued yet."
+    );
 
     return;
   }

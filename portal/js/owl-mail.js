@@ -1,8 +1,23 @@
 function getOwlMails(){
 
-  const caseStatus =
+  const case000Status =
     Player.getCaseStatus(
       "CASE-000"
+    );
+
+  const case001Status =
+    Player.getCaseStatus(
+      "CASE-001"
+    );
+
+  const case002Status =
+    Player.getCaseStatus(
+      "CASE-002"
+    );
+
+  const case003Status =
+    Player.getCaseStatus(
+      "CASE-003"
     );
 
   const worldDay =
@@ -55,11 +70,11 @@ Senior Archivist`
 
 
   /* =====================================================
-     CASE-000 REPORT
+     CASE-000
   ===================================================== */
 
   if(
-    caseStatus ===
+    case000Status ===
     "Under Review"
   ){
 
@@ -96,14 +111,10 @@ Senior Archivist`
   }
 
 
-  /* =====================================================
-     COMMITTEE REVIEW
-  ===================================================== */
-
   if(
-    caseStatus ===
+    case000Status ===
       "Committee Pending" ||
-    caseStatus ===
+    case000Status ===
       "Await Final Review"
   ){
 
@@ -138,12 +149,12 @@ Further instructions will follow.
 
 
   /* =====================================================
-     DAY 2 MAIL
+     DAY 2
   ===================================================== */
 
   if(
     worldDay >= 2 &&
-    caseStatus === "Solved"
+    case000Status === "Solved"
   ){
 
     mails.unshift({
@@ -176,6 +187,202 @@ Do not mistake higher clearance for unrestricted authority.
 
 — Eleanor Whitmore
 Senior Archivist`
+
+    });
+  }
+
+
+  /* =====================================================
+     DAY 3
+  ===================================================== */
+
+  if(
+    worldDay >= 3 &&
+    case001Status === "Solved"
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-005",
+
+      from:
+        "Office of the Undersecretary",
+
+      subject:
+        "Mandatory Internal Briefing",
+
+      status:
+        getMailStatus(
+          "MAIL-005"
+        ),
+
+      body:`Officer,
+
+Your report concerning CASE-001 has been reviewed.
+
+One item requires immediate clarification.
+
+The employee identification referenced in your investigation:
+
+MOM-000117
+
+does not appear in the current Ministry personnel registry.
+
+However, historical security systems continue to recognize the identification as valid.
+
+You are instructed not to discuss this identifier with other employees.
+
+A classified internal briefing is being prepared.
+
+Remain in Office 3-B until further instruction.
+
+This communication is restricted.
+
+— Office of the Undersecretary
+British Ministry of Magic`
+
+    });
+  }
+
+
+  /* =====================================================
+     DAY 4
+  ===================================================== */
+
+  if(
+    worldDay >= 4 &&
+    case002Status === "Solved"
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-006",
+
+      from:
+        "Office of the Undersecretary",
+
+      subject:
+        "Sub-Level 4 Access Directive",
+
+      status:
+        getMailStatus(
+          "MAIL-006"
+        ),
+
+      body:`Officer,
+
+Your findings regarding MOM-000117 have been accepted.
+
+The final historical access record connected to that employee identifier originated from:
+
+SUB-LEVEL 4
+
+You are hereby granted temporary investigative authorization to enter the Sub-Level 4 archive corridor.
+
+This authorization does not alter your permanent clearance level.
+
+Your Level II credentials will be temporarily recognized for one restricted investigation only.
+
+You are not authorized to open unrelated sealed chambers.
+
+You are not authorized to remove documents.
+
+You are not authorized to discuss what you observe with personnel outside this investigation.
+
+A sealed case file will be released after you acknowledge this directive.
+
+If the historical records are correct, MOM-000117 entered Sub-Level 4 thirty years ago.
+
+No record shows the officer leaving.
+
+— Office of the Undersecretary
+British Ministry of Magic`
+
+    });
+  }
+
+
+  /* =====================================================
+     DAY 5
+     CASE-003 REVIEW RESULT
+  ===================================================== */
+
+  if(
+    worldDay >= 5 &&
+    (
+      case003Status === "Under Review" ||
+      case003Status === "Solved"
+    )
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-007",
+
+      from:
+        "Office of the Undersecretary",
+
+      subject:
+        "CASE-003 Review Result · Room 4-7",
+
+      status:
+        getMailStatus(
+          "MAIL-007"
+        ),
+
+      body:`Officer,
+
+Your report concerning CASE-003 has been reviewed.
+
+The Ministry confirms the following information.
+
+ROOM 4-7 EXISTS.
+
+The chamber was removed from standard Ministry floor plans thirty years ago.
+
+Its original designation was:
+
+PERSONNEL CONTINUITY CHAMBER
+
+The chamber was created to preserve Ministry authorization records when an employee's identity could no longer remain inside the standard personnel system.
+
+MOM-000117 was registered as a Continuity Subject.
+
+This explains why the employee identifier remained valid after the corresponding personnel identity was deleted.
+
+However, one discrepancy remains.
+
+Continuity records are not supposed to generate active security events.
+
+They are archival.
+
+They cannot authenticate.
+
+They cannot open cabinets.
+
+And they cannot refresh security seals.
+
+Yet MOM-000117 did exactly that.
+
+At 02:13.
+
+The Ministry therefore cannot conclude that the credential is merely a historical remnant.
+
+Your CASE-003 investigation is officially closed.
+
+A new authorization review is now underway.
+
+Do not attempt to access Room 4-7 again.
+
+Do not discuss the term "Personnel Continuity Chamber" outside authorized channels.
+
+Further instructions will follow.
+
+— Office of the Undersecretary
+British Ministry of Magic`
 
     });
   }
@@ -260,7 +467,7 @@ function showOwlMail(){
 
 
 /* =========================================================
-   OPEN MAIL
+   OPEN OWL MAIL
 ========================================================= */
 
 function openOwlMail(mailId){
@@ -288,9 +495,9 @@ function openOwlMail(mailId){
   );
 
 
-  /*
-    Existing CASE-000 progression.
-  */
+  /* =====================================================
+     CASE-000 PROGRESSION
+  ===================================================== */
 
   if(
     mailId ===
@@ -300,6 +507,34 @@ function openOwlMail(mailId){
     Player.setCaseStatus(
       "CASE-000",
       "Solved"
+    );
+  }
+
+
+  /* =====================================================
+     CASE-003 REVIEW COMPLETE
+  ===================================================== */
+
+  if(
+    mailId ===
+    "MAIL-007"
+  ){
+
+    Player.setCaseStatus(
+      "CASE-003",
+      "Solved"
+    );
+
+
+    localStorage.setItem(
+      "caseCompleted_CASE-003",
+      new Date().toISOString()
+    );
+
+
+    localStorage.setItem(
+      "continuityChamberDiscovered",
+      "true"
     );
   }
 
@@ -333,7 +568,13 @@ function openOwlMail(mailId){
           mail.from,
 
         classification:
-          "Internal",
+          (
+            mailId === "MAIL-005" ||
+            mailId === "MAIL-006" ||
+            mailId === "MAIL-007"
+          )
+            ? "Restricted"
+            : "Internal",
 
         department:
           "Archive Division",
