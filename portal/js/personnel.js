@@ -1,15 +1,23 @@
 function showPersonnelRecord(){
 
   const name = Player.getName();
-
   const employeeId = Player.getEmployeeId();
-
   const identity = Player.getIdentity();
 
-  const completedCases = Player.getCompletedCases();
+  const completedCases =
+    Player.getCompletedCases();
+
+  const currentRank =
+    Player.getRank();
+
+  const currentClearance =
+    Player.getClearance();
+
+  const isPromoted =
+    currentRank === "Archive Officer";
 
   const completedCaseList =
-    completedCases === 1
+    completedCases >= 1
       ? "- CASE-000 · The Missing Owl · Completed"
       : "- No completed cases recorded";
 
@@ -18,19 +26,56 @@ function showPersonnelRecord(){
       ? "Excellent"
       : "Promising";
 
-  const promotionStatus =
-    completedCases >= 1
-      ? "Eligible for Promotion Review"
-      : "Not Eligible";
+  let promotionStatus =
+    "Not Eligible";
+
+  if(
+    completedCases >= 1 &&
+    !isPromoted
+  ){
+    promotionStatus =
+      "Eligible for Promotion Review";
+  }
+
+  if(isPromoted){
+    promotionStatus =
+      "Promoted to Archive Officer";
+  }
 
   const careerTimeline = [
     "Joined the Ministry of Magic"
   ];
 
   if(completedCases >= 1){
-    careerTimeline.push("Completed CASE-000");
-    careerTimeline.push("Promotion Review Eligible");
+    careerTimeline.push(
+      "Completed CASE-000"
+    );
   }
+
+  if(
+    completedCases >= 1 &&
+    !isPromoted
+  ){
+    careerTimeline.push(
+      "Promotion Review Eligible"
+    );
+  }
+
+  if(isPromoted){
+    careerTimeline.push(
+      "Promoted to Archive Officer"
+    );
+
+    careerTimeline.push(
+      "Level II Clearance Granted"
+    );
+  }
+
+  const canRequestPromotion =
+    completedCases >= 1 &&
+    currentRank ===
+      "Junior Archive Officer";
+
 
   app.innerHTML = `
     <section class="panel">
@@ -45,17 +90,24 @@ function showPersonnelRecord(){
 
       ${renderMinistryDocument({
 
-        seal:"MINISTRY PERSONNEL FILE",
+        seal:
+          "MINISTRY PERSONNEL FILE",
 
-        title:name,
+        title:
+          name,
 
-        subtitle:employeeId,
+        subtitle:
+          employeeId,
 
-        classification:"Employee Record",
+        classification:
+          "Employee Record",
 
-        department:identity.department || "Archive Division",
+        department:
+          identity.department ||
+          "Archive Division",
 
-        status:"Active",
+        status:
+          "Active",
 
         body:`Department:
 ${identity.department || "Archive Division"}
@@ -67,10 +119,10 @@ Case History:
 ${completedCaseList}
 
 Current Rank:
-${Player.getRank()}
+${currentRank}
 
 Clearance:
-${Player.getClearance()}
+${currentClearance}
 
 Reputation:
 ${reputation}
@@ -82,27 +134,36 @@ Career Timeline:
 
 ${careerTimeline.join("\n")}`,
 
-        footer:"PERSONNEL RECORD"
+        footer:
+          "PERSONNEL RECORD"
 
       })}
 
       <div class="center">
 
-    <button class="btn"
-      onclick="showPromotionReview()">
+        ${
+          canRequestPromotion
+            ? `
+              <button
+                class="btn"
+                onclick="showPromotionReview()">
 
-      BEGIN PROMOTION REVIEW
+                BEGIN PROMOTION REVIEW
 
-    </button>
+              </button>
+            `
+            : ""
+        }
 
-    <button class="btn"
-      onclick="showDashboard()">
+        <button
+          class="btn"
+          onclick="showDashboard()">
 
-      RETURN TO OFFICE
+          RETURN TO OFFICE
 
-    </button>
+        </button>
 
-</div>
+      </div>
 
     </section>
   `;
