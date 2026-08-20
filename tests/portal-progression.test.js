@@ -390,10 +390,11 @@ assert.deepEqual(
     "CASE-002",
     "CASE-003",
     "CASE-004",
-    "CASE-005"
+    "CASE-005",
+    "CASE-006"
   ]
 );
-pass("All six story cases are registered");
+pass("All seven story cases are registered");
 
 
 assert.equal(
@@ -577,11 +578,7 @@ assert.equal(
 pass("Daily work rotates on a seven-day schedule");
 
 
-for(
-  let day = 10;
-  day <= 23;
-  day += 1
-){
+function completeRoutineDay(day){
 
   assert.equal(
     World.getDay(),
@@ -670,7 +667,215 @@ for(
     /END WORK DAY/
   );
 
+  return {
+    task,
+    choice
+  };
+}
 
+
+for(
+  let day = 10;
+  day <= 13;
+  day += 1
+){
+
+  const completed =
+    completeRoutineDay(day);
+
+
+  if(day === 13){
+
+    assert.equal(
+      completed.task.id,
+      "DUTY-PERSONNEL-CROSSREF"
+    );
+
+    context.showDailyWorkResult();
+
+    assert.match(
+      app.innerHTML,
+      /POST-FILING EXCEPTION/
+    );
+  }
+
+
+  context.endWorkDay();
+}
+
+
+assert.equal(
+  World.getDay(),
+  14
+);
+
+
+const day14Recall =
+  context.getOwlMails()
+    .find(
+      mail =>
+        mail.id === "MAIL-012"
+    );
+
+assert.ok(day14Recall);
+assert.match(
+  day14Recall.body,
+  /MOM-000117/
+);
+assert.match(
+  day14Recall.body,
+  /COMPONENT 1 OF 3/
+);
+assert.match(
+  day14Recall.body,
+  /CHECK WORK SCHEDULES/
+);
+pass("Day 13 routine duty produces a personalized continuity recall");
+
+
+context.showDashboard();
+assert.match(
+  app.innerHTML,
+  /Read the Day 13 Decision Recall/
+);
+assert.doesNotMatch(
+  app.innerHTML,
+  /END WORK DAY/
+);
+
+
+context.openOwlMail(
+  "MAIL-012"
+);
+
+assert.equal(
+  localStorage.getItem(
+    "secondStoryArcStarted"
+  ),
+  "true"
+);
+
+
+activity.openedCase =
+  null;
+
+context.openOfficeItem(
+  "Today’s Assignment"
+);
+
+assert.equal(
+  activity.openedCase,
+  "CASE-006"
+);
+pass("Day 14 recall opens CASE-006 from Office 3-B");
+
+
+Player.setCaseStatus(
+  "CASE-006",
+  "Under Review"
+);
+localStorage.setItem(
+  "case006SubmittedDay",
+  "14"
+);
+localStorage.setItem(
+  "report_CASE-006",
+  JSON.stringify({
+    findings:
+      "The record predates the current decision."
+  })
+);
+
+
+context.showDashboard();
+assert.match(
+  app.innerHTML,
+  /CASE-006 Under Review/
+);
+assert.match(
+  app.innerHTML,
+  /END WORK DAY/
+);
+
+context.endWorkDay();
+
+assert.equal(
+  World.getDay(),
+  15
+);
+
+
+const day15Review =
+  context.getOwlMails()
+    .find(
+      mail =>
+        mail.id === "MAIL-013"
+    );
+
+assert.ok(day15Review);
+assert.match(
+  day15Review.body,
+  /PROCEDURAL RESPONSE CORRESPONDENCE/
+);
+
+
+context.showDashboard();
+assert.match(
+  app.innerHTML,
+  /Read CASE-006 Compatibility Review/
+);
+assert.doesNotMatch(
+  app.innerHTML,
+  /END WORK DAY/
+);
+
+
+context.openOwlMail(
+  "MAIL-013"
+);
+
+assert.equal(
+  Player.getCaseStatus(
+    "CASE-006"
+  ),
+  "Solved"
+);
+assert.equal(
+  localStorage.getItem(
+    "sealedCompatibilityConditionOne"
+  ),
+  "true"
+);
+assert.equal(
+  Player.getCompletedCases(),
+  7
+);
+pass("CASE-006 closes with only the first sealed condition revealed");
+
+
+context.showPersonnelRecord();
+assert.match(
+  app.innerHTML,
+  /COMPONENT 1 OF 3 SATISFIED/
+);
+assert.match(
+  app.innerHTML,
+  /Identity Match:\s*NOT REQUIRED/
+);
+pass("Personnel record preserves the new finding without merging identities");
+
+
+completeRoutineDay(15);
+context.endWorkDay();
+
+
+for(
+  let day = 16;
+  day <= 24;
+  day += 1
+){
+
+  completeRoutineDay(day);
   context.endWorkDay();
 }
 
@@ -720,7 +925,11 @@ assert.match(
   app.innerHTML,
   /openCase\('CASE-005'\)/
 );
-pass("Completed CASE-005 remains available in the Archive Cabinet");
+assert.match(
+  app.innerHTML,
+  /openCase\('CASE-006'\)/
+);
+pass("Completed story cases remain available in the Archive Cabinet");
 
 
 console.log(
