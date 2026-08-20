@@ -898,6 +898,35 @@ function showDailyWorkResult(){
   }
 
 
+  const continuityFlag =
+    result.day === 13 &&
+    localStorage.getItem(
+      "firstStoryArcCompleted"
+    ) === "true"
+
+      ? `
+        <div class="notice warning">
+
+          <h3>
+            POST-FILING EXCEPTION
+          </h3>
+
+          <p>
+            Personnel Continuity has placed this duty receipt
+            under sealed comparison review.
+          </p>
+
+          <p class="muted">
+            No action is required today. Check Owl Mail
+            at the start of your next work day.
+          </p>
+
+        </div>
+      `
+
+      : "";
+
+
   app.innerHTML = `
     <section class="panel">
 
@@ -962,6 +991,9 @@ STATUS: COMPLETE
 EVALUATION: ${result.evaluation.toUpperCase()}
 SERVICE POINTS: +${result.points}
 TOTAL SERVICE POINTS: ${DailyWork.getServicePoints()}</div>
+
+
+      ${continuityFlag}
 
 
       <div class="center">
