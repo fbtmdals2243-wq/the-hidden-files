@@ -28,6 +28,8 @@ The current portal includes:
 - Day 10 and later recurring Ministry work orders
 - Rotating daily news and notices
 - Permanent Service Points and duty history
+- Downloadable and restorable employee archive files
+- Optional Ministry Network account and cloud-save client
 
 
 ## Story progression
@@ -76,6 +78,9 @@ http://localhost:8000/portal/
 Node.js is required only for testing.
 
 ```bash
+node tests/storage-engine.test.js
+node tests/cloud-engine.test.js
+node tests/cloud-portal.test.js
 node tests/portal-progression.test.js
 ```
 
@@ -90,6 +95,8 @@ The test verifies:
 - daily news and notice state
 - duplicate Service Point protection
 - preservation of employee number, rank, clearance, and old reports
+- save snapshot validation and checksum protection
+- account login, per-user cloud save, restore, and local sign-out behavior
 
 
 ## Project structure
@@ -102,6 +109,9 @@ portal/
 └── js/
     ├── player-engine.js
     ├── world-engine.js
+    ├── storage-engine.js
+    ├── cloud-engine.js
+    ├── cloud-portal.js
     ├── daily-work.js
     ├── dashboard.js
     ├── case-data.js
@@ -111,18 +121,29 @@ portal/
     ├── notice-data.js
     └── ...
 
+supabase/
+├── schema.sql
+└── SETUP.md
+
 tests/
+├── storage-engine.test.js
+├── cloud-engine.test.js
+├── cloud-portal.test.js
 └── portal-progression.test.js
 ```
 
 
 ## Save system
 
-The current alpha stores progress in browser localStorage.
+The current alpha stores progress in browser localStorage and can export a
+validated employee archive for manual backup or transfer.
 
 Existing keys are retained for compatibility, including employee identity, rank, clearance, world day, reports, case status, and communication read state.
 
-Public Alpha will require authentication, a database, cloud saves, a backend, and server-side security. See [ROADMAP.md](ROADMAP.md).
+The optional Ministry Network client supports Supabase Auth and per-user cloud
+saves. It is disabled by default, so the static portal continues to work without
+a server. Activation instructions and Row Level Security requirements are in
+[supabase/SETUP.md](supabase/SETUP.md).
 
 
 ## Technology
