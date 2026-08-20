@@ -1519,6 +1519,407 @@ was thirty years old.`
 
     ]
 
+  },
+
+
+  /* =====================================================
+     CASE-005
+     THE POSITION THAT NEVER CLOSED
+  ===================================================== */
+
+  "CASE-005": {
+
+    id:
+      "CASE-005",
+
+    title:
+      "The Position That Never Closed",
+
+    classification:
+      "Level II · Recruitment Systems Audit",
+
+    status:
+      "Active",
+
+    department:
+      "Personnel Registry · Recruitment Oversight",
+
+    summary:
+`The prior authorization claim discovered in CASE-004
+did not target a named applicant or an existing employee number.
+
+It targeted an unresolved Ministry position:
+
+VACANCY-AR-117
+
+The position was created thirty-one years ago,
+assigned to MOM-000117, and never formally closed.
+
+On Day 1, the Recruitment system routed the current officer's
+application into that position before generating a new credential.
+
+The Ministry must determine why the vacancy remained eligible
+for recruitment while its historical occupant was still recorded
+as employed inside the Personnel Continuity System.`,
+
+
+    evidence: [
+
+      {
+        id:
+          "E-501",
+
+        title:
+          "Recruitment Queue Allocation",
+
+        type:
+          "Active Recruitment Log",
+
+        body:
+`BRITISH MINISTRY OF MAGIC
+RECRUITMENT ALLOCATION SYSTEM
+
+DAY 1 · 09:11:57
+
+APPLICATION SESSION:
+ACTIVE
+
+APPLICANT IDENTITY:
+NOT YET ATTACHED
+
+DAY 1 · 09:11:58
+
+VACANCY ROUTE REQUESTED:
+VACANCY-AR-117
+
+ROUTE SOURCE:
+LEGACY PERSONNEL AUTHORIZATION
+
+DAY 1 · 09:12:04
+
+NEW EMPLOYEE NUMBER GENERATED
+
+DAY 1 · 09:12:09
+
+VERIFIED APPLICANT IDENTITY ATTACHED
+
+The vacancy route was selected before
+the active system knew the applicant's name,
+employee number, wand, or department result.`
+      },
+
+
+      {
+        id:
+          "E-502",
+
+        title:
+          "Historical Vacancy Ledger",
+
+        type:
+          "Personnel Administration Record",
+
+        body:
+`VACANCY CODE:
+VACANCY-AR-117
+
+DEPARTMENT:
+ARCHIVE DIVISION
+
+POSITION:
+CONTINUITY RECORDS LIAISON
+
+CREATED:
+31 YEARS AGO
+
+ORIGINAL APPOINTEE:
+MOM-000117
+
+CURRENT OCCUPANCY:
+OCCUPIED
+
+RECRUITMENT STATUS:
+ELIGIBLE
+
+CLOSURE STATUS:
+WITHHELD BY UNDERSECRETARY ORDER
+
+The ledger records the position as both occupied
+and available for recruitment.
+
+Standard Personnel rules do not permit
+both states to exist at the same time.`
+      },
+
+
+      {
+        id:
+          "E-503",
+
+        title:
+          "Identity Engine Route Trace",
+
+        type:
+          "Recruitment Systems Analysis",
+
+        body:
+`IDENTITY ENGINE SESSION:
+CURRENT OFFICER
+
+STANDARD ASSESSMENT:
+COMPLETED
+
+VISIBLE RESULTS:
+VALID
+
+UNDECLARED ROUTE CHECK:
+CONTINUITY COMPATIBILITY
+
+RESULT:
+SATISFIED
+
+CHECK REQUESTED BY:
+VACANCY-AR-117
+
+COMPATIBILITY RULE:
+SEALED
+
+The Identity Engine did not assign
+the historical employee's identity.
+
+It confirmed only that the applicant met
+an unknown condition attached to the vacancy.
+
+The condition itself is absent from
+the current Recruitment system.`
+      },
+
+
+      {
+        id:
+          "E-504",
+
+        title:
+          "Room 4-7 Authorization Exchange",
+
+        type:
+          "Recovered Legacy Transmission",
+
+        body:
+`SOURCE:
+RECRUITMENT ALLOCATION SYSTEM
+
+DESTINATION:
+PERSONNEL CONTINUITY CHAMBER / ROOM 4-7
+
+REQUEST:
+VACANCY-AR-117 CANDIDATE DETECTED
+
+ROOM 4-7 RESPONSE:
+RETAIN AUTHORIZATION
+
+REQUEST:
+CURRENT OCCUPANT STATUS
+
+ROOM 4-7 RESPONSE:
+STILL EMPLOYED
+
+REQUEST:
+PERMIT NEW APPOINTMENT
+
+ROOM 4-7 RESPONSE:
+AUTHORIZED
+
+The chamber simultaneously confirmed
+the historical occupant and authorized
+a new employee for the same position.`
+      },
+
+
+      {
+        id:
+          "E-505",
+
+        title:
+          "Appointment Conflict Report",
+
+        type:
+          "Personnel Integrity Finding",
+
+        body:
+`POSITION:
+VACANCY-AR-117
+
+HISTORICAL EMPLOYEE:
+MOM-000117
+
+CURRENT EMPLOYEE:
+CURRENT INVESTIGATING OFFICER
+
+EMPLOYEE NUMBER MATCH:
+NO
+
+IDENTITY MATCH:
+NOT ESTABLISHED
+
+POSITION AUTHORIZATION MATCH:
+EXACT
+
+ACTIVE RECORDS:
+2
+
+AUTHORIZED POSITIONS:
+1
+
+PRELIMINARY FINDING:
+
+The continuity signature is attached
+to the appointment layer rather than
+to the current officer's identity layer.
+
+Why the vacancy selected this applicant
+remains classified and unresolved.`
+      }
+
+    ],
+
+
+    witnesses: [
+
+      {
+        id:
+          "W-501",
+
+        name:
+          "Beatrice Rowle",
+
+        role:
+          "Senior Recruitment Registrar",
+
+        statement:
+`Vacancies are supposed to be empty.
+
+That sounds obvious, but the distinction
+is enforced by every hiring charm we use.
+
+AR-117 was not empty.
+
+The old system said somebody still held it.
+
+Then the same system placed a new applicant
+into it and approved the appointment.
+
+No registrar selected that route.
+
+By the time your name appeared on screen,
+the position had already accepted you.`
+      },
+
+
+      {
+        id:
+          "W-502",
+
+        name:
+          "Noah Selwyn",
+
+        role:
+          "Identity Engine Auditor",
+
+        statement:
+`The Identity Engine did not confuse you
+with MOM-000117.
+
+I want that stated clearly.
+
+Your results belong to you.
+
+But a sealed compatibility check ran
+underneath the visible assessment.
+
+The question came from a vacancy
+that should not have existed.
+
+We can prove the answer was yes.
+
+We cannot recover the question.`
+      },
+
+
+      {
+        id:
+          "W-503",
+
+        name:
+          "Eleanor Whitmore",
+
+        role:
+          "Senior Archivist",
+
+        statement:
+`Office 3-B has carried an unused personnel slot
+for longer than I have worked here.
+
+It never appeared on our staffing requests.
+
+The desk was simply listed as unavailable.
+
+On your first morning, that restriction vanished.
+
+I assumed Recruitment had finally corrected
+an old administrative error.
+
+Now I understand that the desk was not released.
+
+It recognized an appointment.`
+      }
+
+    ],
+
+
+    timeline: [
+
+      "31 years ago - VACANCY-AR-117 is created for Continuity Records Liaison.",
+
+      "31 years ago - MOM-000117 is appointed to the position.",
+
+      "30 years ago - The employee identity is removed, but the position is not closed.",
+
+      "30 years ago - Undersecretary order leaves the vacancy eligible for recruitment.",
+
+      "Day 1 · 09:11:58 - The current application is routed to VACANCY-AR-117.",
+
+      "Day 1 · 09:12:04 - The current employee number is generated.",
+
+      "Day 1 · 09:12:09 - The current identity is attached to the appointment.",
+
+      "Day 6 · 08:41 - Room 4-7 actively confirms the shared authorization.",
+
+      "Day 8 - Recruitment Oversight opens CASE-005."
+
+    ],
+
+
+    notes: [
+
+      "VACANCY-AR-117 is recorded as occupied and recruitment-eligible.",
+
+      "The vacancy belonged to MOM-000117's historical appointment.",
+
+      "The current officer was routed into the vacancy before identity attachment.",
+
+      "The Identity Engine ran a sealed compatibility check.",
+
+      "The compatibility condition cannot be recovered from active systems.",
+
+      "Room 4-7 authorized a new appointment while retaining the historical occupant.",
+
+      "The shared signature appears to bind the position, not the two identities.",
+
+      "The reason this applicant satisfied the sealed condition remains unknown."
+
+    ]
+
   }
 
 };
