@@ -30,6 +30,11 @@ function getOwlMails(){
       "CASE-005"
     );
 
+  const case006Status =
+    Player.getCaseStatus(
+      "CASE-006"
+    );
+
   const worldDay =
     World.getDay();
 
@@ -720,6 +725,175 @@ British Ministry of Magic`
   }
 
 
+  /* =====================================================
+     DAY 14+
+     SECOND CONTINUITY ARC
+  ===================================================== */
+
+  const firstStoryArcCompleted =
+    localStorage.getItem(
+      "firstStoryArcCompleted"
+    ) === "true";
+
+  const day13DutyCompleted =
+    localStorage.getItem(
+      "dailyDutyCompleted_Day13"
+    ) === "true";
+
+  const day13Result =
+    typeof DailyWork !== "undefined"
+      ? DailyWork.getResult(13)
+      : null;
+
+  const recordedAction =
+    day13Result
+      ? day13Result.choiceLabel
+      : "SEALED PERSONNEL ACTION";
+
+  const recordedEvaluation =
+    day13Result
+      ? day13Result.evaluation
+      : "SEALED";
+
+
+  if(
+    worldDay >= 14 &&
+    firstStoryArcCompleted &&
+    day13DutyCompleted
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-012",
+
+      from:
+        "Personnel Continuity Oversight",
+
+      subject:
+        "Immediate Recall · A Decision Filed Before You Made It",
+
+      status:
+        getMailStatus(
+          "MAIL-012"
+        ),
+
+      body:`Officer,
+
+Your Day 13 Personnel Cross-Reference Review has been recalled from the routine service ledger.
+
+The action recorded under your employee credential was:
+
+${recordedAction}
+
+The service evaluation was:
+
+${recordedEvaluation}
+
+A sealed continuity receipt contains the same action, the same evaluation, and the serial number of your current duty transaction.
+
+That receipt was authenticated at 02:13, before your decision was entered.
+
+HISTORICAL AUTHOR:
+MOM-000117
+
+SYSTEM CLASSIFICATION:
+COMPATIBILITY CONDITION · COMPONENT 1 OF 3
+
+IDENTITY MATCH:
+NOT ESTABLISHED
+
+This is not an allegation against your employee record.
+
+Do not alter or repeat the original duty.
+
+The recalled documents are now available as:
+
+CASE-006
+THE DECISION BEFORE IT WAS MADE
+
+Submit an independent finding on whether the duplicate record represents prediction, later rewriting, or an unresolved continuity mechanism.
+
+— Personnel Continuity Oversight
+British Ministry of Magic`
+
+    });
+  }
+
+
+  const case006SubmittedDay =
+    Number(
+      localStorage.getItem(
+        "case006SubmittedDay"
+      ) || 14
+    );
+
+
+  if(
+    worldDay > case006SubmittedDay &&
+    (
+      case006Status === "Under Review" ||
+      case006Status === "Solved"
+    )
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-013",
+
+      from:
+        "Office of the Undersecretary",
+
+      subject:
+        "CASE-006 Review · Compatibility Condition One",
+
+      status:
+        getMailStatus(
+          "MAIL-013"
+        ),
+
+      body:`Officer,
+
+Your CASE-006 report has been accepted.
+
+The duplicate Day 13 receipt was not created by the current Personnel Cross-Reference form.
+
+Its magical seal and 02:13 authentication are genuine.
+
+The Ministry can therefore confirm that the record existed before your official decision was filed.
+
+The available evidence does not establish whether the Personnel Continuity System predicted your response or altered an older record without leaving an audit event.
+
+It does establish one new fact.
+
+VACANCY-AR-117 contains three sealed compatibility components.
+
+COMPONENT 1:
+PROCEDURAL RESPONSE CORRESPONDENCE
+
+STATUS:
+SATISFIED
+
+The component compares the decisions of appointment holders. It does not require them to share an identity.
+
+Components 2 and 3 remain sealed under Level IV authority.
+
+CASE-006 is officially closed.
+
+Continue your assigned duties as Continuity Liaison.
+
+Do not attempt to reproduce the 02:13 event.
+
+Further instructions will be issued if another component becomes active.
+
+— Office of the Undersecretary
+British Ministry of Magic`
+
+    });
+  }
+
+
   return mails;
 }
 
@@ -939,6 +1113,56 @@ function openOwlMail(mailId){
   }
 
 
+  /* =====================================================
+     SECOND CONTINUITY ARC OPENED
+  ===================================================== */
+
+  if(
+    mailId ===
+    "MAIL-012"
+  ){
+
+    localStorage.setItem(
+      "secondStoryArcStarted",
+      "true"
+    );
+  }
+
+
+  /* =====================================================
+     CASE-006 REVIEW COMPLETE
+  ===================================================== */
+
+  if(
+    mailId ===
+    "MAIL-013"
+  ){
+
+    Player.setCaseStatus(
+      "CASE-006",
+      "Solved"
+    );
+
+
+    localStorage.setItem(
+      "caseCompleted_CASE-006",
+      new Date().toISOString()
+    );
+
+
+    localStorage.setItem(
+      "sealedCompatibilityStage",
+      "1"
+    );
+
+
+    localStorage.setItem(
+      "sealedCompatibilityConditionOne",
+      "true"
+    );
+  }
+
+
   app.innerHTML = `
     <section class="panel">
 
@@ -975,7 +1199,9 @@ function openOwlMail(mailId){
             mailId === "MAIL-008" ||
             mailId === "MAIL-009" ||
             mailId === "MAIL-010" ||
-            mailId === "MAIL-011"
+            mailId === "MAIL-011" ||
+            mailId === "MAIL-012" ||
+            mailId === "MAIL-013"
           )
             ? "Restricted"
             : "Internal",
