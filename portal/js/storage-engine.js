@@ -28,6 +28,9 @@ const MinistryStorage = {
     "orientation",
     "promotion",
     "continuity",
+    "secondStoryArc",
+    "sealedCompatibility",
+    "case006SubmittedDay",
     "firstStoryArcCompleted",
     "lastCompletedWorldDay",
     "day6PersonnelRecordViewed"
