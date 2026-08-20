@@ -35,6 +35,11 @@ function getOwlMails(){
       "CASE-006"
     );
 
+  const case007Status =
+    Player.getCaseStatus(
+      "CASE-007"
+    );
+
   const worldDay =
     World.getDay();
 
@@ -953,6 +958,198 @@ British Ministry of Magic`
   }
 
 
+  /* =====================================================
+     DAY 17+
+     LEVEL III CAREER READINESS REVIEW
+  ===================================================== */
+
+  if(
+    worldDay >= 17 &&
+    typeof MinistryCareerReview !== "undefined" &&
+    MinistryCareerReview.isEligible()
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-015",
+
+      from:
+        "Personnel Advancement Board",
+
+      subject:
+        "Career Review · Level III Readiness",
+
+      status:
+        getMailStatus(
+          "MAIL-015"
+        ),
+
+      body:`Officer,
+
+Your service record has reached the threshold for formal Level III review.
+
+ELIGIBILITY CONFIRMED:
+- Continuity Records Handling · Grade I
+- Six completed Ministry duties
+- Required Service Point record
+- Active Continuity Liaison appointment
+
+REVIEW:
+REVIEW-LEVEL-III
+
+The Board will assess record integrity, clearance discipline, and employee duty of care.
+
+Successful completion grants:
+
+RANK:
+SENIOR ARCHIVE OFFICER
+
+CLEARANCE:
+LEVEL III
+
+Level IV compatibility materials will remain restricted.
+
+Report to the Career Review desk in Office 3-B before beginning today's routine work order.
+
+— Personnel Advancement Board
+British Ministry of Magic`
+
+    });
+  }
+
+
+  /* =====================================================
+     DAY 18+
+     CASE-007 LEVEL III ASSIGNMENT
+  ===================================================== */
+
+  if(
+    worldDay >= 18 &&
+    typeof MinistryCareerReview !== "undefined" &&
+    MinistryCareerReview.isCompleted()
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-016",
+
+      from:
+        "Memory Archive Control",
+
+      subject:
+        "Level III Incident · Memory Vial 117-M",
+
+      status:
+        getMailStatus(
+          "MAIL-016"
+        ),
+
+      body:`Senior Archive Officer,
+
+At 09:00:03, immediately after your Level III credential was issued, a dormant memory vial authenticated your appointment.
+
+ITEM:
+MEMORY VIAL 117-M
+
+SEALED AUTHOR:
+MOM-000117
+
+LAST KNOWN ACTIVITY:
+31 YEARS AGO
+
+NEW PLAYBACK:
+"Record the officer as recognized.
+Do not record the officer as returned."
+
+The vial did not use your name, employee number, or identity markers.
+
+It responded to your authorization as the current holder of VACANCY-AR-117.
+
+Open the Level III incident file:
+
+CASE-007
+THE MEMORY THAT RECOGNIZED YOU
+
+Determine whether the playback is a current alteration, a dormant instruction, or an unauthorized mnemonic connection.
+
+— Memory Archive Control
+British Ministry of Magic`
+
+    });
+  }
+
+
+  const case007SubmittedDay =
+    Number(
+      localStorage.getItem(
+        "case007SubmittedDay"
+      ) || 18
+    );
+
+
+  if(
+    worldDay > case007SubmittedDay &&
+    (
+      case007Status === "Under Review" ||
+      case007Status === "Solved"
+    )
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-017",
+
+      from:
+        "Office of the Undersecretary",
+
+      subject:
+        "CASE-007 Review · Compatibility Condition Two",
+
+      status:
+        getMailStatus(
+          "MAIL-017"
+        ),
+
+      body:`Senior Archive Officer,
+
+Your CASE-007 report has been accepted.
+
+Memory Vial 117-M was not altered on Day 18.
+
+The spoken instruction was sealed thirty-one years ago by MOM-000117 beneath an inactive mnemonic layer.
+
+Your Level III appointment authorization activated that layer exactly as its historical author intended.
+
+COMPONENT 2:
+MNEMONIC RESPONSE CORRESPONDENCE
+
+STATUS:
+SATISFIED
+
+The component confirms that a historical memory prepared by MOM-000117 recognizes the current holder of VACANCY-AR-117.
+
+It does not establish that the current holder is MOM-000117.
+
+IDENTITY MATCH:
+NOT ESTABLISHED
+
+COMPONENT 3:
+SEALED · LEVEL IV AUTHORIZATION REQUIRED
+
+CASE-007 is officially closed.
+
+Continue your Ministry service. Do not attempt to activate the vial again.
+
+— Office of the Undersecretary
+British Ministry of Magic`
+
+    });
+  }
+
+
   return mails;
 }
 
@@ -1222,6 +1419,53 @@ function openOwlMail(mailId){
   }
 
 
+  /* =====================================================
+     CASE-007 OPENED
+  ===================================================== */
+
+  if(
+    mailId ===
+    "MAIL-016"
+  ){
+
+    localStorage.setItem(
+      "thirdStoryArcStarted",
+      "true"
+    );
+  }
+
+
+  /* =====================================================
+     CASE-007 REVIEW COMPLETE
+  ===================================================== */
+
+  if(
+    mailId ===
+    "MAIL-017"
+  ){
+
+    Player.setCaseStatus(
+      "CASE-007",
+      "Solved"
+    );
+
+    localStorage.setItem(
+      "caseCompleted_CASE-007",
+      new Date().toISOString()
+    );
+
+    localStorage.setItem(
+      "sealedCompatibilityStage",
+      "2"
+    );
+
+    localStorage.setItem(
+      "sealedCompatibilityConditionTwo",
+      "true"
+    );
+  }
+
+
   app.innerHTML = `
     <section class="panel">
 
@@ -1260,7 +1504,11 @@ function openOwlMail(mailId){
             mailId === "MAIL-010" ||
             mailId === "MAIL-011" ||
             mailId === "MAIL-012" ||
-            mailId === "MAIL-013"
+            mailId === "MAIL-013" ||
+            mailId === "MAIL-014" ||
+            mailId === "MAIL-015" ||
+            mailId === "MAIL-016" ||
+            mailId === "MAIL-017"
           )
             ? "Restricted"
             : "Internal",

@@ -51,6 +51,43 @@ function showPersonnelRecord(){
       0
     );
 
+  const professionalNetwork =
+    typeof MinistryRelationships !== "undefined"
+      ? MinistryRelationships.colleagues
+          .filter(
+            colleague =>
+              MinistryRelationships.isUnlocked(
+                colleague.id
+              )
+          )
+          .map(
+            colleague => {
+
+              const relationship =
+                MinistryRelationships.getRecord(
+                  colleague.id
+                );
+
+              return (
+                "- " +
+                colleague.name +
+                " · " +
+                MinistryRelationships.getTrustLabel(
+                  relationship.trust
+                ) +
+                " · Trust " +
+                relationship.trust +
+                "/5"
+              );
+            }
+          )
+      : [];
+
+  const professionalNetworkList =
+    professionalNetwork.length > 0
+      ? professionalNetwork.join("\n")
+      : "- No professional contacts recorded";
+
   const firstStoryArcCompleted =
     localStorage.getItem(
       "firstStoryArcCompleted"
@@ -59,6 +96,15 @@ function showPersonnelRecord(){
   const compatibilityConditionOne =
     localStorage.getItem(
       "sealedCompatibilityConditionOne"
+    ) === "true";
+
+  const levelThreeReviewCompleted =
+    typeof MinistryCareerReview !== "undefined" &&
+    MinistryCareerReview.isCompleted();
+
+  const compatibilityConditionTwo =
+    localStorage.getItem(
+      "sealedCompatibilityConditionTwo"
     ) === "true";
 
 
@@ -77,8 +123,8 @@ function showPersonnelRecord(){
 
 
   const isPromoted =
-    currentRank ===
-    "Archive Officer";
+    currentRank !==
+    "Junior Archive Officer";
 
 
   const completedCaseList =
@@ -156,7 +202,9 @@ function showPersonnelRecord(){
   if(isPromoted){
 
     promotionStatus =
-      "Promoted to Archive Officer";
+      levelThreeReviewCompleted
+        ? "Level III Career Review Approved"
+        : "Promoted to Archive Officer";
   }
 
 
@@ -218,6 +266,30 @@ function showPersonnelRecord(){
 
     careerTimeline.push(
       "Compatibility Condition 1 Confirmed"
+    );
+  }
+
+
+  if(levelThreeReviewCompleted){
+
+    careerTimeline.push(
+      "Level III Career Review Approved"
+    );
+
+    careerTimeline.push(
+      "Promoted to Senior Archive Officer"
+    );
+
+    careerTimeline.push(
+      "Level III Clearance Granted"
+    );
+  }
+
+
+  if(compatibilityConditionTwo){
+
+    careerTimeline.push(
+      "Compatibility Condition 2 Confirmed"
     );
   }
 
@@ -356,6 +428,33 @@ Continue routine service and report any additional continuity echoes.`;
   }
 
 
+  if(compatibilityConditionTwo){
+
+    registryIntegrityNotice += `
+
+Sealed Compatibility Review:
+COMPONENT 2 OF 3 SATISFIED
+
+Confirmed Component:
+MNEMONIC RESPONSE CORRESPONDENCE
+
+Historical Record:
+MOM-000117 · MEMORY VIAL 117-M
+
+Current Trigger:
+LEVEL III APPOINTMENT AUTHORIZATION
+
+Identity Match:
+NOT ESTABLISHED
+
+Remaining Components:
+1 SEALED · LEVEL IV AUTHORIZATION REQUIRED
+
+Personnel Finding:
+MOM-000117 prepared a mnemonic response for a future holder of VACANCY-AR-117. Recognition of the appointment does not establish return of the historical identity.`;
+  }
+
+
   app.innerHTML = `
     <section class="panel">
 
@@ -407,6 +506,9 @@ ${trainingCredits}
 
 Qualifications:
 ${qualificationList}
+
+Professional Network:
+${professionalNetworkList}
 
 Completed Cases:
 ${completedCases}

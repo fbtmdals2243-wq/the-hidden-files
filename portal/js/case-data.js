@@ -2227,6 +2227,303 @@ the system was waiting for your answer.`
 
     ]
 
+  },
+
+
+  /* =====================================================
+     CASE-007
+     THE MEMORY THAT RECOGNIZED YOU
+  ===================================================== */
+
+  "CASE-007": {
+
+    id:
+      "CASE-007",
+
+    title:
+      "The Memory That Recognized You",
+
+    classification:
+      "Level III · Mnemonic Continuity",
+
+    status:
+      "Active",
+
+    department:
+      "Memory Archive · Personnel Continuity",
+
+    summary:
+`A memory vial sealed under MOM-000117
+has remained silent for thirty-one years.
+
+Seconds after the current Continuity Liaison received
+Level III clearance, the vial produced a new response.
+
+It did not identify the current officer as MOM-000117.
+
+It recognized the officer as the authorized successor
+to VACANCY-AR-117 and issued an instruction that appears
+to have been prepared before the current employee existed.`,
+
+
+    evidence: [
+
+      {
+        id:
+          "E-701",
+
+        title:
+          "Dormant Memory Vial 117-M",
+
+        type:
+          "Sealed Mnemonic Record",
+
+        body:
+`ARCHIVE ITEM:
+117-M
+
+SEALED AUTHOR:
+MOM-000117
+
+DATE SEALED:
+31 YEARS AGO
+
+PRIOR PLAYBACKS:
+NO AUDIBLE CONTENT
+
+DAY 18 PLAYBACK:
+ACTIVATED WITHOUT PHYSICAL CONTACT
+
+RECORDED MESSAGE:
+"Record the officer as recognized.
+Do not record the officer as returned."
+
+The phrase distinguishes recognition of the current officer
+from the return of the historical employee.`
+      },
+
+      {
+        id:
+          "E-702",
+
+        title:
+          "Level III Issuance Trace",
+
+        type:
+          "Credential Security Log",
+
+        body:
+`PERSONNEL ADVANCEMENT BOARD
+LEVEL III ISSUANCE TRACE
+
+09:00:00
+Career review approved.
+
+09:00:01
+Level III credential written to active employee record.
+
+09:00:02
+Legacy mnemonic channel requested authentication.
+
+SOURCE:
+MEMORY VIAL 117-M
+
+09:00:03
+Current credential accepted.
+
+09:00:03
+Vial playback begins.
+
+No employee, spell, or archive reader opened the vial.`
+      },
+
+      {
+        id:
+          "E-703",
+
+        title:
+          "Mnemonic Layer Examination",
+
+        type:
+          "Memory Archive Analysis",
+
+        body:
+`VISIBLE MEMORY LAYER:
+EMPTY
+
+SEALED INSTRUCTION LAYER:
+AUTHENTIC · 31 YEARS OLD
+
+TRIGGER CONDITION:
+LEVEL III APPOINTMENT AUTHORIZATION
+
+IDENTITY DATA REQUIRED:
+NONE
+
+APPOINTMENT DATA REQUIRED:
+VACANCY-AR-117
+
+The spoken words were not added on Day 18.
+
+The instruction was sealed with the original memory,
+but remained inaudible until an eligible appointment holder
+presented a Level III authorization response.`
+      },
+
+      {
+        id:
+          "E-704",
+
+        title:
+          "Compatibility Register Update",
+
+        type:
+          "Personnel Continuity Output",
+
+        body:
+`APPOINTMENT:
+VACANCY-AR-117
+
+HISTORICAL SUBJECT:
+MOM-000117
+
+CURRENT SUBJECT:
+CURRENT CONTINUITY LIAISON
+
+COMPONENT 1:
+PROCEDURAL RESPONSE CORRESPONDENCE · SATISFIED
+
+COMPONENT 2:
+MNEMONIC RESPONSE CORRESPONDENCE · PENDING REVIEW
+
+COMPONENT 3:
+SEALED · LEVEL IV
+
+IDENTITY MATCH:
+NOT ESTABLISHED
+
+SYSTEM NOTE:
+Recognition of an appointment holder does not establish
+the return or continuation of a historical identity.`
+      }
+
+    ],
+
+
+    witnesses: [
+
+      {
+        id:
+          "W-701",
+
+        name:
+          "Dr. Miriam Vale",
+
+        role:
+          "Memory Archive Specialist",
+
+        statement:
+`The vial did not learn those words today.
+
+They were placed beneath the visible memory
+when MOM-000117 sealed it.
+
+What changed was not the memory.
+What changed was your clearance.
+
+It recognized an authorization condition,
+not your face, name, wand, or employee number.
+
+The distinction in its own message matters:
+recognized, but not returned.`
+      },
+
+      {
+        id:
+          "W-702",
+
+        name:
+          "Gideon March",
+
+        role:
+          "Continuity Systems Examiner",
+
+        statement:
+`The second component compares how a sealed memory
+responds to successive appointment holders.
+
+MOM-000117 prepared the response.
+Your authorization made it audible.
+
+That creates a deliberate connection across thirty-one years,
+but it does not make the two holders one person.
+
+Someone expected the position to be filled again.`
+      },
+
+      {
+        id:
+          "W-703",
+
+        name:
+          "Eleanor Whitmore",
+
+        role:
+          "Senior Archivist",
+
+        statement:
+`The Memory Archive asked me whether you had returned.
+
+I told them the personnel record says you arrived on Day 1.
+
+That answer remains correct.
+
+But MOM-000117 left an instruction for the officer
+who would someday hold your appointment and clearance.
+
+For the first time, we know the connection was anticipated.`
+      }
+
+    ],
+
+
+    timeline: [
+
+      "31 years ago - MOM-000117 seals Memory Vial 117-M.",
+
+      "31 years ago - A hidden Level III appointment trigger is embedded beneath the visible memory layer.",
+
+      "Day 1 - The current officer is appointed to VACANCY-AR-117.",
+
+      "Day 15 - Compatibility Component 1 is confirmed.",
+
+      "Day 17 - The current officer passes the Level III Career Readiness Review.",
+
+      "Day 18 · 09:00:03 - Memory Vial 117-M authenticates the current appointment and speaks.",
+
+      "Day 18 - CASE-007 is opened for Level III investigation."
+
+    ],
+
+
+    notes: [
+
+      "The memory instruction is thirty-one years old and was not written on Day 18.",
+
+      "The current Level III appointment authorization triggered playback.",
+
+      "No current identity field was required by the vial.",
+
+      "The message distinguishes recognized from returned.",
+
+      "MOM-000117 anticipated a future holder of VACANCY-AR-117.",
+
+      "The evidence does not establish a shared identity.",
+
+      "Compatibility Component 3 remains sealed at Level IV."
+
+    ]
+
   }
 
 };

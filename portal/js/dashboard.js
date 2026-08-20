@@ -81,6 +81,11 @@ function showDashboard(){
       "CASE-006"
     );
 
+  const case007Status =
+    Player.getCaseStatus(
+      "CASE-007"
+    );
+
 
   /* =====================================================
      MAIL READ STATES
@@ -149,6 +154,21 @@ function showDashboard(){
   const mail014Read =
     localStorage.getItem(
       "mailRead_MAIL-014"
+    ) === "true";
+
+  const mail015Read =
+    localStorage.getItem(
+      "mailRead_MAIL-015"
+    ) === "true";
+
+  const mail016Read =
+    localStorage.getItem(
+      "mailRead_MAIL-016"
+    ) === "true";
+
+  const mail017Read =
+    localStorage.getItem(
+      "mailRead_MAIL-017"
     ) === "true";
 
 
@@ -238,6 +258,35 @@ function showDashboard(){
   const continuityTrainingCompleted =
     typeof MinistryTraining !== "undefined" &&
     MinistryTraining.isCompleted();
+
+
+  const careerReviewAssigned =
+    worldDay >= 17 &&
+    typeof MinistryCareerReview !== "undefined" &&
+    MinistryCareerReview.isEligible();
+
+
+  const careerReviewCompleted =
+    typeof MinistryCareerReview !== "undefined" &&
+    MinistryCareerReview.isCompleted();
+
+
+  const thirdArcEligible =
+    worldDay >= 18 &&
+    careerReviewCompleted;
+
+
+  const case007SubmittedDay =
+    Number(
+      localStorage.getItem(
+        "case007SubmittedDay"
+      ) || worldDay
+    );
+
+
+  const case007ReviewAvailable =
+    case007Status === "Under Review" &&
+    worldDay > case007SubmittedDay;
 
 
   const dailyDutyCompleted =
@@ -538,6 +587,35 @@ function showDashboard(){
 
     mailLabel =
       "Training directive";
+  }
+
+
+  if(
+    careerReviewAssigned &&
+    !careerReviewCompleted &&
+    !mail015Read
+  ){
+
+    mailLabel =
+      "Career review directive";
+  }
+
+
+  if(thirdArcEligible){
+
+    if(!mail016Read){
+
+      mailLabel =
+        "Level III incident";
+    }
+    else if(
+      case007ReviewAvailable &&
+      !mail017Read
+    ){
+
+      mailLabel =
+        "CASE-007 review";
+    }
   }
 
 
@@ -1100,6 +1178,92 @@ function showDashboard(){
 
 
   /* =====================================================
+     LEVEL III CAREER REVIEW
+  ===================================================== */
+
+  if(
+    careerReviewAssigned &&
+    !careerReviewCompleted
+  ){
+
+    if(!mail015Read){
+
+      assignmentLabel =
+        "Career review assigned";
+
+      currentTask =
+        "Read the Level III Career Review Directive";
+    }
+    else{
+
+      const reviewProgress =
+        MinistryCareerReview.getProgress();
+
+      assignmentLabel =
+        "Career review in progress";
+
+      currentTask =
+        "Level III Review · Scenario " +
+        (
+          reviewProgress.completedScenarios.length +
+          1
+        ) +
+        " of " +
+        MinistryCareerReview.review.scenarios.length;
+    }
+  }
+
+
+  /* =====================================================
+     THIRD CONTINUITY ARC
+  ===================================================== */
+
+  if(
+    thirdArcEligible &&
+    case007Status !== "Solved"
+  ){
+
+    if(!mail016Read){
+
+      assignmentLabel =
+        "Level III incident received";
+
+      currentTask =
+        "Read the Memory Vial 117-M Incident";
+    }
+    else if(
+      case007Status === "Active"
+    ){
+
+      assignmentLabel =
+        "CASE-007 active";
+
+      currentTask =
+        "Investigate CASE-007 · The Memory That Recognized You";
+    }
+    else if(
+      case007ReviewAvailable &&
+      !mail017Read
+    ){
+
+      assignmentLabel =
+        "Review result received";
+
+      currentTask =
+        "Read CASE-007 Compatibility Review";
+    }
+    else{
+
+      assignmentLabel =
+        "Report submitted";
+
+      currentTask =
+        "CASE-007 Under Review";
+    }
+  }
+
+
+  /* =====================================================
      END WORK DAY
   ===================================================== */
 
@@ -1253,6 +1417,36 @@ function showDashboard(){
 
     canEndWorkDay =
       false;
+  }
+
+
+  if(
+    careerReviewAssigned &&
+    !careerReviewCompleted
+  ){
+
+    canEndWorkDay =
+      false;
+  }
+
+
+  if(
+    thirdArcEligible &&
+    case007Status === "Active"
+  ){
+
+    canEndWorkDay =
+      false;
+  }
+
+
+  if(
+    thirdArcEligible &&
+    case007Status === "Under Review"
+  ){
+
+    canEndWorkDay =
+      !case007ReviewAvailable;
   }
 
 
@@ -1472,6 +1666,48 @@ function showDashboard(){
 
 
         <button
+          class="object career-review"
+          onclick="openOfficeItem('Career Review')">
+
+          📜
+
+          <span>
+            Career Review
+          </span>
+
+          <small>
+            ${
+              careerReviewCompleted
+                ? "Level III approved"
+                : careerReviewAssigned
+                  ? mail015Read
+                    ? "Review in progress"
+                    : "Directive pending"
+                  : "No active review"
+            }
+          </small>
+
+        </button>
+
+
+        <button
+          class="object colleagues"
+          onclick="openOfficeItem('Colleagues')">
+
+          👥
+
+          <span>
+            Colleagues
+          </span>
+
+          <small>
+            Professional network
+          </small>
+
+        </button>
+
+
+        <button
           class="object ministry-network"
           onclick="openOfficeItem('Ministry Network')">
 
@@ -1622,6 +1858,28 @@ function startNextWorkDay(){
 ========================================================= */
 
 function openOfficeItem(item){
+
+
+  if(
+    item ===
+    "Colleagues"
+  ){
+
+    showColleagues();
+
+    return;
+  }
+
+
+  if(
+    item ===
+    "Career Review"
+  ){
+
+    showCareerReview();
+
+    return;
+  }
 
 
   if(
@@ -2210,6 +2468,110 @@ function openOfficeItem(item){
         showTrainingDesk();
 
         return;
+      }
+
+
+      const careerReviewRequired =
+        worldDay >= 17 &&
+        typeof MinistryCareerReview !== "undefined" &&
+        MinistryCareerReview.isEligible() &&
+        !MinistryCareerReview.isCompleted();
+
+
+      if(careerReviewRequired){
+
+        if(
+          localStorage.getItem(
+            "mailRead_MAIL-015"
+          ) !== "true"
+        ){
+
+          alert(
+            "Read the Level III Career Review directive in Owl Mail first."
+          );
+
+          return;
+        }
+
+
+        showCareerReview();
+
+        return;
+      }
+
+
+      const thirdArcEligible =
+        worldDay >= 18 &&
+        typeof MinistryCareerReview !== "undefined" &&
+        MinistryCareerReview.isCompleted();
+
+
+      if(thirdArcEligible){
+
+        const incidentRead =
+          localStorage.getItem(
+            "mailRead_MAIL-016"
+          ) === "true";
+
+        const caseStatus =
+          Player.getCaseStatus(
+            "CASE-007"
+          );
+
+
+        if(!incidentRead){
+
+          alert(
+            "Read the Memory Vial 117-M incident in Owl Mail first."
+          );
+
+          return;
+        }
+
+
+        if(caseStatus === "Active"){
+
+          openCase(
+            "CASE-007"
+          );
+
+          return;
+        }
+
+
+        if(caseStatus === "Under Review"){
+
+          const submittedDay =
+            Number(
+              localStorage.getItem(
+                "case007SubmittedDay"
+              ) || worldDay
+            );
+
+          const reviewRead =
+            localStorage.getItem(
+              "mailRead_MAIL-017"
+            ) === "true";
+
+
+          if(
+            worldDay > submittedDay &&
+            !reviewRead
+          ){
+
+            alert(
+              "Read the CASE-007 Compatibility Review in Owl Mail first."
+            );
+          }
+          else{
+
+            alert(
+              "Your CASE-007 report is under review. Continue to monitor Owl Mail."
+            );
+          }
+
+          return;
+        }
       }
 
 

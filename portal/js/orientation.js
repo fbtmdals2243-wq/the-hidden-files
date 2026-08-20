@@ -376,6 +376,11 @@ function showArchiveCabinet(){
     worldDay >= 14 &&
     localStorage.getItem("mailRead_MAIL-012") === "true";
 
+  const case007Available =
+    Player.hasClearance("Level III") &&
+    worldDay >= 18 &&
+    localStorage.getItem("mailRead_MAIL-016") === "true";
+
   function renderCaseEntry(
     caseId,
     title,
@@ -491,6 +496,13 @@ function showArchiveCabinet(){
           "⏳ Await a Personnel Continuity recall"
         )}
 
+        ${renderCaseEntry(
+          "CASE-007",
+          "The Memory That Recognized You",
+          case007Available,
+          "🔒 Level III memory incident authorization required"
+        )}
+
         <button class="case-entry locked">
           <b>CASE-ZERO</b>
           <span>Restricted Archive Origin</span>
@@ -509,7 +521,8 @@ CASE-002: ${case002Available ? "RELEASED" : "PENDING"}
 CASE-003: ${case003Available ? "RELEASED" : "PENDING"}
 CASE-004: ${case004Available ? "RELEASED" : "PENDING"}
 CASE-005: ${case005Available ? "RELEASED" : "PENDING"}
-CASE-006: ${case006Available ? "RELEASED" : "PENDING"}</div>
+CASE-006: ${case006Available ? "RELEASED" : "PENDING"}
+CASE-007: ${case007Available ? "RELEASED" : "PENDING"}</div>
 
       <div class="center">
         <button
