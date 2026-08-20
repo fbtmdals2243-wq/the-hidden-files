@@ -1,5 +1,26 @@
 function showPersonnelRecord(){
 
+  const worldDay =
+    World.getDay();
+
+
+  const day6PersonnelAuditRead =
+    localStorage.getItem(
+      "mailRead_MAIL-008"
+    ) === "true";
+
+
+  if(
+    worldDay >= 6 &&
+    day6PersonnelAuditRead
+  ){
+
+    localStorage.setItem(
+      "day6PersonnelRecordViewed",
+      "true"
+    );
+  }
+
   const name =
     Player.getName();
 
@@ -151,6 +172,36 @@ function showPersonnelRecord(){
       "Junior Archive Officer";
 
 
+  const registryIntegrityNotice =
+    worldDay >= 6 &&
+    day6PersonnelAuditRead
+
+      ? `
+
+Registry Integrity:
+DISCREPANCY DETECTED
+
+Continuity Cross-Reference:
+MOM-000117
+
+Match Type:
+LEGACY AUTHORIZATION SIGNATURE
+
+Registry Finding:
+The current employee credential and MOM-000117 produced the same restricted continuity verification response.
+
+Identity Match:
+NOT ESTABLISHED
+
+Source Record:
+RESTRICTED BY PERSONNEL CONTINUITY SYSTEM
+
+Required Action:
+Retain current employee credentials and await classified instructions.`
+
+      : "";
+
+
   app.innerHTML = `
     <section class="panel">
 
@@ -203,6 +254,8 @@ ${reputation}
 
 Promotion Status:
 ${promotionStatus}
+
+${registryIntegrityNotice}
 
 Career Timeline:
 
