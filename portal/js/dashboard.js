@@ -76,6 +76,11 @@ function showDashboard(){
       "CASE-005"
     );
 
+  const case006Status =
+    Player.getCaseStatus(
+      "CASE-006"
+    );
+
 
   /* =====================================================
      MAIL READ STATES
@@ -131,6 +136,16 @@ function showDashboard(){
       "mailRead_MAIL-011"
     ) === "true";
 
+  const mail012Read =
+    localStorage.getItem(
+      "mailRead_MAIL-012"
+    ) === "true";
+
+  const mail013Read =
+    localStorage.getItem(
+      "mailRead_MAIL-013"
+    ) === "true";
+
 
   const day6PersonnelRecordViewed =
     localStorage.getItem(
@@ -183,6 +198,31 @@ function showDashboard(){
     localStorage.getItem(
       "firstStoryArcCompleted"
     ) === "true";
+
+
+  const day13DutyCompleted =
+    localStorage.getItem(
+      "dailyDutyCompleted_Day13"
+    ) === "true";
+
+
+  const secondArcEligible =
+    worldDay >= 14 &&
+    firstStoryArcCompleted &&
+    day13DutyCompleted;
+
+
+  const case006SubmittedDay =
+    Number(
+      localStorage.getItem(
+        "case006SubmittedDay"
+      ) || worldDay
+    );
+
+
+  const case006ReviewAvailable =
+    case006Status === "Under Review" &&
+    worldDay > case006SubmittedDay;
 
 
   const dailyDutyCompleted =
@@ -451,6 +491,28 @@ function showDashboard(){
       dailyNoticeRead
         ? "Reviewed"
         : "New daily notice";
+  }
+
+
+  /* =====================================================
+     SECOND CONTINUITY ARC MAIL
+  ===================================================== */
+
+  if(secondArcEligible){
+
+    if(!mail012Read){
+
+      mailLabel =
+        "Personnel recall";
+    }
+    else if(
+      case006ReviewAvailable &&
+      !mail013Read
+    ){
+
+      mailLabel =
+        "CASE-006 review";
+    }
   }
 
 
@@ -926,6 +988,56 @@ function showDashboard(){
 
 
   /* =====================================================
+     SECOND CONTINUITY ARC
+  ===================================================== */
+
+  if(
+    secondArcEligible &&
+    case006Status !== "Solved"
+  ){
+
+    if(!mail012Read){
+
+      assignmentLabel =
+        "Continuity recall received";
+
+      currentTask =
+        "Read the Day 13 Decision Recall";
+    }
+    else if(
+      case006Status ===
+      "Active"
+    ){
+
+      assignmentLabel =
+        "CASE-006 active";
+
+      currentTask =
+        "Investigate CASE-006 · The Decision Before It Was Made";
+    }
+    else if(
+      case006ReviewAvailable &&
+      !mail013Read
+    ){
+
+      assignmentLabel =
+        "Review result received";
+
+      currentTask =
+        "Read CASE-006 Compatibility Review";
+    }
+    else{
+
+      assignmentLabel =
+        "Report submitted";
+
+      currentTask =
+        "CASE-006 Under Review";
+    }
+  }
+
+
+  /* =====================================================
      END WORK DAY
   ===================================================== */
 
@@ -1049,6 +1161,26 @@ function showDashboard(){
 
     canEndWorkDay =
       true;
+  }
+
+
+  if(
+    secondArcEligible &&
+    case006Status === "Active"
+  ){
+
+    canEndWorkDay =
+      false;
+  }
+
+
+  if(
+    secondArcEligible &&
+    case006Status === "Under Review"
+  ){
+
+    canEndWorkDay =
+      !case006ReviewAvailable;
   }
 
 
@@ -1855,6 +1987,88 @@ function openOfficeItem(item){
         );
 
         return;
+      }
+
+
+      const secondArcEligible =
+        worldDay >= 14 &&
+        localStorage.getItem(
+          "dailyDutyCompleted_Day13"
+        ) === "true";
+
+
+      if(secondArcEligible){
+
+        const recallRead =
+          localStorage.getItem(
+            "mailRead_MAIL-012"
+          ) === "true";
+
+        const caseStatus =
+          Player.getCaseStatus(
+            "CASE-006"
+          );
+
+
+        if(!recallRead){
+
+          alert(
+            "Read the Personnel Continuity recall in Owl Mail before opening the recalled file."
+          );
+
+          return;
+        }
+
+
+        if(
+          caseStatus ===
+          "Active"
+        ){
+
+          openCase(
+            "CASE-006"
+          );
+
+          return;
+        }
+
+
+        if(
+          caseStatus ===
+          "Under Review"
+        ){
+
+          const submittedDay =
+            Number(
+              localStorage.getItem(
+                "case006SubmittedDay"
+              ) || worldDay
+            );
+
+          const reviewRead =
+            localStorage.getItem(
+              "mailRead_MAIL-013"
+            ) === "true";
+
+
+          if(
+            worldDay > submittedDay &&
+            !reviewRead
+          ){
+
+            alert(
+              "Read the CASE-006 Compatibility Review in Owl Mail first."
+            );
+          }
+          else{
+
+            alert(
+              "Your CASE-006 report is under review. Continue to monitor Owl Mail."
+            );
+          }
+
+          return;
+        }
       }
 
 
