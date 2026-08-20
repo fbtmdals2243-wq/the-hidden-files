@@ -381,6 +381,19 @@ function showArchiveCabinet(){
     worldDay >= 18 &&
     localStorage.getItem("mailRead_MAIL-016") === "true";
 
+  const case008Available =
+    Player.hasClearance("Level III") &&
+    worldDay >= 20 &&
+    localStorage.getItem("mailRead_MAIL-018") === "true";
+
+  const caseZeroAvailable =
+    Player.hasClearance("Level IV") &&
+    localStorage.getItem("continuityOmegaWarrant") === "true" &&
+    localStorage.getItem("mailRead_MAIL-020") === "true";
+
+  const caseOmegaAvailable =
+    localStorage.getItem("finalStoryArcCompleted") === "true";
+
   function renderCaseEntry(
     caseId,
     title,
@@ -503,11 +516,26 @@ function showArchiveCabinet(){
           "🔒 Level III memory incident authorization required"
         )}
 
-        <button class="case-entry locked">
-          <b>CASE-ZERO</b>
-          <span>Restricted Archive Origin</span>
-          <small>🔒 Clearance Level V Required</small>
-        </button>
+        ${renderCaseEntry(
+          "CASE-008",
+          "The Name Beneath the Number",
+          case008Available,
+          "🔒 Final Level III compatibility inquiry required"
+        )}
+
+        ${renderCaseEntry(
+          "CASE-ZERO",
+          "The First Deletion",
+          caseZeroAvailable,
+          "🔒 Level IV + one-record Ω warrant required"
+        )}
+
+        ${renderCaseEntry(
+          "CASE-OMEGA",
+          "The Archive Was Investigating You",
+          caseOmegaAvailable,
+          "🔒 Restore CASE-ZERO first"
+        )}
 
       </div>
 
@@ -522,7 +550,10 @@ CASE-003: ${case003Available ? "RELEASED" : "PENDING"}
 CASE-004: ${case004Available ? "RELEASED" : "PENDING"}
 CASE-005: ${case005Available ? "RELEASED" : "PENDING"}
 CASE-006: ${case006Available ? "RELEASED" : "PENDING"}
-CASE-007: ${case007Available ? "RELEASED" : "PENDING"}</div>
+CASE-007: ${case007Available ? "RELEASED" : "PENDING"}
+CASE-008: ${case008Available ? "RELEASED" : "PENDING"}
+CASE-ZERO: ${caseZeroAvailable ? "WARRANT ACCESS" : "SEALED"}
+CASE-OMEGA: ${caseOmegaAvailable ? "RECOVERED" : "SEALED"}</div>
 
       <div class="center">
         <button

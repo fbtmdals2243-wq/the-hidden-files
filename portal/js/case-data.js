@@ -2524,6 +2524,364 @@ For the first time, we know the connection was anticipated.`
 
     ]
 
+  },
+
+
+  /* =====================================================
+     CASE-008
+     THE NAME BENEATH THE NUMBER
+  ===================================================== */
+
+  "CASE-008": {
+
+    id:
+      "CASE-008",
+
+    title:
+      "The Name Beneath the Number",
+
+    classification:
+      "Level III · Final Compatibility Review",
+
+    status:
+      "Active",
+
+    department:
+      "Archive Division · Personnel Continuity",
+
+    summary:
+`The third compatibility component has reacted to the
+current officer's accumulated Ministry service record.
+
+Room 4-7 has produced a sealed deletion order bearing
+MOM-000117's authorization and a current audit comparison.
+
+The historical and current officers are still recorded as
+two separate people. The inquiry must determine what choice,
+rather than what identity, links the two appointment holders.`,
+
+    evidence: [
+
+      {
+        id: "E-801",
+        title: "Personnel Deletion Order PC-0",
+        type: "Historical Executive Order",
+        body:
+`SUBJECT:
+MOM-000117
+
+ACTION:
+DELETE NAME, PORTRAIT, AND PERSONNEL AUDIT TRAIL
+
+EXCEPTION:
+RETAIN APPOINTMENT AUTHORIZATION INSIDE ROOM 4-7
+
+RESPONSE RECORDED BY SUBJECT:
+ORDER SUSPENDED · EVIDENCE PRESERVED · REVIEW REQUESTED
+
+The signature belongs to MOM-000117.
+The name field beneath the number remains sealed.`
+      },
+
+      {
+        id: "E-802",
+        title: "Current Officer Protection Ledger",
+        type: "Service Record Comparison",
+        body:
+`The current officer's completed cases and routine duties
+contain repeated decisions to preserve contradictory records,
+protect affected employees, and escalate destructive orders.
+
+No identity, ancestry, wand, portrait, or memory match was used.
+
+COMPARISON RESULT:
+PROTECTIVE INTENT CORRESPONDENCE · CANDIDATE MATCH`
+      },
+
+      {
+        id: "E-803",
+        title: "Compatibility Register · Component Three",
+        type: "Personnel Continuity Output",
+        body:
+`APPOINTMENT:
+VACANCY-AR-117
+
+COMPONENT 1:
+PROCEDURAL RESPONSE CORRESPONDENCE · SATISFIED
+
+COMPONENT 2:
+MNEMONIC RESPONSE CORRESPONDENCE · SATISFIED
+
+COMPONENT 3:
+PROTECTIVE INTENT CORRESPONDENCE · REVIEW REQUIRED
+
+IDENTITY MATCH:
+NOT REQUESTED · NOT REQUIRED`
+      },
+
+      {
+        id: "E-804",
+        title: "Room 4-7 Restoration Index",
+        type: "Sealed Archive Index",
+        body:
+`A hidden index lists one recoverable record.
+
+RECORD:
+CASE-ZERO
+
+DESCRIPTION:
+FIRST PERSONNEL DELETION
+
+ACCESS:
+ONE-RECORD CONTINUITY WARRANT REQUIRED
+
+RESTORABLE FIELD:
+ORIGINAL NAME OF MOM-000117`
+      }
+
+    ],
+
+    witnesses: [
+
+      {
+        id: "W-801",
+        name: "Eleanor Whitmore",
+        role: "Senior Archivist",
+        statement:
+`Your record does not resemble MOM-000117 because you are
+the same person. It resembles the historical record because,
+when erasure would have been convenient, both officers chose
+to protect the person and preserve the evidence.`
+      },
+
+      {
+        id: "W-802",
+        name: "Gideon March",
+        role: "Continuity Systems Examiner",
+        statement:
+`The third component has no identity inputs. It compares the
+purpose behind authenticated decisions across the same office.
+If the Board confirms it, all three conditions will be complete.`
+      },
+
+      {
+        id: "W-803",
+        name: "Dr. Miriam Vale",
+        role: "Memory Archive Specialist",
+        statement:
+`Memory recognition told us a successor was expected. This
+record tells us why: the appointment was kept open for someone
+who would refuse to make a person disappear merely because an
+order called the disappearance lawful.`
+      }
+
+    ],
+
+    timeline: [
+      "31 years ago - MOM-000117 receives Personnel Deletion Order PC-0.",
+      "31 years ago - The officer suspends erasure, preserves the order, and requests review.",
+      "Day 1 onward - The current officer repeatedly preserves people and authenticated evidence.",
+      "Day 19 - Compatibility Component 2 is confirmed.",
+      "Day 20 - Room 4-7 compares the two appointment records without using identity data.",
+      "Day 20 - CASE-008 opens for final compatibility review."
+    ],
+
+    notes: [
+      "MOM-000117 and the current officer remain separate people.",
+      "The third component compares protective intent, not identity.",
+      "CASE-ZERO contains the sealed name beneath MOM-000117.",
+      "General Level V access is neither requested nor granted."
+    ]
+
+  },
+
+
+  /* =====================================================
+     CASE-ZERO
+     THE FIRST DELETION
+  ===================================================== */
+
+  "CASE-ZERO": {
+
+    id:
+      "CASE-ZERO",
+
+    title:
+      "The First Deletion",
+
+    classification:
+      "LEVEL Ω · ONE-RECORD CONTINUITY WARRANT",
+
+    status:
+      "Active",
+
+    department:
+      "Room 4-7 · Archive Division",
+
+    summary:
+`CASE-ZERO is the origin record beneath the official archive.
+
+It documents the first identity removed by the Personnel
+Continuity program, the officer who preserved the hidden index,
+and the reason VACANCY-AR-117 was never allowed to close.
+
+The Ω warrant authorizes this record only.`,
+
+    evidence: [
+
+      {
+        id: "ZERO-01",
+        title: "Original Appointment Register",
+        type: "Restored Personnel Record",
+        body:
+`NAME:
+ROWAN MERCER
+
+EMPLOYEE ID:
+MOM-000117
+
+POSITION:
+FIRST CONTINUITY RECORDS LIAISON
+
+APPOINTMENT:
+VACANCY-AR-117
+
+STATUS:
+IDENTITY DELETED · APPOINTMENT PRESERVED`
+      },
+
+      {
+        id: "ZERO-02",
+        title: "The First Deletion Audit",
+        type: "Restored Audit Trail",
+        body:
+`Rowan Mercer refused an order to erase employees whose records
+contradicted an authorized Ministry index.
+
+The order was redirected against Rowan.
+
+The Ministry deleted Rowan's name, portrait, and searchable
+personnel history while requiring the credential to remain
+active inside legacy systems.
+
+This was the first deletion recorded by Room 4-7.`
+      },
+
+      {
+        id: "ZERO-03",
+        title: "Room 4-7 Preservation Charter",
+        type: "Founding Memorandum",
+        body:
+`If an official archive is ordered to forget a person,
+Room 4-7 shall retain proof that the person existed.
+
+Lethe remembers what the Ministry forgets.
+
+The Continuity appointment shall remain open until a future
+officer independently demonstrates the same duty of care.`
+      },
+
+      {
+        id: "ZERO-04",
+        title: "Message to the Next Appointee",
+        type: "Sealed Personal Memorandum",
+        body:
+`To the officer who opens this record:
+
+You are not me, and you were never required to become me.
+
+The position waited for someone who would keep a record from
+becoming a sentence against the person named inside it.
+
+Restore what can be restored. Then return to your own work.
+
+— Rowan Mercer`
+      }
+
+    ],
+
+    witnesses: [
+
+      {
+        id: "ZERO-W1",
+        name: "Personnel Continuity Final Board",
+        role: "Collective Finding",
+        statement:
+`MOM-000117 is restored to the historical register as Rowan
+Mercer. The current officer is the second appointee to the same
+Continuity post and has no identity claim to Rowan's record.`
+      }
+
+    ],
+
+    timeline: [
+      "31 years ago - Rowan Mercer becomes the first Continuity Records Liaison.",
+      "31 years ago - Rowan refuses the mass personnel deletion order.",
+      "31 years ago - Rowan's own identity becomes the first deletion.",
+      "31 years ago - Room 4-7 and the hidden index are removed from official maps.",
+      "Day 1 - The current officer becomes the second lawful appointee.",
+      "Day 20 - All three compatibility components are satisfied.",
+      "Level IV review - A one-record Ω warrant is issued for CASE-ZERO."
+    ],
+
+    notes: [
+      "MOM-000117 was Rowan Mercer.",
+      "The player is not Rowan Mercer.",
+      "The two officers share a protected appointment, not an identity.",
+      "Room 4-7 exists to retain proof of people the official archive was ordered to forget.",
+      "The Ω warrant expires when the final determination is recorded."
+    ]
+
+  },
+
+
+  /* =====================================================
+     CASE-OMEGA
+     FUTURE ARCHIVE ECHO
+  ===================================================== */
+
+  "CASE-OMEGA": {
+
+    id:
+      "CASE-OMEGA",
+
+    title:
+      "The Archive Was Investigating You",
+
+    classification:
+      "LEVEL Ω · FUTURE ARCHIVE ECHO",
+
+    status:
+      "Active",
+
+    department:
+      "Archive OS · Year 2048",
+
+    summary:
+`A future archive echo answers the restoration of CASE-ZERO.
+
+The record is dated 2048. It does not alter the current officer's
+identity or end their Ministry career.
+
+It confirms that the hidden archive survives because successive
+officers continue choosing what must not be forgotten.`,
+
+    evidence: [],
+
+    witnesses: [],
+
+    timeline: [
+      "Present day - CASE-ZERO restores the first deleted identity.",
+      "Present day - The current officer returns to ordinary Ministry service.",
+      "2048 - Archive OS records that the archive was also evaluating its investigators."
+    ],
+
+    notes: [
+      "The Archive remembers what the Ministry forgets.",
+      "The future record is an epilogue, not an identity replacement.",
+      "Daily Ministry work continues after the narrative conclusion."
+    ]
+
   }
 
 };

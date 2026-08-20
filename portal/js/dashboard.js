@@ -86,6 +86,16 @@ function showDashboard(){
       "CASE-007"
     );
 
+  const case008Status =
+    Player.getCaseStatus(
+      "CASE-008"
+    );
+
+  const caseZeroStatus =
+    Player.getCaseStatus(
+      "CASE-ZERO"
+    );
+
 
   /* =====================================================
      MAIL READ STATES
@@ -169,6 +179,26 @@ function showDashboard(){
   const mail017Read =
     localStorage.getItem(
       "mailRead_MAIL-017"
+    ) === "true";
+
+  const mail018Read =
+    localStorage.getItem(
+      "mailRead_MAIL-018"
+    ) === "true";
+
+  const mail019Read =
+    localStorage.getItem(
+      "mailRead_MAIL-019"
+    ) === "true";
+
+  const mail020Read =
+    localStorage.getItem(
+      "mailRead_MAIL-020"
+    ) === "true";
+
+  const mail021Read =
+    localStorage.getItem(
+      "mailRead_MAIL-021"
     ) === "true";
 
 
@@ -287,6 +317,70 @@ function showDashboard(){
   const case007ReviewAvailable =
     case007Status === "Under Review" &&
     worldDay > case007SubmittedDay;
+
+
+  const finalArcEligible =
+    worldDay >= 20 &&
+    case007Status === "Solved" &&
+    localStorage.getItem(
+      "sealedCompatibilityConditionTwo"
+    ) === "true";
+
+
+  const case008SubmittedDay =
+    Number(
+      localStorage.getItem(
+        "case008SubmittedDay"
+      ) || worldDay
+    );
+
+
+  const case008ReviewAvailable =
+    case008Status === "Under Review" &&
+    worldDay > case008SubmittedDay;
+
+
+  const finalReviewEligible =
+    typeof MinistryFinalReview !== "undefined" &&
+    MinistryFinalReview.isEligible();
+
+
+  const finalReviewCompleted =
+    typeof MinistryFinalReview !== "undefined" &&
+    MinistryFinalReview.isCompleted();
+
+
+  const finalReviewCompletedDay =
+    Number(
+      localStorage.getItem(
+        "finalReviewCompletedDay"
+      ) || worldDay
+    );
+
+
+  const caseZeroSubmittedDay =
+    Number(
+      localStorage.getItem(
+        "caseZeroSubmittedDay"
+      ) || worldDay
+    );
+
+
+  const caseZeroReviewAvailable =
+    caseZeroStatus === "Under Review" &&
+    worldDay > caseZeroSubmittedDay;
+
+
+  const finalStoryArcCompleted =
+    localStorage.getItem(
+      "finalStoryArcCompleted"
+    ) === "true";
+
+
+  const caseOmegaViewed =
+    localStorage.getItem(
+      "caseOmegaViewed"
+    ) === "true";
 
 
   const dailyDutyCompleted =
@@ -615,6 +709,50 @@ function showDashboard(){
 
       mailLabel =
         "CASE-007 review";
+    }
+  }
+
+
+  if(finalArcEligible){
+
+    if(
+      case008Status !== "Solved" &&
+      !mail018Read
+    ){
+      mailLabel =
+        "Final compatibility inquiry";
+    }
+    else if(
+      case008ReviewAvailable &&
+      !mail019Read
+    ){
+      mailLabel =
+        "CASE-008 determination";
+    }
+    else if(
+      finalReviewCompleted &&
+      worldDay > finalReviewCompletedDay &&
+      caseZeroStatus !== "Solved" &&
+      !mail020Read
+    ){
+      mailLabel =
+        "Ω warrant issued";
+    }
+    else if(
+      caseZeroReviewAvailable &&
+      !mail021Read
+    ){
+      mailLabel =
+        "CASE-ZERO determination";
+    }
+    else if(
+      caseOmegaViewed &&
+      localStorage.getItem(
+        "mailRead_MAIL-022"
+      ) !== "true"
+    ){
+      mailLabel =
+        "Office 3-B duty roster";
     }
   }
 
@@ -1264,6 +1402,177 @@ function showDashboard(){
 
 
   /* =====================================================
+     FINAL CONTINUITY ARC
+  ===================================================== */
+
+  if(
+    finalArcEligible &&
+    case008Status !== "Solved"
+  ){
+
+    if(!mail018Read){
+
+      assignmentLabel =
+        "Final compatibility inquiry";
+
+      currentTask =
+        "Read the CASE-008 Final Compatibility Inquiry";
+    }
+    else if(case008Status === "Active"){
+
+      assignmentLabel =
+        "CASE-008 active";
+
+      currentTask =
+        "Investigate CASE-008 · The Name Beneath the Number";
+    }
+    else if(
+      case008ReviewAvailable &&
+      !mail019Read
+    ){
+
+      assignmentLabel =
+        "Final determination received";
+
+      currentTask =
+        "Read the CASE-008 Compatibility Determination";
+    }
+    else{
+
+      assignmentLabel =
+        "Report submitted";
+
+      currentTask =
+        "CASE-008 Under Review";
+    }
+  }
+
+
+  if(
+    finalArcEligible &&
+    case008Status === "Solved" &&
+    !finalReviewCompleted
+  ){
+
+    if(!mail019Read){
+
+      assignmentLabel =
+        "Board determination pending";
+
+      currentTask =
+        "Read the CASE-008 Compatibility Determination";
+    }
+    else{
+
+      const finalProgress =
+        MinistryFinalReview.getProgress();
+
+      assignmentLabel =
+        "Level IV Board review";
+
+      currentTask =
+        "Final Review · Scenario " +
+        (
+          finalProgress.completedScenarios.length +
+          1
+        ) +
+        " of " +
+        MinistryFinalReview.review.scenarios.length;
+    }
+  }
+
+
+  if(
+    finalReviewCompleted &&
+    caseZeroStatus !== "Solved"
+  ){
+
+    if(worldDay <= finalReviewCompletedDay){
+
+      assignmentLabel =
+        "Level IV authority issued";
+
+      currentTask =
+        "Final Board Review Complete · Ω Warrant Pending";
+    }
+    else if(!mail020Read){
+
+      assignmentLabel =
+        "Ω warrant received";
+
+      currentTask =
+        "Read the CASE-ZERO Ω Continuity Warrant";
+    }
+    else if(caseZeroStatus === "Active"){
+
+      assignmentLabel =
+        "CASE-ZERO active";
+
+      currentTask =
+        "Investigate CASE-ZERO · The First Deletion";
+    }
+    else if(
+      caseZeroReviewAvailable &&
+      !mail021Read
+    ){
+
+      assignmentLabel =
+        "Name restoration received";
+
+      currentTask =
+        "Read the CASE-ZERO Final Determination";
+    }
+    else{
+
+      assignmentLabel =
+        "Ω report submitted";
+
+      currentTask =
+        "CASE-ZERO Under Review";
+    }
+  }
+
+
+  if(
+    finalStoryArcCompleted &&
+    !caseOmegaViewed
+  ){
+
+    assignmentLabel =
+      "Future archive echo";
+
+    currentTask =
+      "Open CASE-OMEGA · Final Recovered Record";
+  }
+
+
+  if(
+    finalStoryArcCompleted &&
+    caseOmegaViewed
+  ){
+
+    const continuingTask =
+      typeof DailyWork !== "undefined"
+        ? DailyWork.getTaskForDay(
+            worldDay
+          )
+        : null;
+
+    assignmentLabel =
+      dailyDutyCompleted
+        ? "Continuing service recorded"
+        : "Daily work order";
+
+    currentTask =
+      dailyDutyCompleted
+        ? "Daily Ministry Duty Complete"
+        : continuingTask
+          ? continuingTask.title
+          : "Continuity Liaison · Continuing Service";
+  }
+
+
+  /* =====================================================
      END WORK DAY
   ===================================================== */
 
@@ -1447,6 +1756,95 @@ function showDashboard(){
 
     canEndWorkDay =
       !case007ReviewAvailable;
+  }
+
+
+  if(
+    finalArcEligible &&
+    case008Status === "Active"
+  ){
+
+    canEndWorkDay =
+      false;
+  }
+
+
+  if(
+    finalArcEligible &&
+    case008Status === "Under Review"
+  ){
+
+    canEndWorkDay =
+      !case008ReviewAvailable;
+  }
+
+
+  if(
+    finalReviewEligible &&
+    !finalReviewCompleted
+  ){
+
+    canEndWorkDay =
+      false;
+  }
+
+
+  if(
+    finalReviewCompleted &&
+    worldDay === finalReviewCompletedDay
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  if(
+    finalReviewCompleted &&
+    worldDay > finalReviewCompletedDay &&
+    caseZeroStatus === "Active"
+  ){
+
+    canEndWorkDay =
+      false;
+  }
+
+
+  if(
+    finalReviewCompleted &&
+    caseZeroStatus === "Under Review"
+  ){
+
+    canEndWorkDay =
+      !caseZeroReviewAvailable;
+  }
+
+
+  if(
+    finalStoryArcCompleted &&
+    !caseOmegaViewed
+  ){
+
+    canEndWorkDay =
+      false;
+  }
+
+
+  if(
+    finalStoryArcCompleted &&
+    caseOmegaViewed
+  ){
+
+    const caseOmegaViewedDay =
+      Number(
+        localStorage.getItem(
+          "caseOmegaViewedDay"
+        ) || 0
+      );
+
+    canEndWorkDay =
+      worldDay === caseOmegaViewedDay ||
+      dailyDutyCompleted;
   }
 
 
@@ -1652,7 +2050,11 @@ function showDashboard(){
 
           <small>
             ${
-              continuityTrainingCompleted
+              Player.hasQualification(
+                "QUAL-CONTINUITY-II"
+              )
+                ? "Grade II certified"
+                : continuityTrainingCompleted
                 ? "Grade I certified"
                 : trainingAssigned
                   ? mail014Read
@@ -1677,7 +2079,11 @@ function showDashboard(){
 
           <small>
             ${
-              careerReviewCompleted
+              finalReviewCompleted
+                ? "Level IV approved"
+                : finalReviewEligible
+                  ? "Final Board in progress"
+                  : careerReviewCompleted
                 ? "Level III approved"
                 : careerReviewAssigned
                   ? mail015Read
@@ -1876,7 +2282,20 @@ function openOfficeItem(item){
     "Career Review"
   ){
 
-    showCareerReview();
+    if(
+      typeof MinistryFinalReview !== "undefined" &&
+      (
+        MinistryFinalReview.isEligible() ||
+        MinistryFinalReview.isCompleted()
+      )
+    ){
+
+      showFinalContinuityReview();
+    }
+    else{
+
+      showCareerReview();
+    }
 
     return;
   }
@@ -2569,6 +2988,236 @@ function openOfficeItem(item){
               "Your CASE-007 report is under review. Continue to monitor Owl Mail."
             );
           }
+
+          return;
+        }
+      }
+
+
+      const finalArcEligible =
+        worldDay >= 20 &&
+        Player.getCaseStatus(
+          "CASE-007"
+        ) === "Solved" &&
+        localStorage.getItem(
+          "sealedCompatibilityConditionTwo"
+        ) === "true";
+
+
+      if(finalArcEligible){
+
+        const case008Status =
+          Player.getCaseStatus(
+            "CASE-008"
+          );
+
+        const finalInquiryRead =
+          localStorage.getItem(
+            "mailRead_MAIL-018"
+          ) === "true";
+
+
+        if(case008Status !== "Solved"){
+
+          if(!finalInquiryRead){
+
+            alert(
+              "Read the CASE-008 Final Compatibility Inquiry in Owl Mail first."
+            );
+
+            return;
+          }
+
+
+          if(case008Status === "Active"){
+
+            openCase(
+              "CASE-008"
+            );
+
+            return;
+          }
+
+
+          if(case008Status === "Under Review"){
+
+            const submittedDay =
+              Number(
+                localStorage.getItem(
+                  "case008SubmittedDay"
+                ) || worldDay
+              );
+
+            const determinationRead =
+              localStorage.getItem(
+                "mailRead_MAIL-019"
+              ) === "true";
+
+
+            if(
+              worldDay > submittedDay &&
+              !determinationRead
+            ){
+
+              alert(
+                "Read the CASE-008 Compatibility Determination in Owl Mail first."
+              );
+            }
+            else{
+
+              alert(
+                "Your CASE-008 report is under review. Continue to monitor Owl Mail."
+              );
+            }
+
+            return;
+          }
+        }
+
+
+        const compatibilityDeterminationRead =
+          localStorage.getItem(
+            "mailRead_MAIL-019"
+          ) === "true";
+
+
+        if(
+          case008Status === "Solved" &&
+          !compatibilityDeterminationRead
+        ){
+
+          alert(
+            "Read the CASE-008 Compatibility Determination in Owl Mail first."
+          );
+
+          return;
+        }
+
+
+        const finalReviewRequired =
+          typeof MinistryFinalReview !== "undefined" &&
+          MinistryFinalReview.isEligible() &&
+          !MinistryFinalReview.isCompleted();
+
+
+        if(finalReviewRequired){
+
+          showFinalContinuityReview();
+
+          return;
+        }
+
+
+        const finalReviewComplete =
+          typeof MinistryFinalReview !== "undefined" &&
+          MinistryFinalReview.isCompleted();
+
+
+        if(finalReviewComplete){
+
+          const reviewDay =
+            Number(
+              localStorage.getItem(
+                "finalReviewCompletedDay"
+              ) || worldDay
+            );
+
+          const caseZeroStatus =
+            Player.getCaseStatus(
+              "CASE-ZERO"
+            );
+
+
+          if(
+            worldDay <= reviewDay &&
+            caseZeroStatus !== "Solved"
+          ){
+
+            alert(
+              "Your Level IV authority is active. The one-record Ω warrant will arrive on your next work day."
+            );
+
+            return;
+          }
+
+
+          if(caseZeroStatus !== "Solved"){
+
+            const warrantRead =
+              localStorage.getItem(
+                "mailRead_MAIL-020"
+              ) === "true";
+
+
+            if(!warrantRead){
+
+              alert(
+                "Read the CASE-ZERO Ω Continuity Warrant in Owl Mail first."
+              );
+
+              return;
+            }
+
+
+            if(caseZeroStatus === "Active"){
+
+              openCase(
+                "CASE-ZERO"
+              );
+
+              return;
+            }
+
+
+            if(caseZeroStatus === "Under Review"){
+
+              const submittedDay =
+                Number(
+                  localStorage.getItem(
+                    "caseZeroSubmittedDay"
+                  ) || worldDay
+                );
+
+              const determinationRead =
+                localStorage.getItem(
+                  "mailRead_MAIL-021"
+                ) === "true";
+
+
+              if(
+                worldDay > submittedDay &&
+                !determinationRead
+              ){
+
+                alert(
+                  "Read the CASE-ZERO Final Determination in Owl Mail first."
+                );
+              }
+              else{
+
+                alert(
+                  "Your CASE-ZERO report is under review. Continue to monitor Owl Mail."
+                );
+              }
+
+              return;
+            }
+          }
+        }
+
+
+        if(
+          localStorage.getItem(
+            "finalStoryArcCompleted"
+          ) === "true" &&
+          localStorage.getItem(
+            "caseOmegaViewed"
+          ) !== "true"
+        ){
+
+          openCase(
+            "CASE-OMEGA"
+          );
 
           return;
         }

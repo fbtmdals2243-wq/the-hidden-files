@@ -107,6 +107,25 @@ function showPersonnelRecord(){
       "sealedCompatibilityConditionTwo"
     ) === "true";
 
+  const compatibilityConditionThree =
+    localStorage.getItem(
+      "sealedCompatibilityConditionThree"
+    ) === "true";
+
+  const levelFourReviewCompleted =
+    typeof MinistryFinalReview !== "undefined" &&
+    MinistryFinalReview.isCompleted();
+
+  const finalStoryArcCompleted =
+    localStorage.getItem(
+      "finalStoryArcCompleted"
+    ) === "true";
+
+  const historicalAppointeeIdentity =
+    localStorage.getItem(
+      "historicalAppointeeIdentity"
+    ) || "SEALED";
+
 
   const completedCaseIds =
     Player.getCompletedCaseIds();
@@ -202,7 +221,9 @@ function showPersonnelRecord(){
   if(isPromoted){
 
     promotionStatus =
-      levelThreeReviewCompleted
+      levelFourReviewCompleted
+        ? "Level IV Continuity Authority Approved"
+        : levelThreeReviewCompleted
         ? "Level III Career Review Approved"
         : "Promoted to Archive Officer";
   }
@@ -290,6 +311,50 @@ function showPersonnelRecord(){
 
     careerTimeline.push(
       "Compatibility Condition 2 Confirmed"
+    );
+  }
+
+
+  if(compatibilityConditionThree){
+
+    careerTimeline.push(
+      "Compatibility Condition 3 Confirmed"
+    );
+
+    careerTimeline.push(
+      "All Continuity Compatibility Conditions Satisfied"
+    );
+  }
+
+
+  if(levelFourReviewCompleted){
+
+    careerTimeline.push(
+      "Level IV Continuity Authority Approved"
+    );
+
+    careerTimeline.push(
+      "Promoted to Principal Archive Officer"
+    );
+
+    careerTimeline.push(
+      "One-Record Ω Continuity Warrant Issued"
+    );
+  }
+
+
+  if(finalStoryArcCompleted){
+
+    careerTimeline.push(
+      "Restored CASE-ZERO · The First Deletion"
+    );
+
+    careerTimeline.push(
+      "Restored Historical Identity: Rowan Mercer · MOM-000117"
+    );
+
+    careerTimeline.push(
+      "Continued Active Service in Office 3-B"
     );
   }
 
@@ -452,6 +517,81 @@ Remaining Components:
 
 Personnel Finding:
 MOM-000117 prepared a mnemonic response for a future holder of VACANCY-AR-117. Recognition of the appointment does not establish return of the historical identity.`;
+  }
+
+
+  if(compatibilityConditionThree){
+
+    registryIntegrityNotice += `
+
+Sealed Compatibility Review:
+COMPONENT 3 OF 3 SATISFIED
+
+Confirmed Component:
+PROTECTIVE INTENT CORRESPONDENCE
+
+Historical Action:
+DELETION SUSPENDED · EVIDENCE PRESERVED · REVIEW REQUESTED
+
+Current Record:
+INDEPENDENT PROTECTIVE ARCHIVE DECISIONS
+
+Identity Match:
+NOT REQUIRED · NOT ESTABLISHED
+
+Personnel Finding:
+All three compatibility components belong to the continuing appointment. They do not merge the identities of its two holders.`;
+  }
+
+
+  if(levelFourReviewCompleted){
+
+    registryIntegrityNotice += `
+
+Final Board Record:
+LEVEL IV CONTINUITY AUTHORITY APPROVED
+
+Qualification:
+CONTINUITY RECORDS HANDLING · GRADE II
+
+Rank:
+PRINCIPAL ARCHIVE OFFICER
+
+Special Authority:
+ONE-RECORD Ω CONTINUITY WARRANT · CASE-ZERO ONLY
+
+General Level V Access:
+NOT GRANTED`;
+  }
+
+
+  if(finalStoryArcCompleted){
+
+    registryIntegrityNotice += `
+
+CASE-ZERO Final Determination:
+FIRST DELETED IDENTITY RESTORED
+
+Historical Appointee:
+${historicalAppointeeIdentity} · MOM-000117
+
+Historical Role:
+FIRST CONTINUITY RECORDS LIAISON
+
+Current Appointee:
+${name} · ${employeeId}
+
+Identity Relation:
+SEPARATE PEOPLE
+
+Appointment Relation:
+FIRST AND SECOND HOLDERS OF VACANCY-AR-117
+
+Current Employment:
+ACTIVE · CONTINUING SERVICE
+
+Personnel Finding:
+Rowan Mercer's identity was the first deletion. The current officer lawfully restored that record without inheriting or replacing Rowan's identity.`;
   }
 
 

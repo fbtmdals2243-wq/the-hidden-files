@@ -23,6 +23,8 @@ const MinistryRelationships = {
       ],
       advancedBriefing:
         "Level III gives you more doors, not fewer responsibilities. If a record can harm an employee, read it twice before you act.",
+      finalBriefing:
+        "Rowan's name is back where it belongs, and yours never left. Office 3-B needs both truths in the record. Tomorrow we return to the ordinary impossible work.",
       choices: [
         {
           id: "ask-priority",
@@ -65,6 +67,8 @@ const MinistryRelationships = {
       ],
       advancedBriefing:
         "Vial 117-M recognized your appointment. Its own language denied a return. Preserve that distinction, even if others prefer a simpler story.",
+      finalBriefing:
+        "The memory was not asking Rowan to return. It was asking whether someone else would remember. You answered without surrendering your own identity.",
       choices: [
         {
           id: "ask-method",
@@ -107,6 +111,8 @@ const MinistryRelationships = {
       ],
       advancedBriefing:
         "Two compatibility components are now satisfied. The third remains Level IV, and I would prefer that boundary remain intact until we know who benefits from opening it.",
+      finalBriefing:
+        "Three components, two people, one appointment. The system is finally legible. That does not make it harmless, but it gives us an audit trail worth protecting.",
       choices: [
         {
           id: "ask-system",
@@ -268,6 +274,15 @@ const MinistryRelationships = {
 
     if(!colleague){
       return "No colleague briefing is available.";
+    }
+
+    if(
+      MinistryStorage.getBoolean(
+        "finalStoryArcCompleted",
+        false
+      )
+    ){
+      return colleague.finalBriefing;
     }
 
     if(

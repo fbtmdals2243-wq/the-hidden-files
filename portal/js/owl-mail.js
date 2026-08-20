@@ -40,6 +40,16 @@ function getOwlMails(){
       "CASE-007"
     );
 
+  const case008Status =
+    Player.getCaseStatus(
+      "CASE-008"
+    );
+
+  const caseZeroStatus =
+    Player.getCaseStatus(
+      "CASE-ZERO"
+    );
+
   const worldDay =
     World.getDay();
 
@@ -1150,6 +1160,295 @@ British Ministry of Magic`
   }
 
 
+  /* =====================================================
+     DAY 20+
+     FINAL COMPATIBILITY ARC
+  ===================================================== */
+
+  const compatibilityConditionTwo =
+    localStorage.getItem(
+      "sealedCompatibilityConditionTwo"
+    ) === "true";
+
+
+  if(
+    worldDay >= 20 &&
+    case007Status === "Solved" &&
+    compatibilityConditionTwo &&
+    case008Status !== "Solved"
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-018",
+
+      from:
+        "Personnel Continuity Final Board",
+
+      subject:
+        "Final Compatibility Inquiry · CASE-008",
+
+      status:
+        getMailStatus(
+          "MAIL-018"
+        ),
+
+      body:`Senior Archive Officer,
+
+Room 4-7 has opened the third and final compatibility comparison.
+
+The comparison contains no identity fields.
+
+It links an order issued to MOM-000117 thirty-one years ago with your accumulated decisions as the current holder of VACANCY-AR-117.
+
+HISTORICAL ACTION:
+DELETION SUSPENDED · EVIDENCE PRESERVED · REVIEW REQUESTED
+
+CURRENT RECORD:
+MULTIPLE PROTECTIVE ARCHIVE DECISIONS
+
+IDENTITY MATCH:
+NOT REQUESTED
+
+Open the Level III inquiry:
+
+CASE-008
+THE NAME BENEATH THE NUMBER
+
+Determine whether the correspondence belongs to identity, appointment, or independently demonstrated duty of care.
+
+— Personnel Continuity Final Board
+British Ministry of Magic`
+
+    });
+  }
+
+
+  const case008SubmittedDay =
+    Number(
+      localStorage.getItem(
+        "case008SubmittedDay"
+      ) || worldDay
+    );
+
+
+  if(
+    worldDay > case008SubmittedDay &&
+    (
+      case008Status === "Under Review" ||
+      case008Status === "Solved"
+    )
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-019",
+
+      from:
+        "Personnel Continuity Final Board",
+
+      subject:
+        "CASE-008 Determination · Compatibility Complete",
+
+      status:
+        getMailStatus(
+          "MAIL-019"
+        ),
+
+      body:`Senior Archive Officer,
+
+Your CASE-008 report has been accepted.
+
+COMPONENT 3:
+PROTECTIVE INTENT CORRESPONDENCE
+
+STATUS:
+SATISFIED
+
+MOM-000117 and the current officer independently chose to suspend destructive action, preserve authenticated evidence, and protect the person affected by the record.
+
+The comparison does not establish shared identity.
+
+IDENTITY MATCH:
+NOT REQUIRED · NOT ESTABLISHED
+
+All three compatibility components are now satisfied.
+
+You are summoned to the Level IV Continuity Authority Review. Successful completion will grant Grade II qualification, Principal Archive Officer rank, Level IV clearance, and a one-record Ω warrant for CASE-ZERO.
+
+— Personnel Continuity Final Board
+British Ministry of Magic`
+
+    });
+  }
+
+
+  const finalReviewCompleted =
+    typeof MinistryFinalReview !== "undefined" &&
+    MinistryFinalReview.isCompleted();
+
+  const finalReviewCompletedDay =
+    Number(
+      localStorage.getItem(
+        "finalReviewCompletedDay"
+      ) || worldDay
+    );
+
+
+  if(
+    finalReviewCompleted &&
+    worldDay > finalReviewCompletedDay &&
+    caseZeroStatus !== "Solved"
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-020",
+
+      from:
+        "Office of the Undersecretary",
+
+      subject:
+        "Ω Continuity Warrant · CASE-ZERO",
+
+      status:
+        getMailStatus(
+          "MAIL-020"
+        ),
+
+      body:`Principal Archive Officer,
+
+Your Level IV authority has been entered into the active personnel register.
+
+The attached Ω Continuity Warrant grants access to one record only:
+
+CASE-ZERO
+THE FIRST DELETION
+
+The warrant does not grant general Level V clearance.
+
+You are authorized to restore the original name beneath MOM-000117, identify the first personnel deletion, and record why VACANCY-AR-117 remained open.
+
+Log every action. Remove nothing. Submit a final determination and return the warrant.
+
+— Office of the Undersecretary
+British Ministry of Magic`
+
+    });
+  }
+
+
+  const caseZeroSubmittedDay =
+    Number(
+      localStorage.getItem(
+        "caseZeroSubmittedDay"
+      ) || worldDay
+    );
+
+
+  if(
+    worldDay > caseZeroSubmittedDay &&
+    (
+      caseZeroStatus === "Under Review" ||
+      caseZeroStatus === "Solved"
+    )
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-021",
+
+      from:
+        "Personnel Continuity Final Board",
+
+      subject:
+        "CASE-ZERO Final Determination · Name Restored",
+
+      status:
+        getMailStatus(
+          "MAIL-021"
+        ),
+
+      body:`Principal Archive Officer,
+
+Your CASE-ZERO determination has been accepted.
+
+The historical register is restored as follows.
+
+NAME:
+ROWAN MERCER
+
+EMPLOYEE ID:
+MOM-000117
+
+ROLE:
+FIRST CONTINUITY RECORDS LIAISON
+
+FIRST DELETION:
+ROWAN MERCER'S OWN PERSONNEL IDENTITY
+
+Rowan refused an order to erase employees whose records contradicted an official index. The Ministry redirected the deletion against Rowan while preserving the credential inside Room 4-7.
+
+You are the second lawful appointee to VACANCY-AR-117.
+
+You are not Rowan Mercer.
+
+The shared Continuity authorization belongs to the appointment, while each employee identity remains separate.
+
+The Ω warrant is returned. Your employment, Level IV clearance, and Continuity Liaison assignment remain active.
+
+A future archive echo is now available as CASE-OMEGA.
+
+— Personnel Continuity Final Board
+British Ministry of Magic`
+
+    });
+  }
+
+
+  if(
+    localStorage.getItem(
+      "caseOmegaViewed"
+    ) === "true"
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-022",
+
+      from:
+        "Eleanor Whitmore",
+
+      subject:
+        "Tomorrow's Office 3-B Duty Roster",
+
+      status:
+        getMailStatus(
+          "MAIL-022"
+        ),
+
+      body:`Principal Archive Officer,
+
+CASE-ZERO is restored, CASE-OMEGA is archived, and your personnel record remains your own.
+
+The Ministry has not run out of work.
+
+Office 3-B opens at the usual time tomorrow. Daily assignments, colleague briefings, training records, and service progression will continue.
+
+Bring the Ω warrant receipt. And coffee.
+
+— Eleanor Whitmore
+Senior Archivist`
+
+    });
+  }
+
+
   return mails;
 }
 
@@ -1466,6 +1765,121 @@ function openOwlMail(mailId){
   }
 
 
+  /* =====================================================
+     FINAL CONTINUITY ARC
+  ===================================================== */
+
+  if(mailId === "MAIL-018"){
+
+    Player.setCaseStatus(
+      "CASE-008",
+      "Active"
+    );
+
+    localStorage.setItem(
+      "finalStoryArcStarted",
+      "true"
+    );
+
+    localStorage.setItem(
+      "finalStoryStage",
+      "case-008"
+    );
+  }
+
+
+  if(mailId === "MAIL-019"){
+
+    Player.setCaseStatus(
+      "CASE-008",
+      "Solved"
+    );
+
+    localStorage.setItem(
+      "caseCompleted_CASE-008",
+      new Date().toISOString()
+    );
+
+    localStorage.setItem(
+      "sealedCompatibilityStage",
+      "3"
+    );
+
+    localStorage.setItem(
+      "sealedCompatibilityConditionThree",
+      "true"
+    );
+
+    localStorage.setItem(
+      "finalStoryStage",
+      "level-iv-review"
+    );
+  }
+
+
+  if(mailId === "MAIL-020"){
+
+    Player.setCaseStatus(
+      "CASE-ZERO",
+      "Active"
+    );
+
+    localStorage.setItem(
+      "finalStoryStage",
+      "case-zero"
+    );
+  }
+
+
+  if(mailId === "MAIL-021"){
+
+    Player.setCaseStatus(
+      "CASE-ZERO",
+      "Solved"
+    );
+
+    Player.setCaseStatus(
+      "CASE-OMEGA",
+      "Active"
+    );
+
+    localStorage.setItem(
+      "caseCompleted_CASE-ZERO",
+      new Date().toISOString()
+    );
+
+    localStorage.setItem(
+      "historicalAppointeeIdentity",
+      "Rowan Mercer"
+    );
+
+    localStorage.setItem(
+      "historicalAppointeeEmployeeId",
+      "MOM-000117"
+    );
+
+    localStorage.setItem(
+      "firstDeletionRestored",
+      "true"
+    );
+
+    localStorage.setItem(
+      "continuityOmegaWarrantReturned",
+      "true"
+    );
+
+    localStorage.setItem(
+      "finalStoryArcCompleted",
+      "true"
+    );
+
+    localStorage.setItem(
+      "finalStoryStage",
+      "omega-epilogue"
+    );
+  }
+
+
   app.innerHTML = `
     <section class="panel">
 
@@ -1508,7 +1922,12 @@ function openOwlMail(mailId){
             mailId === "MAIL-014" ||
             mailId === "MAIL-015" ||
             mailId === "MAIL-016" ||
-            mailId === "MAIL-017"
+            mailId === "MAIL-017" ||
+            mailId === "MAIL-018" ||
+            mailId === "MAIL-019" ||
+            mailId === "MAIL-020" ||
+            mailId === "MAIL-021" ||
+            mailId === "MAIL-022"
           )
             ? "Restricted"
             : "Internal",

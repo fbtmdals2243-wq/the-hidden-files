@@ -291,5 +291,38 @@ Promotion and departmental transfer decisions require a separate Personnel revie
   }
 
 
+  if(
+    localStorage.getItem(
+      "finalStoryArcCompleted"
+    ) === "true"
+  ){
+
+    notices.push({
+
+      id:
+        "NOTICE-CONTINUITY-AUTHORITY",
+
+      title:
+        "Continuity Record Restoration Procedure",
+
+      category:
+        "Level IV Archive Procedure",
+
+      status:
+        getNoticeStatus(
+          "NOTICE-CONTINUITY-AUTHORITY",
+          "Standing Order"
+        ),
+
+      body:`A restored historical identity must remain separate from every current employee identity.
+
+One-record Ω warrants do not grant general Level V access and may not be transferred, widened by association, or retained after final determination.
+
+Archive officers must preserve the original deletion order, the restored record, and the complete audit trail.`
+
+    });
+  }
+
+
   return notices;
 }

@@ -333,5 +333,37 @@ The Archive Division has been asked to provide technical guidance.`
   }
 
 
+  if(
+    localStorage.getItem(
+      "finalStoryArcCompleted"
+    ) === "true"
+  ){
+
+    news.push({
+
+      id:
+        "NEWS-CONTINUITY-RESTORATION",
+
+      title:
+        "Historical Personnel Record Restored After Archive Review",
+
+      category:
+        "Ministry Affairs",
+
+      status:
+        getNewsStatus(
+          "NEWS-CONTINUITY-RESTORATION"
+        ),
+
+      body:`The Ministry of Magic has confirmed that a historical employee record removed from searchable systems thirty-one years ago has been restored.
+
+Officials stated that the restoration corrects an improper personnel deletion and does not replace, merge, or invalidate any current employee identity.
+
+The Archive Division will retain the recovered audit trail under continuing review. No general expansion of restricted archive access has been authorized.`
+
+    });
+  }
+
+
   return news;
 }

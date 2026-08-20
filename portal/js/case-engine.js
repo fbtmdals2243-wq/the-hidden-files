@@ -5,6 +5,11 @@ function showCaseList() {
 
 function openCase(caseId) {
 
+    if(caseId === "CASE-OMEGA"){
+        openOmegaEpilogue();
+        return;
+    }
+
     const caseData =
         MinistryCases[caseId];
 
@@ -880,6 +885,38 @@ FURTHER ACCESS: RESTRICTED</div>
 
 
     /* =====================================================
+       FINAL CONTINUITY ARC REVIEW TIMING
+    ===================================================== */
+
+    if(
+        caseId ===
+        "CASE-008"
+    ){
+
+        localStorage.setItem(
+            "case008SubmittedDay",
+            String(
+                World.getDay()
+            )
+        );
+    }
+
+
+    if(
+        caseId ===
+        "CASE-ZERO"
+    ){
+
+        localStorage.setItem(
+            "caseZeroSubmittedDay",
+            String(
+                World.getDay()
+            )
+        );
+    }
+
+
+    /* =====================================================
        STANDARD REVIEW FLOW
     ===================================================== */
 
@@ -941,6 +978,144 @@ ARCHIVE DIVISION REVIEW: PENDING</div>
 
                     RETURN TO OFFICE
 
+                </button>
+
+            </div>
+
+        </section>
+    `;
+}
+
+
+/* =========================================================
+   CASE-OMEGA · FUTURE ARCHIVE EPILOGUE
+========================================================= */
+
+function openOmegaEpilogue(){
+
+    const finalArcCompleted =
+        MinistryStorage.getBoolean(
+            "finalStoryArcCompleted",
+            false
+        );
+
+
+    if(!finalArcCompleted){
+
+        alert(
+            "CASE-OMEGA remains sealed until the CASE-ZERO final determination is recorded."
+        );
+
+        return;
+    }
+
+
+    MinistryStorage.setItem(
+        "caseOmegaViewed",
+        "true"
+    );
+
+    MinistryStorage.setItem(
+        "caseOmegaViewedAt",
+        new Date().toISOString()
+    );
+
+    MinistryStorage.setItem(
+        "caseOmegaViewedDay",
+        String(World.getDay())
+    );
+
+    Player.setCaseStatus(
+        "CASE-OMEGA",
+        "Solved"
+    );
+
+    MinistryStorage.setItem(
+        "caseCompleted_CASE-OMEGA",
+        new Date().toISOString()
+    );
+
+    app.innerHTML = `
+        <section class="panel">
+
+            <div class="seal">
+                ARCHIVE OS · YEAR 2048
+            </div>
+
+            <h1>CASE-OMEGA</h1>
+
+            <h2>The Archive Was Investigating You</h2>
+
+            ${renderMinistryDocument({
+
+                seal:
+                    "FUTURE ARCHIVE ECHO",
+
+                title:
+                    "Final Recovered Record",
+
+                subtitle:
+                    "CASE-OMEGA · Year 2048",
+
+                classification:
+                    "LEVEL Ω · EPILOGUE",
+
+                department:
+                    "Archive OS",
+
+                status:
+                    "Recovered",
+
+                body:`You were never investigating the archive alone.
+
+The archive was investigating whether its next officer would
+protect a person when an official record demanded erasure.
+
+ROWAN MERCER · MOM-000117
+First Continuity Records Liaison
+
+${Player.getName()} · ${Player.getEmployeeId()}
+Second Continuity Records Liaison
+
+IDENTITY MATCH:
+NONE · TWO LAWFUL PEOPLE
+
+APPOINTMENT CONTINUITY:
+CONFIRMED
+
+CASE-ZERO has restored the first deleted name.
+The Ω warrant is closed.
+Your own Ministry record remains yours.
+
+Return to Office 3-B.
+There will be work tomorrow.
+
+The Archive remembers what the Ministry forgets.`,
+
+                footer:
+                    "ARCHIVE OS · FINAL RECORD / CONTINUING SERVICE"
+
+            })}
+
+            <div class="terminal">NARRATIVE ARC: COMPLETE
+MOM-000117: ROWAN MERCER
+CURRENT OFFICER: ${Player.getEmployeeId()}
+IDENTITY RELATION: SEPARATE PEOPLE
+MINISTRY EMPLOYMENT: ACTIVE
+NEXT WORK DAY: AVAILABLE</div>
+
+            <div class="center">
+
+                <button
+                    class="btn"
+                    onclick="showDashboard()">
+                    RETURN TO OFFICE 3-B
+                </button>
+
+                <button
+                    class="btn"
+                    onclick="window.location.href='../'">
+                    OPEN ARCHIVE OS
                 </button>
 
             </div>
