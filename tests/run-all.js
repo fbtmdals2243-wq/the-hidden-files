@@ -12,6 +12,7 @@ const tests = [
   "career-review.test.js",
   "case007-submission.test.js",
   "relationship-engine.test.js",
+  "final-arc.test.js",
   "portal-progression.test.js"
 ];
 

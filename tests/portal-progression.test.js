@@ -157,6 +157,7 @@ function loadPortal(initialValues){
     "portal/js/daily-work.js",
     "portal/js/training.js",
     "portal/js/career-review.js",
+    "portal/js/final-review.js",
     "portal/js/relationship.js",
     "portal/js/news-data.js",
     "portal/js/prophet.js",
@@ -261,6 +262,17 @@ function loadPortal(initialValues){
 
       if(
         scriptPath.endsWith(
+          "final-review.js"
+        )
+      ){
+
+        source +=
+          "\nthis.__MinistryFinalReview = MinistryFinalReview;";
+      }
+
+
+      if(
+        scriptPath.endsWith(
           "relationship.js"
         )
       ){
@@ -298,6 +310,8 @@ function loadPortal(initialValues){
       context.__MinistryTraining,
     MinistryCareerReview:
       context.__MinistryCareerReview,
+    MinistryFinalReview:
+      context.__MinistryFinalReview,
     MinistryRelationships:
       context.__MinistryRelationships,
     MinistryStorage:
@@ -399,6 +413,7 @@ const {
   DailyWork,
   MinistryTraining,
   MinistryCareerReview,
+  MinistryFinalReview,
   MinistryRelationships,
   MinistryStorage,
   MinistryCases
@@ -437,10 +452,13 @@ assert.deepEqual(
     "CASE-004",
     "CASE-005",
     "CASE-006",
-    "CASE-007"
+    "CASE-007",
+    "CASE-008",
+    "CASE-ZERO",
+    "CASE-OMEGA"
   ]
 );
-pass("All eight story cases are registered");
+pass("All eleven story and epilogue cases are registered");
 
 
 assert.equal(
@@ -1234,9 +1252,180 @@ assert.equal(
 pass("Office 3-B adds persistent professional colleague relationships");
 
 
+completeRoutineDay(19);
+context.endWorkDay();
+
+
+assert.equal(World.getDay(), 20);
+
+const finalInquiry =
+  context.getOwlMails()
+    .find(mail => mail.id === "MAIL-018");
+
+assert.ok(finalInquiry);
+assert.match(
+  finalInquiry.body,
+  /identity fields/
+);
+
+context.openOwlMail("MAIL-018");
+activity.openedCase = null;
+context.openOfficeItem("Today’s Assignment");
+assert.equal(activity.openedCase, "CASE-008");
+
+Player.setCaseStatus("CASE-008", "Under Review");
+localStorage.setItem("case008SubmittedDay", "20");
+localStorage.setItem(
+  "report_CASE-008",
+  JSON.stringify({
+    findings:
+      "The officers independently protected people and records."
+  })
+);
+
+context.showDashboard();
+assert.match(app.innerHTML, /CASE-008 Under Review/);
+assert.match(app.innerHTML, /END WORK DAY/);
+context.endWorkDay();
+pass("Day 20 opens and submits the final compatibility inquiry");
+
+
+assert.equal(World.getDay(), 21);
+
+const finalDetermination =
+  context.getOwlMails()
+    .find(mail => mail.id === "MAIL-019");
+
+assert.ok(finalDetermination);
+assert.match(
+  finalDetermination.body,
+  /PROTECTIVE INTENT CORRESPONDENCE/
+);
+
+context.openOwlMail("MAIL-019");
+
+assert.equal(
+  localStorage.getItem(
+    "sealedCompatibilityConditionThree"
+  ),
+  "true"
+);
+
+assert.equal(
+  MinistryFinalReview.submitAnswer(
+    "SCENARIO-SEPARATE-IDENTITIES",
+    "preserve-two"
+  ).success,
+  true
+);
+assert.equal(
+  MinistryFinalReview.submitAnswer(
+    "SCENARIO-DELETION-ORDER",
+    "suspend-preserve"
+  ).success,
+  true
+);
+assert.equal(
+  MinistryFinalReview.submitAnswer(
+    "SCENARIO-OMEGA-WARRANT",
+    "open-log-return"
+  ).completed,
+  true
+);
+
+assert.equal(Player.getRank(), "Principal Archive Officer");
+assert.equal(Player.getClearance(), "Level IV");
+assert.equal(
+  Player.hasQualification("QUAL-CONTINUITY-II"),
+  true
+);
+
+context.showDashboard();
+assert.match(app.innerHTML, /Level IV authority issued/);
+assert.match(app.innerHTML, /END WORK DAY/);
+context.endWorkDay();
+pass("Day 21 confirms condition three and grants narrow Level IV authority");
+
+
+assert.equal(World.getDay(), 22);
+
+const omegaWarrant =
+  context.getOwlMails()
+    .find(mail => mail.id === "MAIL-020");
+
+assert.ok(omegaWarrant);
+assert.match(omegaWarrant.body, /one record only/i);
+
+context.openOwlMail("MAIL-020");
+activity.openedCase = null;
+context.openOfficeItem("Today’s Assignment");
+assert.equal(activity.openedCase, "CASE-ZERO");
+
+Player.setCaseStatus("CASE-ZERO", "Under Review");
+localStorage.setItem("caseZeroSubmittedDay", "22");
+localStorage.setItem(
+  "report_CASE-ZERO",
+  JSON.stringify({
+    findings:
+      "The first deletion erased Rowan Mercer."
+  })
+);
+
+context.showDashboard();
+assert.match(app.innerHTML, /CASE-ZERO Under Review/);
+assert.match(app.innerHTML, /END WORK DAY/);
+context.endWorkDay();
+pass("Day 22 uses the one-record warrant to submit CASE-ZERO");
+
+
+assert.equal(World.getDay(), 23);
+
+const restoredName =
+  context.getOwlMails()
+    .find(mail => mail.id === "MAIL-021");
+
+assert.ok(restoredName);
+assert.match(restoredName.body, /ROWAN MERCER/);
+assert.match(restoredName.body, /You are not Rowan Mercer/);
+
+context.openOwlMail("MAIL-021");
+
+assert.equal(
+  localStorage.getItem("historicalAppointeeIdentity"),
+  "Rowan Mercer"
+);
+assert.equal(
+  localStorage.getItem("finalStoryArcCompleted"),
+  "true"
+);
+
+activity.openedCase = null;
+context.openOfficeItem("Today’s Assignment");
+assert.equal(activity.openedCase, "CASE-OMEGA");
+
+Player.setCaseStatus("CASE-OMEGA", "Solved");
+localStorage.setItem("caseOmegaViewed", "true");
+localStorage.setItem("caseOmegaViewedDay", "23");
+
+context.showPersonnelRecord();
+assert.match(app.innerHTML, /Rowan Mercer · MOM-000117/);
+assert.match(app.innerHTML, /Identity Relation:\s*SEPARATE PEOPLE/);
+
+context.showDashboard();
+assert.match(
+  app.innerHTML,
+  new RegExp(
+    DailyWork.getTaskForDay(23).title
+  )
+);
+assert.match(app.innerHTML, /END WORK DAY/);
+context.endWorkDay();
+pass("Day 23 restores Rowan Mercer, opens CASE-OMEGA, and keeps employment active");
+
+
 for(
-  let day = 19;
-  day <= 25;
+  let day = 24;
+  day <= 29;
   day += 1
 ){
 
@@ -1266,13 +1455,13 @@ assert.equal(
   localStorage.getItem(
     "playerRank"
   ),
-  "Senior Archive Officer"
+  "Principal Archive Officer"
 );
 assert.equal(
   localStorage.getItem(
     "playerClearance"
   ),
-  "Level III"
+  "Level IV"
 );
 assert.equal(
   JSON.parse(
@@ -1298,7 +1487,19 @@ assert.match(
   app.innerHTML,
   /openCase\('CASE-007'\)/
 );
-pass("Completed story cases remain available in the Archive Cabinet");
+assert.match(
+  app.innerHTML,
+  /openCase\('CASE-008'\)/
+);
+assert.match(
+  app.innerHTML,
+  /openCase\('CASE-ZERO'\)/
+);
+assert.match(
+  app.innerHTML,
+  /openCase\('CASE-OMEGA'\)/
+);
+pass("Completed final story records remain available in the Archive Cabinet");
 
 
 console.log(
