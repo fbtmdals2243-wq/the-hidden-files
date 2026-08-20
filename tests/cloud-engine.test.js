@@ -301,7 +301,20 @@ async function run(){
         JSON.stringify({
           findings:
             "Cloud preservation test."
-        })
+        }),
+      playerQualifications:
+        JSON.stringify([
+          {
+            id:
+              "QUAL-CONTINUITY-I",
+            title:
+              "Continuity Records Handling · Grade I"
+          }
+        ]),
+      ["trainingCompleted_TRAIN-CONTINUITY-I"]:
+        "true",
+      ministryTrainingCredits:
+        "3"
     });
 
 
@@ -513,6 +526,12 @@ async function run(){
     "playerRank",
     "Changed Locally"
   );
+  localStorage.removeItem(
+    "playerQualifications"
+  );
+  localStorage.removeItem(
+    "trainingCompleted_TRAIN-CONTINUITY-I"
+  );
 
 
   const pulled =
@@ -545,7 +564,21 @@ async function run(){
     ).findings,
     "Cloud preservation test."
   );
-  pass("Cloud restore recovers World Day, career, and old reports together");
+  assert.equal(
+    JSON.parse(
+      localStorage.getItem(
+        "playerQualifications"
+      )
+    )[0].id,
+    "QUAL-CONTINUITY-I"
+  );
+  assert.equal(
+    localStorage.getItem(
+      "trainingCompleted_TRAIN-CONTINUITY-I"
+    ),
+    "true"
+  );
+  pass("Cloud restore recovers World Day, career, qualifications, and old reports together");
 
 
   const signedOut =
