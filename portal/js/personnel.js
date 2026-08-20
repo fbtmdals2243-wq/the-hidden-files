@@ -1,11 +1,64 @@
 function showPersonnelRecord(){
 
-  const name = Player.getName();
-  const employeeId = Player.getEmployeeId();
-  const identity = Player.getIdentity();
+  const worldDay =
+    World.getDay();
+
+
+  const day6PersonnelAuditRead =
+    localStorage.getItem(
+      "mailRead_MAIL-008"
+    ) === "true";
+
+
+  if(
+    worldDay >= 6 &&
+    day6PersonnelAuditRead
+  ){
+
+    localStorage.setItem(
+      "day6PersonnelRecordViewed",
+      "true"
+    );
+  }
+
+  const name =
+    Player.getName();
+
+  const employeeId =
+    Player.getEmployeeId();
+
+  const recommendedDepartment =
+    Player.getRecommendedDepartment();
+
+  const assignedDepartment =
+    Player.getAssignedDepartment();
+
+  const specialAssignment =
+    Player.getSpecialAssignment();
+
+  const servicePoints =
+    Player.getServicePoints();
+
+  const completedDuties =
+    Player.getCompletedDuties();
+
+  const firstStoryArcCompleted =
+    localStorage.getItem(
+      "firstStoryArcCompleted"
+    ) === "true";
+
+  const compatibilityConditionOne =
+    localStorage.getItem(
+      "sealedCompatibilityConditionOne"
+    ) === "true";
+
+
+  const completedCaseIds =
+    Player.getCompletedCaseIds();
 
   const completedCases =
-    Player.getCompletedCases();
+    completedCaseIds.length;
+
 
   const currentRank =
     Player.getRank();
@@ -13,55 +66,154 @@ function showPersonnelRecord(){
   const currentClearance =
     Player.getClearance();
 
+
   const isPromoted =
-    currentRank === "Archive Officer";
+    currentRank ===
+    "Archive Officer";
+
 
   const completedCaseList =
-    completedCases >= 1
-      ? "- CASE-000 · The Missing Owl · Completed"
+    completedCaseIds.length > 0
+
+      ? completedCaseIds
+          .map(caseId => {
+
+            const caseData =
+              typeof MinistryCases !== "undefined"
+                ? MinistryCases[caseId]
+                : null;
+
+            const caseTitle =
+              caseData
+                ? caseData.title
+                : "Classified Case";
+
+            return (
+              "- " +
+              caseId +
+              " · " +
+              caseTitle +
+              " · Completed"
+            );
+
+          })
+          .join("\n")
+
       : "- No completed cases recorded";
 
-  const reputation =
+
+  let reputation =
     completedCases >= 1
       ? "Excellent"
       : "Promising";
 
+
+  if(servicePoints >= 30){
+
+    reputation =
+      "Distinguished";
+  }
+
+
   let promotionStatus =
     "Not Eligible";
+
 
   if(
     completedCases >= 1 &&
     !isPromoted
   ){
+
     promotionStatus =
       "Eligible for Promotion Review";
   }
 
+
   if(isPromoted){
+
     promotionStatus =
       "Promoted to Archive Officer";
   }
+
 
   const careerTimeline = [
     "Joined the Ministry of Magic"
   ];
 
-  if(completedCases >= 1){
-    careerTimeline.push(
-      "Completed CASE-000"
-    );
-  }
+
+  completedCaseIds.forEach(
+    caseId => {
+
+      careerTimeline.push(
+        "Completed " + caseId
+      );
+
+
+      if(
+        caseId === "CASE-000" &&
+        isPromoted
+      ){
+
+        careerTimeline.push(
+          "Promoted to Archive Officer"
+        );
+
+        careerTimeline.push(
+          "Level II Clearance Granted"
+        );
+      }
+
+    }
+  );
+
 
   if(
     completedCases >= 1 &&
     !isPromoted
   ){
+
     careerTimeline.push(
       "Promotion Review Eligible"
     );
   }
 
-  if(isPromoted){
+
+  if(firstStoryArcCompleted){
+
+    careerTimeline.push(
+      "Continuity Appointment Confirmed"
+    );
+
+    careerTimeline.push(
+      "Assigned as Continuity Liaison"
+    );
+  }
+
+
+  if(compatibilityConditionOne){
+
+    careerTimeline.push(
+      "Compatibility Condition 1 Confirmed"
+    );
+  }
+
+
+  if(completedDuties > 0){
+
+    careerTimeline.push(
+      "Completed Daily Duties: " +
+      completedDuties
+    );
+  }
+
+
+  if(
+    isPromoted &&
+    !completedCaseIds.includes(
+      "CASE-000"
+    )
+  ){
+
     careerTimeline.push(
       "Promoted to Archive Officer"
     );
@@ -71,10 +223,102 @@ function showPersonnelRecord(){
     );
   }
 
+
   const canRequestPromotion =
     completedCases >= 1 &&
     currentRank ===
       "Junior Archive Officer";
+
+
+  let registryIntegrityNotice =
+    "";
+
+
+  if(
+    worldDay >= 6 &&
+    day6PersonnelAuditRead
+  ){
+
+    registryIntegrityNotice = `
+
+Registry Integrity:
+DISCREPANCY DETECTED
+
+Continuity Cross-Reference:
+MOM-000117
+
+Match Type:
+LEGACY AUTHORIZATION SIGNATURE
+
+Registry Finding:
+The current employee credential and MOM-000117 produced the same restricted continuity verification response.
+
+Identity Match:
+NOT ESTABLISHED
+
+Source Record:
+RESTRICTED BY PERSONNEL CONTINUITY SYSTEM
+
+Required Action:
+Retain current employee credentials and await classified instructions.`;
+  }
+
+
+  if(firstStoryArcCompleted){
+
+    registryIntegrityNotice = `
+
+Continuity Determination:
+APPOINTMENT AUTHORIZATION CONFIRMED
+
+Continuity Position:
+VACANCY-AR-117
+
+Historical Appointee:
+MOM-000117
+
+Current Appointee:
+${employeeId}
+
+Identity Match:
+NOT ESTABLISHED
+
+Personnel Finding:
+The shared continuity signature belongs to the Ministry appointment. The current employee identity remains active and distinct.
+
+Credential Status:
+VALID
+
+Required Action:
+Continue assigned Ministry duties as Continuity Liaison.`;
+  }
+
+
+  if(compatibilityConditionOne){
+
+    registryIntegrityNotice += `
+
+Sealed Compatibility Review:
+COMPONENT 1 OF 3 SATISFIED
+
+Confirmed Component:
+PROCEDURAL RESPONSE CORRESPONDENCE
+
+Historical Record:
+MOM-000117 · LEGACY RECEIPT 117-C
+
+Current Record:
+DAY 13 PERSONNEL CROSS-REFERENCE DECISION
+
+Identity Match:
+NOT REQUIRED
+
+Remaining Components:
+2 SEALED · LEVEL IV AUTHORIZATION REQUIRED
+
+Required Action:
+Continue routine service and report any additional continuity echoes.`;
+  }
 
 
   app.innerHTML = `
@@ -103,14 +347,25 @@ function showPersonnelRecord(){
           "Employee Record",
 
         department:
-          identity.department ||
-          "Archive Division",
+          assignedDepartment,
 
         status:
           "Active",
 
-        body:`Department:
-${identity.department || "Archive Division"}
+        body:`Assigned Department:
+${assignedDepartment}
+
+Identity Engine Recommendation:
+${recommendedDepartment}
+
+Special Assignment:
+${specialAssignment}
+
+Daily Duties Completed:
+${completedDuties}
+
+Ministry Service Points:
+${servicePoints}
 
 Completed Cases:
 ${completedCases}
@@ -129,6 +384,8 @@ ${reputation}
 
 Promotion Status:
 ${promotionStatus}
+
+${registryIntegrityNotice}
 
 Career Timeline:
 
