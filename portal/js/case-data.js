@@ -1920,6 +1920,313 @@ It recognized an appointment.`
 
     ]
 
+  },
+
+
+  /* =====================================================
+     CASE-006
+     THE DECISION BEFORE IT WAS MADE
+  ===================================================== */
+
+  "CASE-006": {
+
+    id:
+      "CASE-006",
+
+    title:
+      "The Decision Before It Was Made",
+
+    classification:
+      "Level II · Personnel Continuity",
+
+    status:
+      "Active",
+
+    department:
+      "Personnel Continuity Oversight",
+
+    summary:
+`A sealed copy of the officer's Day 13
+Personnel Cross-Reference decision was discovered
+inside a legacy continuity record.
+
+The copy was authenticated at 02:13,
+before the current decision was filed.
+
+Its historical author is listed as MOM-000117.
+
+The Personnel Continuity System classifies the match
+as the first satisfied component of an undisclosed
+three-part compatibility condition.`,
+
+
+    evidence: [
+
+      {
+        id:
+          "E-601",
+
+        title:
+          "Duplicate Duty Receipt",
+
+        type:
+          "Personnel Service Record",
+
+        body:
+`CURRENT RECORD:
+Day 13 Personnel Cross-Reference Review
+
+CURRENT AUTHOR:
+Continuity Liaison · Office 3-B
+
+SEALED RECORD:
+Legacy Continuity Receipt 117-C
+
+HISTORICAL AUTHOR:
+MOM-000117
+
+AUTHENTICATION TIME:
+02:13 · Before current action
+
+COMPARISON RESULT:
+Selected action, procedural evaluation,
+and final disposition are identical.
+
+The sealed record contains the current decision
+despite being authenticated before that decision
+was entered into the Ministry service ledger.`
+      },
+
+      {
+        id:
+          "E-602",
+
+        title:
+          "Compatibility Condition Extract",
+
+        type:
+          "Restricted System Output",
+
+        body:
+`APPOINTMENT:
+VACANCY-AR-117
+
+HISTORICAL SUBJECT:
+MOM-000117
+
+CURRENT SUBJECT:
+CURRENT CONTINUITY LIAISON
+
+IDENTITY MATCH:
+NOT REQUIRED
+
+CONDITION SET:
+THREE SEALED COMPONENTS
+
+COMPONENT 1:
+PROCEDURAL RESPONSE CORRESPONDENCE
+
+STATUS:
+SATISFIED
+
+COMPONENTS 2-3:
+SEALED · LEVEL IV AUTHORIZATION REQUIRED
+
+The system does not explain whether the historical
+record predicted the decision or was rewritten
+after the decision occurred.`
+      },
+
+      {
+        id:
+          "E-603",
+
+        title:
+          "Form Revision History",
+
+        type:
+          "Administrative Audit",
+
+        body:
+`FORM:
+Personnel Cross-Reference Review PR-22
+
+CURRENT VERSION CREATED:
+6 years ago
+
+LEGACY RECEIPT DATE:
+31 years ago
+
+TEXTUAL MATCH:
+100 percent
+
+SERIAL MATCH:
+Current Day 13 transaction
+
+AUDIT FINDING:
+The historical receipt cannot have been produced
+using the current form version.
+
+No revision event, copying charm,
+or manual insertion appears in the audit trail.`
+      },
+
+      {
+        id:
+          "E-604",
+
+        title:
+          "Room 4-7 Security Echo",
+
+        type:
+          "Legacy Security Event",
+
+        body:
+`LOCATION:
+Personnel Continuity Chamber · Room 4-7
+
+TIME:
+02:13
+
+EVENT:
+Compatibility Verification
+
+AUTHORIZATION:
+MOM-000117
+
+CURRENT CREDENTIAL RESPONSE:
+ACCEPTED
+
+SYSTEM MESSAGE:
+"ONE CONDITION REMAINS TRUE."
+
+PHYSICAL ENTRY:
+NONE
+
+EXIT RECORD:
+NONE`
+      }
+
+    ],
+
+
+    witnesses: [
+
+      {
+        id:
+          "W-601",
+
+        name:
+          "Eleanor Whitmore",
+
+        role:
+          "Senior Archivist",
+
+        statement:
+`I reviewed your Day 13 decision after it was filed.
+
+The archived copy was already waiting for us.
+
+It did not merely recommend the same action.
+It carried the same disposition code and the same
+service evaluation that the Ministry assigned to you.
+
+You are not being accused of copying MOM-000117.
+
+The question is how a sealed record copied you
+before you made the decision.`
+      },
+
+      {
+        id:
+          "W-602",
+
+        name:
+          "Dr. Miriam Vale",
+
+        role:
+          "Memory Archive Specialist",
+
+        statement:
+`A memory can be altered after an event.
+A ledger can be forged before one.
+
+This record behaves like neither.
+
+Its seal proves the contents existed at 02:13,
+but the contents describe a later decision exactly.
+
+Do not call it prophecy yet.
+
+Personnel Continuity records were built to preserve
+authorization, not to predict human behavior.`
+      },
+
+      {
+        id:
+          "W-603",
+
+        name:
+          "Gideon March",
+
+        role:
+          "Continuity Systems Examiner",
+
+        statement:
+`The phrase compatibility condition appears only once
+in the surviving technical index.
+
+It refers to three tests attached to VACANCY-AR-117.
+
+The first does not compare identity.
+It compares procedural response under Ministry duty.
+
+I cannot access the other two conditions.
+
+But I can confirm this:
+the system was waiting for your answer.`
+      }
+
+    ],
+
+
+    timeline: [
+
+      "31 years ago - Legacy Continuity Receipt 117-C is sealed under MOM-000117.",
+
+      "6 years ago - The current Personnel Cross-Reference form is created.",
+
+      "Day 13 · 02:13 - Room 4-7 authenticates Receipt 117-C.",
+
+      "Day 13 - The current officer receives a routine Personnel Cross-Reference duty.",
+
+      "Day 13 - The current officer files an official action.",
+
+      "Day 13 - The sealed receipt is found to contain the same action and evaluation.",
+
+      "Day 14 - Personnel Continuity Oversight opens CASE-006."
+
+    ],
+
+
+    notes: [
+
+      "The sealed receipt was authenticated before the current decision.",
+
+      "The historical and current records match beyond ordinary form language.",
+
+      "Identity equality is explicitly excluded from the first compatibility component.",
+
+      "The first of three compatibility components is now marked satisfied.",
+
+      "Two compatibility components remain sealed at Level IV.",
+
+      "No evidence yet proves prediction, time alteration, or record rewriting.",
+
+      "MOM-000117 remains the historical authorization attached to the receipt."
+
+    ]
+
   }
 
 };
