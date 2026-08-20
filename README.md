@@ -23,8 +23,9 @@ The current portal includes:
 - Owl Mail, Daily Prophet, and Notice Board
 - World Day progression and End Work Day
 - Investigation reports saved in localStorage
-- CASE-000 through CASE-005
+- CASE-000 through CASE-006
 - First Personnel Continuity story arc
+- Second Personnel Continuity arc opening
 - Day 10 and later recurring Ministry work orders
 - Rotating daily news and notices
 - Permanent Service Points and duty history
@@ -44,10 +45,19 @@ Day 6   CASE-004 · The Second Signature
 Day 7   Prior Authorization Claim review
 Day 8   CASE-005 · The Position That Never Closed
 Day 9   Continuity Appointment determination
-Day 10+ Continuing daily Ministry service
+Day 10  Continuing daily Ministry service begins
+Day 13  A routine personnel decision produces a sealed exception
+Day 14  CASE-006 · The Decision Before It Was Made
+Day 15  Compatibility Condition One review
+Day 16+ Continuing Ministry service
 ```
 
 The first arc establishes that the player and MOM-000117 are separate recorded identities connected to one unresolved Ministry appointment. The identity of MOM-000117 and the sealed compatibility condition remain available for future story arcs.
+
+The second arc begins inside ordinary Ministry work rather than replacing it.
+A routine Day 13 decision is found in a MOM-000117 record that was authenticated
+before the player made the decision. CASE-006 confirms only the first of three
+sealed compatibility components; it does not establish an identity match.
 
 
 ## Run locally
@@ -81,15 +91,18 @@ Node.js is required only for testing.
 node tests/storage-engine.test.js
 node tests/cloud-engine.test.js
 node tests/cloud-portal.test.js
+node tests/case006-submission.test.js
 node tests/portal-progression.test.js
 ```
 
 The test verifies:
 
-- CASE-000 through CASE-005 registration
+- CASE-000 through CASE-006 registration
 - scalable completed-case tracking
 - Day 8 and Day 9 story progression
 - first-arc career assignment
+- Day 13 through Day 15 second-arc progression
+- personalized duty recall and first compatibility component
 - recommended versus assigned department separation
 - fourteen continuous daily work cycles
 - daily news and notice state
@@ -129,6 +142,7 @@ tests/
 ├── storage-engine.test.js
 ├── cloud-engine.test.js
 ├── cloud-portal.test.js
+├── case006-submission.test.js
 └── portal-progression.test.js
 ```
 
