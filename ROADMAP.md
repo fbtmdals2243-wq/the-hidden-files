@@ -9,8 +9,11 @@
 - Rank, clearance, promotion, and personnel records
 - Owl Mail, Daily Prophet, and Notice Board
 - World Day progression
-- CASE-000 through CASE-005
+- CASE-000 through CASE-006
 - First Personnel Continuity story arc
+- Second Personnel Continuity arc opening
+- Day 13 routine-duty anomaly and personalized recall
+- First of three sealed compatibility components
 - Assigned department versus recommended department separation
 - Continuity Liaison career assignment
 - Day 10+ rotating daily work orders
@@ -25,9 +28,9 @@
 
 ## Next Story Content
 
-- Second Personnel Continuity arc
+- Second Personnel Continuity arc continuation
 - Identity of MOM-000117
-- Sealed compatibility condition
+- Sealed compatibility components 2 and 3
 - CASE-ZERO and the origin of Room 4-7
 - Additional NPC relationships
 - Department-specific case chains
@@ -91,7 +94,7 @@ BRITISH MINISTRY OF MAGIC PORTAL
 ├── Colleagues
 ├── Ministry Events
 └── THE HIDDEN FILES
-    ├── CASE-000 ... CASE-005
+    ├── CASE-000 ... CASE-006
     ├── CASE-ZERO
     └── Future classified files
 ```
