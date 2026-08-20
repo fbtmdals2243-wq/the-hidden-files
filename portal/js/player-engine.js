@@ -48,11 +48,56 @@ const Player = {
   },
 
 
+  getCaseIds(){
+
+    if(
+      typeof MinistryCases === "undefined" ||
+      !MinistryCases ||
+      typeof MinistryCases !== "object"
+    ){
+
+      return [];
+    }
+
+
+    return Object.keys(
+      MinistryCases
+    )
+      .filter(
+        caseId =>
+          caseId.startsWith("CASE-")
+      )
+      .sort(
+        (a, b) =>
+          a.localeCompare(
+            b,
+            undefined,
+            {
+              numeric: true
+            }
+          )
+      );
+
+  },
+
+
+  getCompletedCaseIds(){
+
+    return this.getCaseIds()
+      .filter(
+        caseId =>
+          this.getCaseStatus(caseId) ===
+          "Solved"
+      );
+
+  },
+
+
   getCompletedCases(){
 
-    return this.getCaseStatus("CASE-000") === "Solved"
-      ? 1
-      : 0;
+    return this
+      .getCompletedCaseIds()
+      .length;
 
   },
 
@@ -96,6 +141,7 @@ const Player = {
     ];
 
     if(!validLevels.includes(level)){
+
       console.error(
         "Invalid clearance level:",
         level
@@ -131,14 +177,11 @@ const Player = {
       levels[requiredLevel];
 
 
-    /*
-      알 수 없는 권한 단계가 들어오면
-      접근을 허용하지 않는다.
-    */
     if(
       currentLevel === undefined ||
       required === undefined
     ){
+
       return false;
     }
 
