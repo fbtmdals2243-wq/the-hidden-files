@@ -42,6 +42,15 @@ function showPersonnelRecord(){
   const completedDuties =
     Player.getCompletedDuties();
 
+  const qualifications =
+    Player.getQualifications();
+
+  const trainingCredits =
+    MinistryStorage.getNumber(
+      "ministryTrainingCredits",
+      0
+    );
+
   const firstStoryArcCompleted =
     localStorage.getItem(
       "firstStoryArcCompleted"
@@ -100,6 +109,21 @@ function showPersonnelRecord(){
           .join("\n")
 
       : "- No completed cases recorded";
+
+
+  const qualificationList =
+    qualifications.length > 0
+
+      ? qualifications
+          .map(
+            qualification =>
+              "- " +
+              qualification.title +
+              " · Active"
+          )
+          .join("\n")
+
+      : "- No qualifications recorded";
 
 
   let reputation =
@@ -196,6 +220,17 @@ function showPersonnelRecord(){
       "Compatibility Condition 1 Confirmed"
     );
   }
+
+
+  qualifications.forEach(
+    qualification => {
+
+      careerTimeline.push(
+        "Qualified: " +
+        qualification.title
+      );
+    }
+  );
 
 
   if(completedDuties > 0){
@@ -366,6 +401,12 @@ ${completedDuties}
 
 Ministry Service Points:
 ${servicePoints}
+
+Training Credits:
+${trainingCredits}
+
+Qualifications:
+${qualificationList}
 
 Completed Cases:
 ${completedCases}
