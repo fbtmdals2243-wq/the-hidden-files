@@ -2,41 +2,30 @@ const Player = {
 
   getName(){
 
-    return localStorage.getItem(
-      "ministryApplicantName"
-    ) || "Officer";
+    return MinistryStorage.getItem(
+      "ministryApplicantName",
+      "Officer"
+    );
 
   },
 
 
   getEmployeeId(){
 
-    return localStorage.getItem(
-      "ministryEmployeeId"
-    ) || "MOM-000000";
+    return MinistryStorage.getItem(
+      "ministryEmployeeId",
+      "MOM-000000"
+    );
 
   },
 
 
   getIdentity(){
 
-    try{
-
-      return JSON.parse(
-        localStorage.getItem(
-          "ministryIdentity"
-        ) || "{}"
-      );
-    }
-    catch(error){
-
-      console.error(
-        "Invalid Ministry identity record:",
-        error
-      );
-
-      return {};
-    }
+    return MinistryStorage.getJSON(
+      "ministryIdentity",
+      {}
+    );
 
   },
 
@@ -56,9 +45,10 @@ const Player = {
 
   getAssignedDepartment(){
 
-    return localStorage.getItem(
-      "playerAssignedDepartment"
-    ) || "Archive Division";
+    return MinistryStorage.getItem(
+      "playerAssignedDepartment",
+      "Archive Division"
+    );
 
   },
 
@@ -73,7 +63,7 @@ const Player = {
       return false;
     }
 
-    localStorage.setItem(
+    MinistryStorage.setItem(
       "playerAssignedDepartment",
       department.trim()
     );
@@ -85,9 +75,10 @@ const Player = {
 
   getSpecialAssignment(){
 
-    return localStorage.getItem(
-      "playerSpecialAssignment"
-    ) || "None";
+    return MinistryStorage.getItem(
+      "playerSpecialAssignment",
+      "None"
+    );
 
   },
 
@@ -102,7 +93,7 @@ const Player = {
       return false;
     }
 
-    localStorage.setItem(
+    MinistryStorage.setItem(
       "playerSpecialAssignment",
       assignment.trim()
     );
@@ -114,10 +105,9 @@ const Player = {
 
   getServicePoints(){
 
-    return Number(
-      localStorage.getItem(
-        "ministryServicePoints"
-      ) || 0
+    return MinistryStorage.getNumber(
+      "ministryServicePoints",
+      0
     );
 
   },
@@ -125,10 +115,9 @@ const Player = {
 
   getCompletedDuties(){
 
-    return Number(
-      localStorage.getItem(
-        "dailyDutyCompletedCount"
-      ) || 0
+    return MinistryStorage.getNumber(
+      "dailyDutyCompletedCount",
+      0
     );
 
   },
@@ -136,16 +125,17 @@ const Player = {
 
   getCaseStatus(caseId){
 
-    return localStorage.getItem(
-      "caseStatus_" + caseId
-    ) || "Active";
+    return MinistryStorage.getItem(
+      "caseStatus_" + caseId,
+      "Active"
+    );
 
   },
 
 
   setCaseStatus(caseId, status){
 
-    localStorage.setItem(
+    MinistryStorage.setItem(
       "caseStatus_" + caseId,
       status
     );
@@ -209,16 +199,17 @@ const Player = {
 
   getRank(){
 
-    return localStorage.getItem(
-      "playerRank"
-    ) || "Junior Archive Officer";
+    return MinistryStorage.getItem(
+      "playerRank",
+      "Junior Archive Officer"
+    );
 
   },
 
 
   setRank(rank){
 
-    localStorage.setItem(
+    MinistryStorage.setItem(
       "playerRank",
       rank
     );
@@ -228,9 +219,10 @@ const Player = {
 
   getClearance(){
 
-    return localStorage.getItem(
-      "playerClearance"
-    ) || "Level I";
+    return MinistryStorage.getItem(
+      "playerClearance",
+      "Level I"
+    );
 
   },
 
@@ -255,7 +247,7 @@ const Player = {
       return false;
     }
 
-    localStorage.setItem(
+    MinistryStorage.setItem(
       "playerClearance",
       level
     );
