@@ -61,6 +61,11 @@ function showDashboard(){
       "CASE-003"
     );
 
+  const case004Status =
+    Player.getCaseStatus(
+      "CASE-004"
+    );
+
 
   /* =====================================================
      MAIL READ STATES
@@ -567,11 +572,38 @@ function showDashboard(){
 
     else{
 
-      assignmentLabel =
-        "Registry review active";
+      if(
+        case004Status ===
+        "Under Review"
+      ){
 
-      currentTask =
-        "Personnel Continuity Discrepancy · Await Instructions";
+        assignmentLabel =
+          "Report submitted";
+
+        currentTask =
+          "CASE-004 Under Review";
+      }
+
+      else if(
+        case004Status ===
+        "Solved"
+      ){
+
+        assignmentLabel =
+          "Assignment completed";
+
+        currentTask =
+          "CASE-004 Completed";
+      }
+
+      else{
+
+        assignmentLabel =
+          "CASE-004 active";
+
+        currentTask =
+          "Investigate CASE-004 · The Second Signature";
+      }
     }
   }
 
@@ -636,6 +668,19 @@ function showDashboard(){
     worldDay === 5 &&
     mail007Read &&
     case003Status === "Solved"
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  if(
+    worldDay === 6 &&
+    (
+      case004Status === "Under Review" ||
+      case004Status === "Solved"
+    )
   ){
 
     canEndWorkDay =
@@ -1198,7 +1243,57 @@ function openOfficeItem(item){
       }
 
 
-      showPersonnelRecord();
+      const personnelRecordViewed =
+        localStorage.getItem(
+          "day6PersonnelRecordViewed"
+        ) === "true";
+
+
+      if(
+        !personnelRecordViewed
+      ){
+
+        showPersonnelRecord();
+
+        return;
+      }
+
+
+      const caseStatus =
+        Player.getCaseStatus(
+          "CASE-004"
+        );
+
+
+      if(
+        caseStatus ===
+        "Under Review"
+      ){
+
+        alert(
+          "Your CASE-004 report has already been submitted. Await further Ministry instructions."
+        );
+
+        return;
+      }
+
+
+      if(
+        caseStatus ===
+        "Solved"
+      ){
+
+        alert(
+          "CASE-004 has already been closed."
+        );
+
+        return;
+      }
+
+
+      openCase(
+        "CASE-004"
+      );
 
       return;
     }
