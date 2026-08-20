@@ -268,6 +268,57 @@ async function run(){
   pass("Checksum rejects altered save data before mutation");
 
 
+  const missingChecksumSnapshot =
+    JSON.parse(
+      JSON.stringify(snapshot)
+    );
+
+  delete missingChecksumSnapshot.checksum;
+
+
+  const rejectedMissingChecksum =
+    storage.restoreSnapshot(
+      missingChecksumSnapshot
+    );
+
+
+  assert.equal(
+    rejectedMissingChecksum.success,
+    false
+  );
+  assert.equal(
+    rejectedMissingChecksum.reason,
+    "invalid-checksum"
+  );
+  pass("Snapshot import requires a valid checksum");
+
+
+  const mismatchedEmployeeSnapshot =
+    JSON.parse(
+      JSON.stringify(snapshot)
+    );
+
+  mismatchedEmployeeSnapshot.employeeId =
+    "MOM-OTHER";
+
+
+  const rejectedEmployeeMismatch =
+    storage.restoreSnapshot(
+      mismatchedEmployeeSnapshot
+    );
+
+
+  assert.equal(
+    rejectedEmployeeMismatch.success,
+    false
+  );
+  assert.equal(
+    rejectedEmployeeMismatch.reason,
+    "employee-id-mismatch"
+  );
+  pass("Snapshot metadata must match its employee record");
+
+
   const unknownKeySnapshot =
     JSON.parse(
       JSON.stringify(snapshot)
@@ -381,6 +432,17 @@ async function run(){
     configured,
     true
   );
+
+
+  assert.equal(
+    storage.clearRemoteAdapter({}),
+    false
+  );
+  assert.notEqual(
+    storage.remoteAdapter,
+    null
+  );
+  pass("An unrelated service cannot remove the active cloud adapter");
 
 
   const pushed =
