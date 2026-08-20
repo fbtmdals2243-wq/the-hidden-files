@@ -96,6 +96,17 @@ function showDashboard(){
       "mailRead_MAIL-007"
     ) === "true";
 
+  const mail008Read =
+    localStorage.getItem(
+      "mailRead_MAIL-008"
+    ) === "true";
+
+
+  const day6PersonnelRecordViewed =
+    localStorage.getItem(
+      "day6PersonnelRecordViewed"
+    ) === "true";
+
 
   /* =====================================================
      NEWS READ STATES
@@ -282,7 +293,9 @@ function showDashboard(){
   ){
 
     mailLabel =
-      "Reviewed";
+      mail008Read
+        ? "Personnel audit read"
+        : "Restricted personnel mail";
 
     newsLabel =
       "Morning edition";
@@ -530,11 +543,36 @@ function showDashboard(){
     worldDay >= 6
   ){
 
-    assignmentLabel =
-      "Await new assignment";
+    if(
+      !mail008Read
+    ){
 
-    currentTask =
-      "Awaiting Classified Assignment";
+      assignmentLabel =
+        "Personnel integrity alert";
+
+      currentTask =
+        "Read Mandatory Personnel Integrity Audit";
+    }
+
+    else if(
+      !day6PersonnelRecordViewed
+    ){
+
+      assignmentLabel =
+        "Employee record flagged";
+
+      currentTask =
+        "Inspect Your Employee Record";
+    }
+
+    else{
+
+      assignmentLabel =
+        "Registry review active";
+
+      currentTask =
+        "Personnel Continuity Discrepancy · Await Instructions";
+    }
   }
 
 
@@ -1131,6 +1169,36 @@ function openOfficeItem(item){
       alert(
         "CASE-003 is closed. Await further classified authorization."
       );
+
+      return;
+    }
+
+
+    /* DAY 6+ */
+
+    if(
+      worldDay >= 6
+    ){
+
+      const personnelAuditRead =
+        localStorage.getItem(
+          "mailRead_MAIL-008"
+        ) === "true";
+
+
+      if(
+        !personnelAuditRead
+      ){
+
+        alert(
+          "Read the Mandatory Personnel Integrity Audit in Owl Mail first."
+        );
+
+        return;
+      }
+
+
+      showPersonnelRecord();
 
       return;
     }
