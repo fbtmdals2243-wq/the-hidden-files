@@ -1,7 +1,7 @@
 # THE HIDDEN FILES ROADMAP
 
 
-## Completed: Static Playable Alpha
+## Completed: Static Narrative Release
 
 - Recruitment, application, interview, and Identity Engine
 - Persistent employee number and returning employee resume
@@ -9,16 +9,24 @@
 - Rank, clearance, promotion, and personnel records
 - Owl Mail, Daily Prophet, and Notice Board
 - World Day progression
-- CASE-000 through CASE-007
-- First Personnel Continuity story arc
-- Second Personnel Continuity arc opening
+- CASE-000 through CASE-008
+- CASE-ZERO and CASE-OMEGA
+- Complete Personnel Continuity narrative
 - Day 13 routine-duty anomaly and personalized recall
-- First and second of three sealed compatibility components
+- All three sealed compatibility components
 - Ministry Training Desk and course progression
 - Permanent employee qualification records
 - Continuity Records Handling · Grade I qualification
 - Level III Career Readiness Review
 - Senior Archive Officer rank and Level III clearance
+- Level IV Continuity Authority Final Board
+- Principal Archive Officer rank and Level IV clearance
+- Continuity Records Handling · Grade II
+- One-record Ω Continuity Warrant
+- MOM-000117 identity restored as Rowan Mercer
+- First personnel deletion and Room 4-7 origin resolved
+- Archive OS 2048 epilogue connection
+- Continuing daily service after the narrative conclusion
 - Persistent colleague directory and professional trust records
 - Assigned department versus recommended department separation
 - Continuity Liaison career assignment
@@ -32,13 +40,8 @@
 - Supabase database schema with per-user Row Level Security
 
 
-## Next Story Content
+## Optional Post-Release Content
 
-- Third Personnel Continuity arc continuation
-- Identity of MOM-000117
-- Sealed compatibility component 3
-- Level IV eligibility and formal clearance review
-- CASE-ZERO and the origin of Room 4-7
 - Additional NPC relationships
 - Department-specific case chains
 - Additional training and advanced qualification records
@@ -101,7 +104,8 @@ BRITISH MINISTRY OF MAGIC PORTAL
 ├── Colleagues
 ├── Ministry Events
 └── THE HIDDEN FILES
-    ├── CASE-000 ... CASE-007
+    ├── CASE-000 ... CASE-008
     ├── CASE-ZERO
+    ├── CASE-OMEGA
     └── Future classified files
 ```

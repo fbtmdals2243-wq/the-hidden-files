@@ -49,7 +49,11 @@ Day 16  Continuity Records Handling · Grade I
 Day 17  Level III Career Readiness Review
 Day 18  CASE-007
 Day 19  Compatibility Condition Two review
-Day 20+ Daily service continues
+Day 20  CASE-008
+Day 21  Compatibility Condition Three + Level IV Final Board
+Day 22  CASE-ZERO
+Day 23  Rowan Mercer restoration + CASE-OMEGA
+Day 24+ Daily service continues
 ```
 
 
@@ -79,7 +83,45 @@ MNEMONIC RESPONSE CORRESPONDENCE
 IDENTITY MATCH: NOT ESTABLISHED
 ```
 
-The third component must remain sealed at Level IV.
+The third component remains sealed until the following work day.
+
+
+## Day 20–23 final route check
+
+Read `MAIL-018`, investigate CASE-008, and submit both report fields. On the
+next work day, read `MAIL-019`. The Personnel Record must show:
+
+```text
+COMPONENT 3 OF 3 SATISFIED
+PROTECTIVE INTENT CORRESPONDENCE
+IDENTITY MATCH: NOT REQUIRED · NOT ESTABLISHED
+```
+
+Complete all three Level IV Final Board scenarios. The dashboard and Personnel
+Record must then show:
+
+```text
+RANK: Principal Archive Officer
+CLEARANCE: Level IV
+QUALIFICATION: Continuity Records Handling · Grade II
+SPECIAL AUTHORITY: ONE-RECORD Ω CONTINUITY WARRANT
+```
+
+On the next work day, read `MAIL-020`, investigate CASE-ZERO, and submit the
+report. Read `MAIL-021` on the following day, then open CASE-OMEGA.
+
+The final record must confirm:
+
+```text
+MOM-000117: Rowan Mercer
+CURRENT OFFICER: the player's existing employee identity
+IDENTITY RELATION: SEPARATE PEOPLE
+APPOINTMENT RELATION: first and second holders of VACANCY-AR-117
+MINISTRY EMPLOYMENT: ACTIVE
+```
+
+End the work day and verify that a normal rotating daily assignment appears on
+the next day. The narrative ending must not end the employee simulation.
 
 
 ## Colleagues success check

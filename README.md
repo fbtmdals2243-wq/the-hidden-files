@@ -9,7 +9,7 @@ The target feeling is:
 > I logged into work today.
 
 
-## Current playable alpha
+## Current static release
 
 The current portal includes:
 
@@ -23,9 +23,8 @@ The current portal includes:
 - Owl Mail, Daily Prophet, and Notice Board
 - World Day progression and End Work Day
 - Investigation reports saved in localStorage
-- CASE-000 through CASE-007
-- First Personnel Continuity story arc
-- Second Personnel Continuity arc opening
+- CASE-000 through CASE-008, CASE-ZERO, and CASE-OMEGA
+- Complete Personnel Continuity narrative
 - Day 10 and later recurring Ministry work orders
 - Rotating daily news and notices
 - Permanent Service Points and duty history
@@ -33,6 +32,11 @@ The current portal includes:
 - Continuity Records Handling · Grade I course
 - Level III Career Readiness Review
 - Senior Archive Officer promotion and Level III clearance
+- Level IV Continuity Authority Final Board
+- Principal Archive Officer promotion and Grade II qualification
+- One-record Ω Continuity Warrant
+- Restored historical identity of MOM-000117
+- Narrative epilogue with continuing post-story employment
 - Persistent colleague relationships and daily professional check-ins
 - Downloadable and restorable employee archive files
 - Optional Ministry Network account and cloud-save client
@@ -58,10 +62,15 @@ Day 16  Mandatory Continuity Records Handling qualification
 Day 17  Level III Career Readiness Review
 Day 18  CASE-007 · The Memory That Recognized You
 Day 19  Compatibility Condition Two review
-Day 20+ Continuing Ministry service and colleague relationships
+Day 20  CASE-008 · The Name Beneath the Number
+Day 21  Compatibility Condition Three + Level IV Final Board
+Day 22  CASE-ZERO · The First Deletion
+Day 23  Rowan Mercer restoration + CASE-OMEGA epilogue
+Day 24+ Continuing Ministry service and colleague relationships
 ```
 
-The first arc establishes that the player and MOM-000117 are separate recorded identities connected to one unresolved Ministry appointment. The identity of MOM-000117 and the sealed compatibility condition remain available for future story arcs.
+The complete story establishes that the player and MOM-000117 are separate
+recorded identities connected to one protected Ministry appointment.
 
 The second arc begins inside ordinary Ministry work rather than replacing it.
 A routine Day 13 decision is found in a MOM-000117 record that was authenticated
@@ -77,10 +86,22 @@ On Day 17, qualified employees with the required service record complete a
 three-scenario Personnel Advancement Board review. Approval permanently grants
 the rank of Senior Archive Officer and Level III clearance.
 
-CASE-007 then confirms only the second sealed compatibility component:
+CASE-007 confirms the second sealed compatibility component:
 MNEMONIC RESPONSE CORRESPONDENCE. A memory prepared by MOM-000117 recognizes
 the current appointment, while the official record continues to state that an
-identity match is not established. The final component remains sealed.
+identity match is not established.
+
+CASE-008 confirms the third component, PROTECTIVE INTENT CORRESPONDENCE. The
+two appointment holders independently chose to suspend destructive action,
+protect affected people, and preserve authenticated evidence. This does not
+require or establish a shared identity.
+
+The Level IV Final Board grants the rank of Principal Archive Officer,
+Continuity Records Handling · Grade II, and a one-record Ω warrant. CASE-ZERO
+then restores MOM-000117 as Rowan Mercer, the first Continuity Records Liaison
+and the first person deleted by the original program. The player remains the
+second, separate appointee. CASE-OMEGA connects the portal to the future Archive
+OS epilogue, after which ordinary Ministry work continues indefinitely.
 
 The Colleagues desk turns Eleanor Whitmore, Dr. Miriam Vale, and Gideon March
 into persistent professional relationships. One optional check-in per colleague
@@ -109,6 +130,10 @@ Then visit:
 http://localhost:8000/portal/
 ```
 
+The Archive OS home page and the employee portal link to each other. The
+CASE-OMEGA epilogue may open the Archive OS directly, while the Archive OS
+sidebar provides a return path to the Ministry employee portal.
+
 
 ## Automated progression test
 
@@ -121,7 +146,7 @@ node tests/run-all.js
 The test verifies:
 
 - recruitment identity through Day 6 preservation
-- CASE-000 through CASE-007 registration
+- CASE-000 through CASE-008, CASE-ZERO, and CASE-OMEGA registration
 - scalable completed-case tracking
 - Day 8 and Day 9 story progression
 - first-arc career assignment
@@ -130,6 +155,8 @@ The test verifies:
 - Day 16 training directive and three-module qualification
 - Day 17 Level III career review and permanent career milestone
 - Day 18 through Day 19 CASE-007 and compatibility component two
+- Day 20 through Day 23 final compatibility, Level IV, CASE-ZERO, and epilogue
+- Rowan Mercer restoration while preserving the current player identity
 - daily colleague relationships with duplicate interaction protection
 - permanent qualification, training-credit, archive, and cloud-save preservation
 - recommended versus assigned department separation
@@ -157,6 +184,7 @@ portal/
     ├── daily-work.js
     ├── training.js
     ├── career-review.js
+    ├── final-review.js
     ├── relationship.js
     ├── dashboard.js
     ├── case-data.js
@@ -180,6 +208,7 @@ tests/
 ├── career-review.test.js
 ├── case007-submission.test.js
 ├── relationship-engine.test.js
+├── final-arc.test.js
 ├── training-engine.test.js
 └── portal-progression.test.js
 ```
@@ -187,7 +216,7 @@ tests/
 
 ## Save system
 
-The current alpha stores progress in browser localStorage and can export a
+The current static release stores progress in browser localStorage and can export a
 validated employee archive for manual backup or transfer.
 
 Existing keys are retained for compatibility, including employee identity, rank, clearance, world day, reports, case status, and communication read state.
