@@ -25,6 +25,7 @@ const MinistryStorage = {
     "noticeRead_",
     "interview_",
     "dailyDuty",
+    "training",
     "orientation",
     "promotion",
     "continuity",
