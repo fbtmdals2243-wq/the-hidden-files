@@ -1087,6 +1087,1146 @@ for that officer to leave.`
 
     ]
 
+  },
+
+
+  /* =====================================================
+     CASE-004
+     THE SECOND SIGNATURE
+  ===================================================== */
+
+  "CASE-004": {
+
+    id:
+      "CASE-004",
+
+    title:
+      "The Second Signature",
+
+    classification:
+      "Level II · Personnel Integrity Review",
+
+    status:
+      "Active",
+
+    department:
+      "Personnel Registry · Archive Division",
+
+    summary:
+`A Day 6 personnel integrity audit has detected
+a restricted continuity authorization signature
+inside the investigating officer's active employee record.
+
+The signature is an exact match for the authorization
+record preserved under MOM-000117.
+
+Standard identity fields do not match.
+
+The current employee number is active, recently issued,
+and remains attached to the officer's own verified identity.
+
+The Ministry must determine when the second signature
+entered the record, why it remained dormant, and whether
+Room 4-7 is actively authorizing a current employee.`,
+
+
+    evidence: [
+
+      {
+        id:
+          "E-401",
+
+        title:
+          "Active Personnel Integrity Extract",
+
+        type:
+          "Restricted Personnel Record",
+
+        body:
+`MINISTRY PERSONNEL REGISTRY
+INTEGRITY REVIEW DESK
+
+RECORD TYPE:
+ACTIVE EMPLOYEE
+
+EMPLOYEE STATUS:
+ACTIVE
+
+IDENTITY VERIFICATION:
+PASSED
+
+STANDARD RECORD OWNER:
+CURRENT INVESTIGATING OFFICER
+
+UNEXPECTED FIELD DETECTED:
+LEGACY CONTINUITY AUTHORIZATION
+
+AUTHORIZATION SIGNATURE:
+PC-117-CONTINUITY
+
+HISTORICAL MATCH:
+MOM-000117
+
+IDENTITY MATCH:
+NOT ESTABLISHED
+
+The active record and the historical record
+share no visible name, wand, department,
+education, address, or biometric identity fields.
+
+Only the authorization signature is identical.`
+      },
+
+
+      {
+        id:
+          "E-402",
+
+        title:
+          "Credential Issuance Audit",
+
+        type:
+          "Recruitment System Log",
+
+        body:
+`BRITISH MINISTRY OF MAGIC
+RECRUITMENT CREDENTIAL LOG
+
+DAY 1 · 09:12:04
+
+New employee identifier generated.
+
+DAY 1 · 09:12:09
+
+Applicant identity attached.
+
+DAY 1 · 09:12:13
+
+Department recommendation attached.
+
+DAY 1 · 09:12:17
+
+Credential finalized.
+
+DAY 1 · 09:12:17
+
+UNREQUESTED LEGACY RESPONSE RECEIVED.
+
+SOURCE:
+PERSONNEL CONTINUITY ROUTING
+
+ACTION:
+AUTHORIZATION SIGNATURE APPENDED
+
+The Recruitment Office did not request
+a continuity verification.
+
+No Ministry employee is recorded as
+having added the signature.`
+      },
+
+
+      {
+        id:
+          "E-403",
+
+        title:
+          "Day 6 Authentication Route",
+
+        type:
+          "Live Security Trace",
+
+        body:
+`MINISTRY SECURITY TRACE
+
+DAY 6 · 08:41:00
+
+LOCATION:
+OFFICE 3-B
+
+EVENT:
+MORNING EMPLOYEE AUTHENTICATION
+
+ACTIVE CLEARANCE:
+LEVEL II
+
+08:41:01
+Standard identity verification passed.
+
+08:41:02
+Level II authorization verification requested.
+
+08:41:02
+Request redirected without instruction.
+
+DESTINATION:
+SUB-LEVEL 4 / ROOM 4-7
+
+08:41:03
+Legacy security response received.
+
+RESPONSE:
+AUTHORIZED
+
+CONTINUITY STATUS:
+OCCUPANT AUTHORIZATION CONFIRMED
+
+The response arrived from a chamber
+that is not connected to the active
+Ministry personnel network.`
+      },
+
+
+      {
+        id:
+          "E-404",
+
+        title:
+          "Continuity Signature Comparison",
+
+        type:
+          "Magical Seal Analysis",
+
+        body:
+`PERSONNEL CONTINUITY SYSTEM
+SIGNATURE COMPARISON
+
+HISTORICAL RECORD:
+MOM-000117
+
+ACTIVE RECORD:
+CURRENT INVESTIGATING OFFICER
+
+SIGNATURE SIMILARITY:
+100.000%
+
+RESULT:
+EXACT AUTHORIZATION MATCH
+
+Continuity signatures are designed
+to remain unique to one authorization record.
+
+They cannot be inherited.
+
+They cannot be copied through standard magic.
+
+They cannot be reassigned by the Personnel Registry.
+
+Both signatures carry the same original
+Undersecretary master seal from thirty years ago.
+
+The active signature also carries
+a current Day 6 verification timestamp.`
+      },
+
+
+      {
+        id:
+          "E-405",
+
+        title:
+          "Personnel Record Difference Report",
+
+        type:
+          "Identity Comparison",
+
+        body:
+`MINISTRY PERSONNEL REGISTRY
+IDENTITY DIFFERENCE REPORT
+
+COMPARISON:
+CURRENT OFFICER / MOM-000117
+
+EMPLOYEE NUMBER:
+DIFFERENT
+
+NAME:
+NO MATCH
+
+DEPARTMENT:
+NO MATCH
+
+WAND REGISTRATION:
+NO MATCH
+
+EDUCATION RECORD:
+NO MATCH
+
+MAGICAL IDENTITY MARKERS:
+NO MATCH
+
+AUTHORIZATION SIGNATURE:
+EXACT MATCH
+
+CONCLUSION:
+
+The available evidence does not support
+a standard duplicate identity.
+
+The current officer's identity remains intact.
+
+The unexplained connection exists beneath
+the identity layer, inside Ministry authorization.`
+      }
+
+    ],
+
+
+    witnesses: [
+
+      {
+        id:
+          "W-401",
+
+        name:
+          "Amara Finch",
+
+        role:
+          "Personnel Integrity Auditor",
+
+        statement:
+`I checked the record three times.
+
+The officer's identity is not a copy.
+
+The name, wand registration, magical markers,
+and recruitment history all belong to the
+current employee.
+
+But authorization sits underneath identity.
+
+That lower layer answered as MOM-000117.
+
+I have never seen an active record
+carry a continuity signature.
+
+The Registry locked the file automatically
+because it did not know which record
+was authorizing which.`
+      },
+
+
+      {
+        id:
+          "W-402",
+
+        name:
+          "Tobias Reed",
+
+        role:
+          "Legacy Security Technician",
+
+        statement:
+`The signature was not copied into the record.
+
+That would leave a transfer trace.
+
+There is no transfer trace.
+
+The active credential asked whether it
+was authorized, and Room 4-7 answered yes.
+
+That is worse.
+
+It means the chamber is not merely storing
+MOM-000117's old permission.
+
+It is making a current decision.
+
+What I cannot tell you is why it recognizes
+this officer's credential as something
+it is permitted to answer for.`
+      },
+
+
+      {
+        id:
+          "W-403",
+
+        name:
+          "Eleanor Whitmore",
+
+        role:
+          "Senior Archivist",
+
+        statement:
+`Your employee record looked normal
+when you arrived in Office 3-B.
+
+I saw the number, the rank,
+and your Level I clearance.
+
+Nothing mentioned continuity.
+
+After your promotion, the authorization layer
+became visible to deeper Ministry checks.
+
+This morning the system told me
+not to confiscate your credentials.
+
+That instruction arrived before the Registry
+sent its alert.
+
+The sender field was blank.
+
+The authorization mark on the instruction
+was thirty years old.`
+      }
+
+    ],
+
+
+    timeline: [
+
+      "30 years ago - MOM-000117 is registered as a Continuity Subject.",
+
+      "30 years ago - PC-117-CONTINUITY signature is sealed inside Room 4-7.",
+
+      "Day 1 · 09:12:04 - Current employee identifier is generated.",
+
+      "Day 1 · 09:12:17 - Unrequested continuity response reaches Recruitment.",
+
+      "Day 1 · 09:12:17 - PC-117-CONTINUITY is appended beneath the active identity layer.",
+
+      "Day 2 - Level II clearance is granted to the current officer.",
+
+      "Day 6 · 08:41:02 - Level II morning verification reaches Room 4-7.",
+
+      "Day 6 · 08:41:03 - Room 4-7 returns active authorization.",
+
+      "Day 6 · 08:42 - Personnel Registry locks the integrity layer for review."
+
+    ],
+
+
+    notes: [
+
+      "The current officer's standard identity fields remain intact and distinct from MOM-000117.",
+
+      "The active record contains the exact PC-117-CONTINUITY authorization signature.",
+
+      "No transfer, inheritance, or manual copy event exists.",
+
+      "The signature entered the record during Day 1 credential finalization.",
+
+      "The signature remained dormant until a Level II verification was requested.",
+
+      "Room 4-7 responded to the current credential in real time on Day 6.",
+
+      "The evidence does not establish that the current officer and MOM-000117 are the same identity.",
+
+      "The reason Room 4-7 recognizes the current credential remains unknown."
+
+    ]
+
+  },
+
+
+  /* =====================================================
+     CASE-005
+     THE POSITION THAT NEVER CLOSED
+  ===================================================== */
+
+  "CASE-005": {
+
+    id:
+      "CASE-005",
+
+    title:
+      "The Position That Never Closed",
+
+    classification:
+      "Level II · Recruitment Systems Audit",
+
+    status:
+      "Active",
+
+    department:
+      "Personnel Registry · Recruitment Oversight",
+
+    summary:
+`The prior authorization claim discovered in CASE-004
+did not target a named applicant or an existing employee number.
+
+It targeted an unresolved Ministry position:
+
+VACANCY-AR-117
+
+The position was created thirty-one years ago,
+assigned to MOM-000117, and never formally closed.
+
+On Day 1, the Recruitment system routed the current officer's
+application into that position before generating a new credential.
+
+The Ministry must determine why the vacancy remained eligible
+for recruitment while its historical occupant was still recorded
+as employed inside the Personnel Continuity System.`,
+
+
+    evidence: [
+
+      {
+        id:
+          "E-501",
+
+        title:
+          "Recruitment Queue Allocation",
+
+        type:
+          "Active Recruitment Log",
+
+        body:
+`BRITISH MINISTRY OF MAGIC
+RECRUITMENT ALLOCATION SYSTEM
+
+DAY 1 · 09:11:57
+
+APPLICATION SESSION:
+ACTIVE
+
+APPLICANT IDENTITY:
+NOT YET ATTACHED
+
+DAY 1 · 09:11:58
+
+VACANCY ROUTE REQUESTED:
+VACANCY-AR-117
+
+ROUTE SOURCE:
+LEGACY PERSONNEL AUTHORIZATION
+
+DAY 1 · 09:12:04
+
+NEW EMPLOYEE NUMBER GENERATED
+
+DAY 1 · 09:12:09
+
+VERIFIED APPLICANT IDENTITY ATTACHED
+
+The vacancy route was selected before
+the active system knew the applicant's name,
+employee number, wand, or department result.`
+      },
+
+
+      {
+        id:
+          "E-502",
+
+        title:
+          "Historical Vacancy Ledger",
+
+        type:
+          "Personnel Administration Record",
+
+        body:
+`VACANCY CODE:
+VACANCY-AR-117
+
+DEPARTMENT:
+ARCHIVE DIVISION
+
+POSITION:
+CONTINUITY RECORDS LIAISON
+
+CREATED:
+31 YEARS AGO
+
+ORIGINAL APPOINTEE:
+MOM-000117
+
+CURRENT OCCUPANCY:
+OCCUPIED
+
+RECRUITMENT STATUS:
+ELIGIBLE
+
+CLOSURE STATUS:
+WITHHELD BY UNDERSECRETARY ORDER
+
+The ledger records the position as both occupied
+and available for recruitment.
+
+Standard Personnel rules do not permit
+both states to exist at the same time.`
+      },
+
+
+      {
+        id:
+          "E-503",
+
+        title:
+          "Identity Engine Route Trace",
+
+        type:
+          "Recruitment Systems Analysis",
+
+        body:
+`IDENTITY ENGINE SESSION:
+CURRENT OFFICER
+
+STANDARD ASSESSMENT:
+COMPLETED
+
+VISIBLE RESULTS:
+VALID
+
+UNDECLARED ROUTE CHECK:
+CONTINUITY COMPATIBILITY
+
+RESULT:
+SATISFIED
+
+CHECK REQUESTED BY:
+VACANCY-AR-117
+
+COMPATIBILITY RULE:
+SEALED
+
+The Identity Engine did not assign
+the historical employee's identity.
+
+It confirmed only that the applicant met
+an unknown condition attached to the vacancy.
+
+The condition itself is absent from
+the current Recruitment system.`
+      },
+
+
+      {
+        id:
+          "E-504",
+
+        title:
+          "Room 4-7 Authorization Exchange",
+
+        type:
+          "Recovered Legacy Transmission",
+
+        body:
+`SOURCE:
+RECRUITMENT ALLOCATION SYSTEM
+
+DESTINATION:
+PERSONNEL CONTINUITY CHAMBER / ROOM 4-7
+
+REQUEST:
+VACANCY-AR-117 CANDIDATE DETECTED
+
+ROOM 4-7 RESPONSE:
+RETAIN AUTHORIZATION
+
+REQUEST:
+CURRENT OCCUPANT STATUS
+
+ROOM 4-7 RESPONSE:
+STILL EMPLOYED
+
+REQUEST:
+PERMIT NEW APPOINTMENT
+
+ROOM 4-7 RESPONSE:
+AUTHORIZED
+
+The chamber simultaneously confirmed
+the historical occupant and authorized
+a new employee for the same position.`
+      },
+
+
+      {
+        id:
+          "E-505",
+
+        title:
+          "Appointment Conflict Report",
+
+        type:
+          "Personnel Integrity Finding",
+
+        body:
+`POSITION:
+VACANCY-AR-117
+
+HISTORICAL EMPLOYEE:
+MOM-000117
+
+CURRENT EMPLOYEE:
+CURRENT INVESTIGATING OFFICER
+
+EMPLOYEE NUMBER MATCH:
+NO
+
+IDENTITY MATCH:
+NOT ESTABLISHED
+
+POSITION AUTHORIZATION MATCH:
+EXACT
+
+ACTIVE RECORDS:
+2
+
+AUTHORIZED POSITIONS:
+1
+
+PRELIMINARY FINDING:
+
+The continuity signature is attached
+to the appointment layer rather than
+to the current officer's identity layer.
+
+Why the vacancy selected this applicant
+remains classified and unresolved.`
+      }
+
+    ],
+
+
+    witnesses: [
+
+      {
+        id:
+          "W-501",
+
+        name:
+          "Beatrice Rowle",
+
+        role:
+          "Senior Recruitment Registrar",
+
+        statement:
+`Vacancies are supposed to be empty.
+
+That sounds obvious, but the distinction
+is enforced by every hiring charm we use.
+
+AR-117 was not empty.
+
+The old system said somebody still held it.
+
+Then the same system placed a new applicant
+into it and approved the appointment.
+
+No registrar selected that route.
+
+By the time your name appeared on screen,
+the position had already accepted you.`
+      },
+
+
+      {
+        id:
+          "W-502",
+
+        name:
+          "Noah Selwyn",
+
+        role:
+          "Identity Engine Auditor",
+
+        statement:
+`The Identity Engine did not confuse you
+with MOM-000117.
+
+I want that stated clearly.
+
+Your results belong to you.
+
+But a sealed compatibility check ran
+underneath the visible assessment.
+
+The question came from a vacancy
+that should not have existed.
+
+We can prove the answer was yes.
+
+We cannot recover the question.`
+      },
+
+
+      {
+        id:
+          "W-503",
+
+        name:
+          "Eleanor Whitmore",
+
+        role:
+          "Senior Archivist",
+
+        statement:
+`Office 3-B has carried an unused personnel slot
+for longer than I have worked here.
+
+It never appeared on our staffing requests.
+
+The desk was simply listed as unavailable.
+
+On your first morning, that restriction vanished.
+
+I assumed Recruitment had finally corrected
+an old administrative error.
+
+Now I understand that the desk was not released.
+
+It recognized an appointment.`
+      }
+
+    ],
+
+
+    timeline: [
+
+      "31 years ago - VACANCY-AR-117 is created for Continuity Records Liaison.",
+
+      "31 years ago - MOM-000117 is appointed to the position.",
+
+      "30 years ago - The employee identity is removed, but the position is not closed.",
+
+      "30 years ago - Undersecretary order leaves the vacancy eligible for recruitment.",
+
+      "Day 1 · 09:11:58 - The current application is routed to VACANCY-AR-117.",
+
+      "Day 1 · 09:12:04 - The current employee number is generated.",
+
+      "Day 1 · 09:12:09 - The current identity is attached to the appointment.",
+
+      "Day 6 · 08:41 - Room 4-7 actively confirms the shared authorization.",
+
+      "Day 8 - Recruitment Oversight opens CASE-005."
+
+    ],
+
+
+    notes: [
+
+      "VACANCY-AR-117 is recorded as occupied and recruitment-eligible.",
+
+      "The vacancy belonged to MOM-000117's historical appointment.",
+
+      "The current officer was routed into the vacancy before identity attachment.",
+
+      "The Identity Engine ran a sealed compatibility check.",
+
+      "The compatibility condition cannot be recovered from active systems.",
+
+      "Room 4-7 authorized a new appointment while retaining the historical occupant.",
+
+      "The shared signature appears to bind the position, not the two identities.",
+
+      "The reason this applicant satisfied the sealed condition remains unknown."
+
+    ]
+
+  },
+
+
+  /* =====================================================
+     CASE-006
+     THE DECISION BEFORE IT WAS MADE
+  ===================================================== */
+
+  "CASE-006": {
+
+    id:
+      "CASE-006",
+
+    title:
+      "The Decision Before It Was Made",
+
+    classification:
+      "Level II · Personnel Continuity",
+
+    status:
+      "Active",
+
+    department:
+      "Personnel Continuity Oversight",
+
+    summary:
+`A sealed copy of the officer's Day 13
+Personnel Cross-Reference decision was discovered
+inside a legacy continuity record.
+
+The copy was authenticated at 02:13,
+before the current decision was filed.
+
+Its historical author is listed as MOM-000117.
+
+The Personnel Continuity System classifies the match
+as the first satisfied component of an undisclosed
+three-part compatibility condition.`,
+
+
+    evidence: [
+
+      {
+        id:
+          "E-601",
+
+        title:
+          "Duplicate Duty Receipt",
+
+        type:
+          "Personnel Service Record",
+
+        body:
+`CURRENT RECORD:
+Day 13 Personnel Cross-Reference Review
+
+CURRENT AUTHOR:
+Continuity Liaison · Office 3-B
+
+SEALED RECORD:
+Legacy Continuity Receipt 117-C
+
+HISTORICAL AUTHOR:
+MOM-000117
+
+AUTHENTICATION TIME:
+02:13 · Before current action
+
+COMPARISON RESULT:
+Selected action, procedural evaluation,
+and final disposition are identical.
+
+The sealed record contains the current decision
+despite being authenticated before that decision
+was entered into the Ministry service ledger.`
+      },
+
+      {
+        id:
+          "E-602",
+
+        title:
+          "Compatibility Condition Extract",
+
+        type:
+          "Restricted System Output",
+
+        body:
+`APPOINTMENT:
+VACANCY-AR-117
+
+HISTORICAL SUBJECT:
+MOM-000117
+
+CURRENT SUBJECT:
+CURRENT CONTINUITY LIAISON
+
+IDENTITY MATCH:
+NOT REQUIRED
+
+CONDITION SET:
+THREE SEALED COMPONENTS
+
+COMPONENT 1:
+PROCEDURAL RESPONSE CORRESPONDENCE
+
+STATUS:
+SATISFIED
+
+COMPONENTS 2-3:
+SEALED · LEVEL IV AUTHORIZATION REQUIRED
+
+The system does not explain whether the historical
+record predicted the decision or was rewritten
+after the decision occurred.`
+      },
+
+      {
+        id:
+          "E-603",
+
+        title:
+          "Form Revision History",
+
+        type:
+          "Administrative Audit",
+
+        body:
+`FORM:
+Personnel Cross-Reference Review PR-22
+
+CURRENT VERSION CREATED:
+6 years ago
+
+LEGACY RECEIPT DATE:
+31 years ago
+
+TEXTUAL MATCH:
+100 percent
+
+SERIAL MATCH:
+Current Day 13 transaction
+
+AUDIT FINDING:
+The historical receipt cannot have been produced
+using the current form version.
+
+No revision event, copying charm,
+or manual insertion appears in the audit trail.`
+      },
+
+      {
+        id:
+          "E-604",
+
+        title:
+          "Room 4-7 Security Echo",
+
+        type:
+          "Legacy Security Event",
+
+        body:
+`LOCATION:
+Personnel Continuity Chamber · Room 4-7
+
+TIME:
+02:13
+
+EVENT:
+Compatibility Verification
+
+AUTHORIZATION:
+MOM-000117
+
+CURRENT CREDENTIAL RESPONSE:
+ACCEPTED
+
+SYSTEM MESSAGE:
+"ONE CONDITION REMAINS TRUE."
+
+PHYSICAL ENTRY:
+NONE
+
+EXIT RECORD:
+NONE`
+      }
+
+    ],
+
+
+    witnesses: [
+
+      {
+        id:
+          "W-601",
+
+        name:
+          "Eleanor Whitmore",
+
+        role:
+          "Senior Archivist",
+
+        statement:
+`I reviewed your Day 13 decision after it was filed.
+
+The archived copy was already waiting for us.
+
+It did not merely recommend the same action.
+It carried the same disposition code and the same
+service evaluation that the Ministry assigned to you.
+
+You are not being accused of copying MOM-000117.
+
+The question is how a sealed record copied you
+before you made the decision.`
+      },
+
+      {
+        id:
+          "W-602",
+
+        name:
+          "Dr. Miriam Vale",
+
+        role:
+          "Memory Archive Specialist",
+
+        statement:
+`A memory can be altered after an event.
+A ledger can be forged before one.
+
+This record behaves like neither.
+
+Its seal proves the contents existed at 02:13,
+but the contents describe a later decision exactly.
+
+Do not call it prophecy yet.
+
+Personnel Continuity records were built to preserve
+authorization, not to predict human behavior.`
+      },
+
+      {
+        id:
+          "W-603",
+
+        name:
+          "Gideon March",
+
+        role:
+          "Continuity Systems Examiner",
+
+        statement:
+`The phrase compatibility condition appears only once
+in the surviving technical index.
+
+It refers to three tests attached to VACANCY-AR-117.
+
+The first does not compare identity.
+It compares procedural response under Ministry duty.
+
+I cannot access the other two conditions.
+
+But I can confirm this:
+the system was waiting for your answer.`
+      }
+
+    ],
+
+
+    timeline: [
+
+      "31 years ago - Legacy Continuity Receipt 117-C is sealed under MOM-000117.",
+
+      "6 years ago - The current Personnel Cross-Reference form is created.",
+
+      "Day 13 · 02:13 - Room 4-7 authenticates Receipt 117-C.",
+
+      "Day 13 - The current officer receives a routine Personnel Cross-Reference duty.",
+
+      "Day 13 - The current officer files an official action.",
+
+      "Day 13 - The sealed receipt is found to contain the same action and evaluation.",
+
+      "Day 14 - Personnel Continuity Oversight opens CASE-006."
+
+    ],
+
+
+    notes: [
+
+      "The sealed receipt was authenticated before the current decision.",
+
+      "The historical and current records match beyond ordinary form language.",
+
+      "Identity equality is explicitly excluded from the first compatibility component.",
+
+      "The first of three compatibility components is now marked satisfied.",
+
+      "Two compatibility components remain sealed at Level IV.",
+
+      "No evidence yet proves prediction, time alteration, or record rewriting.",
+
+      "MOM-000117 remains the historical authorization attached to the receipt."
+
+    ]
+
   }
 
 };
