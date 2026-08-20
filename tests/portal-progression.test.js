@@ -84,7 +84,9 @@ function loadPortal(initialValues){
   const activity = {
     alerts: [],
     openedCase:
-      null
+      null,
+    networkOpened:
+      false
   };
 
 
@@ -124,6 +126,12 @@ function loadPortal(initialValues){
 
     showPromotionReview(){},
     talkToWhitmore(){},
+
+    showMinistryNetwork(){
+
+      activity.networkOpened =
+        true;
+    },
 
     document: {
       getElementById(){
@@ -426,11 +434,25 @@ assert.match(
   app.innerHTML,
   /Read Recruitment Systems Audit/
 );
+assert.match(
+  app.innerHTML,
+  /Ministry Network/
+);
 assert.doesNotMatch(
   app.innerHTML,
   /END WORK DAY/
 );
 pass("Day 8 dashboard gates the assignment correctly");
+
+
+context.openOfficeItem(
+  "Ministry Network"
+);
+assert.equal(
+  activity.networkOpened,
+  true
+);
+pass("Office 3-B exposes the employee archive and account desk");
 
 
 context.openOwlMail(
