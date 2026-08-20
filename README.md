@@ -1,158 +1,139 @@
-# 🗂️ The Hidden Files
+# THE HIDDEN FILES
 
-> **An interactive archive mystery experience built with HTML, CSS and Vanilla JavaScript.**
+THE HIDDEN FILES is a browser-based British Ministry of Magic employee experience built with static HTML, CSS, and vanilla JavaScript.
 
-The Hidden Files is a browser-based investigation experience inspired by magical archive systems.
+The player does not simply open a mystery game. They are recruited, interviewed, assigned an employee identity, and return to Office 3-B for continuing Ministry work.
 
-Players access a classified archive, investigate recovered personnel, case files and evidence, unlock hidden records, and ultimately discover the truth behind **CASE-ZERO** and **CASE-OMEGA**.
+The target feeling is:
 
----
+> I logged into work today.
 
-# ✨ Features
 
-- 🗄️ Interactive Archive OS Interface
-- 🔍 Real-time Archive Search
-- 📁 Archive Explorer
-- 🕸️ Intelligence Investigation Board
-- 👤 Personnel Database
-- 📂 Case Records
-- 📜 Evidence Viewer
-- 📅 Investigation Timeline
-- 💾 Automatic Progress Saving
-- 🌐 Multi-language UI
-  - English
-  - 한국어
-  - 日本語
-- 🔒 Hidden Investigation Route
-- 🎬 Secret Ending (CASE-OMEGA)
-- ♻️ Archive Reset
+## Current playable alpha
 
----
+The current portal includes:
 
-# 📸 Screenshots
+- Recruitment, application, and interview
+- Identity Engine results
+- Permanent employee number
+- Returning Employee resume flow
+- Office 3-B dashboard
+- Eleanor Whitmore and First Day Orientation
+- Rank, clearance, promotion, and personnel records
+- Owl Mail, Daily Prophet, and Notice Board
+- World Day progression and End Work Day
+- Investigation reports saved in localStorage
+- CASE-000 through CASE-005
+- First Personnel Continuity story arc
+- Day 10 and later recurring Ministry work orders
+- Rotating daily news and notices
+- Permanent Service Points and duty history
 
-> Screenshots will be added in a future update.
 
-| Screen | Description |
-|--------|-------------|
-| Boot Screen | Archive initialization |
-| Dashboard | Main archive interface |
-| Investigation Board | Relationship mapping |
-| Archive Explorer | Folder navigation |
-| CASE-OMEGA | Final hidden archive |
+## Story progression
 
----
+```text
+Day 1   CASE-000 · The Missing Owl
+Day 2   CASE-001 · Memory Fracture
+Day 3   CASE-002 · The Officer Who Never Existed
+Day 4   CASE-003 · Sub-Level 4
+Day 5   Personnel Continuity Chamber review
+Day 6   CASE-004 · The Second Signature
+Day 7   Prior Authorization Claim review
+Day 8   CASE-005 · The Position That Never Closed
+Day 9   Continuity Appointment determination
+Day 10+ Continuing daily Ministry service
+```
 
-# 🎮 How to Play
+The first arc establishes that the player and MOM-000117 are separate recorded identities connected to one unresolved Ministry appointment. The identity of MOM-000117 and the sealed compatibility condition remain available for future story arcs.
 
-1. Boot the Archive OS.
-2. Login with the archive credentials.
-3. Explore Personnel, Cases and Evidence.
-4. Search the archive for hidden keywords.
-5. Unlock CASE-ZERO.
-6. Discover CASE-OMEGA.
 
----
+## Run locally
 
-# 🌍 Supported Languages
+No build step is required.
 
-- 🇬🇧 English
-- 🇰🇷 한국어
-- 🇯🇵 日本語
+Open:
 
----
+```text
+portal/index.html
+```
 
-# 🛠️ Built With
+For consistent browser storage and routing, a simple local web server is recommended:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then visit:
+
+```text
+http://localhost:8000/portal/
+```
+
+
+## Automated progression test
+
+Node.js is required only for testing.
+
+```bash
+node tests/portal-progression.test.js
+```
+
+The test verifies:
+
+- CASE-000 through CASE-005 registration
+- scalable completed-case tracking
+- Day 8 and Day 9 story progression
+- first-arc career assignment
+- recommended versus assigned department separation
+- fourteen continuous daily work cycles
+- daily news and notice state
+- duplicate Service Point protection
+- preservation of employee number, rank, clearance, and old reports
+
+
+## Project structure
+
+```text
+portal/
+├── index.html
+├── css/
+│   └── portal.css
+└── js/
+    ├── player-engine.js
+    ├── world-engine.js
+    ├── daily-work.js
+    ├── dashboard.js
+    ├── case-data.js
+    ├── case-engine.js
+    ├── owl-mail.js
+    ├── news-data.js
+    ├── notice-data.js
+    └── ...
+
+tests/
+└── portal-progression.test.js
+```
+
+
+## Save system
+
+The current alpha stores progress in browser localStorage.
+
+Existing keys are retained for compatibility, including employee identity, rank, clearance, world day, reports, case status, and communication read state.
+
+Public Alpha will require authentication, a database, cloud saves, a backend, and server-side security. See [ROADMAP.md](ROADMAP.md).
+
+
+## Technology
 
 - HTML5
 - CSS3
 - Vanilla JavaScript
-- LocalStorage API
-- GitHub Pages
+- Browser localStorage
+- Node.js built-in test utilities
 
----
 
-# 🚀 Live Demo
+## Author
 
-https://fbtmdals2243-wq.github.io/the-hidden-files/
-
----
-
-# 📦 Version
-
-Current Version
-
-```
-v1.0.0
-```
-
-Release Name
-
-```
-Recovery Complete
-```
-
----
-
-# 📁 Project Structure
-
-```
-the-hidden-files
-│
-├── css/
-│   └── style.css
-│
-├── js/
-│   └── app.js
-│
-├── index.html
-├── README.md
-├── LICENSE
-└── ROADMAP.md
-```
-
----
-
-# 🔮 Roadmap
-
-### v1.1
-
-- Additional hidden investigations
-- New archive documents
-- Expanded explorer
-
-### v2.0
-
-- Multiple archive branches
-- New storyline
-- Additional endings
-
----
-
-# 📄 License
-
-MIT License
-
----
-
-# 👤 Author
-
-Created by **Ryu TaeO**
-
-GitHub
-
-https://github.com/fbtmdals2243-wq
-
----
-
-## Archive Status
-
-```
-ARCHIVE RESTORATION: 100%
-ROOT FILES VERIFIED
-CASE-ZERO UNLOCKED
-CASE-OMEGA RECOVERED
-
-SYSTEM STATUS:
-ONLINE
-```
+Created by Ryu TaeO.
