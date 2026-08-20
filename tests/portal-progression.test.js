@@ -21,6 +21,22 @@ function createStorage(initialValues = {}){
 
   return {
 
+    get length(){
+
+      return values.size;
+    },
+
+
+    key(index){
+
+      return (
+        Array.from(
+          values.keys()
+        )[index] ||
+        null
+      );
+    },
+
     getItem(key){
 
       return values.has(key)
@@ -126,6 +142,7 @@ function loadPortal(initialValues){
 
 
   const scripts = [
+    "portal/js/storage-engine.js",
     "portal/js/case-data.js",
     "portal/js/player-engine.js",
     "portal/js/world-engine.js",
@@ -152,6 +169,17 @@ function loadPortal(initialValues){
           ),
           "utf8"
         );
+
+
+      if(
+        scriptPath.endsWith(
+          "storage-engine.js"
+        )
+      ){
+
+        source +=
+          "\nthis.__MinistryStorage = MinistryStorage;";
+      }
 
 
       if(
@@ -222,6 +250,8 @@ function loadPortal(initialValues){
       context.__World,
     DailyWork:
       context.__DailyWork,
+    MinistryStorage:
+      context.__MinistryStorage,
     MinistryCases:
       context.__MinistryCases
   };
@@ -317,8 +347,31 @@ const {
   Player,
   World,
   DailyWork,
+  MinistryStorage,
   MinistryCases
 } = portal;
+
+
+const initialSnapshot =
+  MinistryStorage.createSnapshot();
+
+assert.equal(
+  initialSnapshot.employeeId,
+  "MOM-009999"
+);
+assert.equal(
+  initialSnapshot.data.worldDay,
+  "8"
+);
+assert.equal(
+  initialSnapshot.data[
+    "report_CASE-004"
+  ],
+  localStorage.getItem(
+    "report_CASE-004"
+  )
+);
+pass("Portal progress is available through the versioned storage layer");
 
 
 assert.deepEqual(
