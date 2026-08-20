@@ -1,11 +1,21 @@
 function showPersonnelRecord(){
 
-  const name = Player.getName();
-  const employeeId = Player.getEmployeeId();
-  const identity = Player.getIdentity();
+  const name =
+    Player.getName();
+
+  const employeeId =
+    Player.getEmployeeId();
+
+  const identity =
+    Player.getIdentity();
+
+
+  const completedCaseIds =
+    Player.getCompletedCaseIds();
 
   const completedCases =
-    Player.getCompletedCases();
+    completedCaseIds.length;
+
 
   const currentRank =
     Player.getRank();
@@ -13,55 +23,118 @@ function showPersonnelRecord(){
   const currentClearance =
     Player.getClearance();
 
+
   const isPromoted =
-    currentRank === "Archive Officer";
+    currentRank ===
+    "Archive Officer";
+
 
   const completedCaseList =
-    completedCases >= 1
-      ? "- CASE-000 · The Missing Owl · Completed"
+    completedCaseIds.length > 0
+
+      ? completedCaseIds
+          .map(caseId => {
+
+            const caseData =
+              typeof MinistryCases !== "undefined"
+                ? MinistryCases[caseId]
+                : null;
+
+            const caseTitle =
+              caseData
+                ? caseData.title
+                : "Classified Case";
+
+            return (
+              "- " +
+              caseId +
+              " · " +
+              caseTitle +
+              " · Completed"
+            );
+
+          })
+          .join("\n")
+
       : "- No completed cases recorded";
+
 
   const reputation =
     completedCases >= 1
       ? "Excellent"
       : "Promising";
 
+
   let promotionStatus =
     "Not Eligible";
+
 
   if(
     completedCases >= 1 &&
     !isPromoted
   ){
+
     promotionStatus =
       "Eligible for Promotion Review";
   }
 
+
   if(isPromoted){
+
     promotionStatus =
       "Promoted to Archive Officer";
   }
+
 
   const careerTimeline = [
     "Joined the Ministry of Magic"
   ];
 
-  if(completedCases >= 1){
-    careerTimeline.push(
-      "Completed CASE-000"
-    );
-  }
+
+  completedCaseIds.forEach(
+    caseId => {
+
+      careerTimeline.push(
+        "Completed " + caseId
+      );
+
+
+      if(
+        caseId === "CASE-000" &&
+        isPromoted
+      ){
+
+        careerTimeline.push(
+          "Promoted to Archive Officer"
+        );
+
+        careerTimeline.push(
+          "Level II Clearance Granted"
+        );
+      }
+
+    }
+  );
+
 
   if(
     completedCases >= 1 &&
     !isPromoted
   ){
+
     careerTimeline.push(
       "Promotion Review Eligible"
     );
   }
 
-  if(isPromoted){
+
+  if(
+    isPromoted &&
+    !completedCaseIds.includes(
+      "CASE-000"
+    )
+  ){
+
     careerTimeline.push(
       "Promoted to Archive Officer"
     );
@@ -70,6 +143,7 @@ function showPersonnelRecord(){
       "Level II Clearance Granted"
     );
   }
+
 
   const canRequestPromotion =
     completedCases >= 1 &&
