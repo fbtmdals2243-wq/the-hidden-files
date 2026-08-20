@@ -1087,6 +1087,438 @@ for that officer to leave.`
 
     ]
 
+  },
+
+
+  /* =====================================================
+     CASE-004
+     THE SECOND SIGNATURE
+  ===================================================== */
+
+  "CASE-004": {
+
+    id:
+      "CASE-004",
+
+    title:
+      "The Second Signature",
+
+    classification:
+      "Level II · Personnel Integrity Review",
+
+    status:
+      "Active",
+
+    department:
+      "Personnel Registry · Archive Division",
+
+    summary:
+`A Day 6 personnel integrity audit has detected
+a restricted continuity authorization signature
+inside the investigating officer's active employee record.
+
+The signature is an exact match for the authorization
+record preserved under MOM-000117.
+
+Standard identity fields do not match.
+
+The current employee number is active, recently issued,
+and remains attached to the officer's own verified identity.
+
+The Ministry must determine when the second signature
+entered the record, why it remained dormant, and whether
+Room 4-7 is actively authorizing a current employee.`,
+
+
+    evidence: [
+
+      {
+        id:
+          "E-401",
+
+        title:
+          "Active Personnel Integrity Extract",
+
+        type:
+          "Restricted Personnel Record",
+
+        body:
+`MINISTRY PERSONNEL REGISTRY
+INTEGRITY REVIEW DESK
+
+RECORD TYPE:
+ACTIVE EMPLOYEE
+
+EMPLOYEE STATUS:
+ACTIVE
+
+IDENTITY VERIFICATION:
+PASSED
+
+STANDARD RECORD OWNER:
+CURRENT INVESTIGATING OFFICER
+
+UNEXPECTED FIELD DETECTED:
+LEGACY CONTINUITY AUTHORIZATION
+
+AUTHORIZATION SIGNATURE:
+PC-117-CONTINUITY
+
+HISTORICAL MATCH:
+MOM-000117
+
+IDENTITY MATCH:
+NOT ESTABLISHED
+
+The active record and the historical record
+share no visible name, wand, department,
+education, address, or biometric identity fields.
+
+Only the authorization signature is identical.`
+      },
+
+
+      {
+        id:
+          "E-402",
+
+        title:
+          "Credential Issuance Audit",
+
+        type:
+          "Recruitment System Log",
+
+        body:
+`BRITISH MINISTRY OF MAGIC
+RECRUITMENT CREDENTIAL LOG
+
+DAY 1 · 09:12:04
+
+New employee identifier generated.
+
+DAY 1 · 09:12:09
+
+Applicant identity attached.
+
+DAY 1 · 09:12:13
+
+Department recommendation attached.
+
+DAY 1 · 09:12:17
+
+Credential finalized.
+
+DAY 1 · 09:12:17
+
+UNREQUESTED LEGACY RESPONSE RECEIVED.
+
+SOURCE:
+PERSONNEL CONTINUITY ROUTING
+
+ACTION:
+AUTHORIZATION SIGNATURE APPENDED
+
+The Recruitment Office did not request
+a continuity verification.
+
+No Ministry employee is recorded as
+having added the signature.`
+      },
+
+
+      {
+        id:
+          "E-403",
+
+        title:
+          "Day 6 Authentication Route",
+
+        type:
+          "Live Security Trace",
+
+        body:
+`MINISTRY SECURITY TRACE
+
+DAY 6 · 08:41:00
+
+LOCATION:
+OFFICE 3-B
+
+EVENT:
+MORNING EMPLOYEE AUTHENTICATION
+
+ACTIVE CLEARANCE:
+LEVEL II
+
+08:41:01
+Standard identity verification passed.
+
+08:41:02
+Level II authorization verification requested.
+
+08:41:02
+Request redirected without instruction.
+
+DESTINATION:
+SUB-LEVEL 4 / ROOM 4-7
+
+08:41:03
+Legacy security response received.
+
+RESPONSE:
+AUTHORIZED
+
+CONTINUITY STATUS:
+OCCUPANT AUTHORIZATION CONFIRMED
+
+The response arrived from a chamber
+that is not connected to the active
+Ministry personnel network.`
+      },
+
+
+      {
+        id:
+          "E-404",
+
+        title:
+          "Continuity Signature Comparison",
+
+        type:
+          "Magical Seal Analysis",
+
+        body:
+`PERSONNEL CONTINUITY SYSTEM
+SIGNATURE COMPARISON
+
+HISTORICAL RECORD:
+MOM-000117
+
+ACTIVE RECORD:
+CURRENT INVESTIGATING OFFICER
+
+SIGNATURE SIMILARITY:
+100.000%
+
+RESULT:
+EXACT AUTHORIZATION MATCH
+
+Continuity signatures are designed
+to remain unique to one authorization record.
+
+They cannot be inherited.
+
+They cannot be copied through standard magic.
+
+They cannot be reassigned by the Personnel Registry.
+
+Both signatures carry the same original
+Undersecretary master seal from thirty years ago.
+
+The active signature also carries
+a current Day 6 verification timestamp.`
+      },
+
+
+      {
+        id:
+          "E-405",
+
+        title:
+          "Personnel Record Difference Report",
+
+        type:
+          "Identity Comparison",
+
+        body:
+`MINISTRY PERSONNEL REGISTRY
+IDENTITY DIFFERENCE REPORT
+
+COMPARISON:
+CURRENT OFFICER / MOM-000117
+
+EMPLOYEE NUMBER:
+DIFFERENT
+
+NAME:
+NO MATCH
+
+DEPARTMENT:
+NO MATCH
+
+WAND REGISTRATION:
+NO MATCH
+
+EDUCATION RECORD:
+NO MATCH
+
+MAGICAL IDENTITY MARKERS:
+NO MATCH
+
+AUTHORIZATION SIGNATURE:
+EXACT MATCH
+
+CONCLUSION:
+
+The available evidence does not support
+a standard duplicate identity.
+
+The current officer's identity remains intact.
+
+The unexplained connection exists beneath
+the identity layer, inside Ministry authorization.`
+      }
+
+    ],
+
+
+    witnesses: [
+
+      {
+        id:
+          "W-401",
+
+        name:
+          "Amara Finch",
+
+        role:
+          "Personnel Integrity Auditor",
+
+        statement:
+`I checked the record three times.
+
+The officer's identity is not a copy.
+
+The name, wand registration, magical markers,
+and recruitment history all belong to the
+current employee.
+
+But authorization sits underneath identity.
+
+That lower layer answered as MOM-000117.
+
+I have never seen an active record
+carry a continuity signature.
+
+The Registry locked the file automatically
+because it did not know which record
+was authorizing which.`
+      },
+
+
+      {
+        id:
+          "W-402",
+
+        name:
+          "Tobias Reed",
+
+        role:
+          "Legacy Security Technician",
+
+        statement:
+`The signature was not copied into the record.
+
+That would leave a transfer trace.
+
+There is no transfer trace.
+
+The active credential asked whether it
+was authorized, and Room 4-7 answered yes.
+
+That is worse.
+
+It means the chamber is not merely storing
+MOM-000117's old permission.
+
+It is making a current decision.
+
+What I cannot tell you is why it recognizes
+this officer's credential as something
+it is permitted to answer for.`
+      },
+
+
+      {
+        id:
+          "W-403",
+
+        name:
+          "Eleanor Whitmore",
+
+        role:
+          "Senior Archivist",
+
+        statement:
+`Your employee record looked normal
+when you arrived in Office 3-B.
+
+I saw the number, the rank,
+and your Level I clearance.
+
+Nothing mentioned continuity.
+
+After your promotion, the authorization layer
+became visible to deeper Ministry checks.
+
+This morning the system told me
+not to confiscate your credentials.
+
+That instruction arrived before the Registry
+sent its alert.
+
+The sender field was blank.
+
+The authorization mark on the instruction
+was thirty years old.`
+      }
+
+    ],
+
+
+    timeline: [
+
+      "30 years ago - MOM-000117 is registered as a Continuity Subject.",
+
+      "30 years ago - PC-117-CONTINUITY signature is sealed inside Room 4-7.",
+
+      "Day 1 · 09:12:04 - Current employee identifier is generated.",
+
+      "Day 1 · 09:12:17 - Unrequested continuity response reaches Recruitment.",
+
+      "Day 1 · 09:12:17 - PC-117-CONTINUITY is appended beneath the active identity layer.",
+
+      "Day 2 - Level II clearance is granted to the current officer.",
+
+      "Day 6 · 08:41:02 - Level II morning verification reaches Room 4-7.",
+
+      "Day 6 · 08:41:03 - Room 4-7 returns active authorization.",
+
+      "Day 6 · 08:42 - Personnel Registry locks the integrity layer for review."
+
+    ],
+
+
+    notes: [
+
+      "The current officer's standard identity fields remain intact and distinct from MOM-000117.",
+
+      "The active record contains the exact PC-117-CONTINUITY authorization signature.",
+
+      "No transfer, inheritance, or manual copy event exists.",
+
+      "The signature entered the record during Day 1 credential finalization.",
+
+      "The signature remained dormant until a Level II verification was requested.",
+
+      "Room 4-7 responded to the current credential in real time on Day 6.",
+
+      "The evidence does not establish that the current officer and MOM-000117 are the same identity.",
+
+      "The reason Room 4-7 recognizes the current credential remains unknown."
+
+    ]
+
   }
 
 };
