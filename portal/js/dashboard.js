@@ -146,6 +146,11 @@ function showDashboard(){
       "mailRead_MAIL-013"
     ) === "true";
 
+  const mail014Read =
+    localStorage.getItem(
+      "mailRead_MAIL-014"
+    ) === "true";
+
 
   const day6PersonnelRecordViewed =
     localStorage.getItem(
@@ -223,6 +228,16 @@ function showDashboard(){
   const case006ReviewAvailable =
     case006Status === "Under Review" &&
     worldDay > case006SubmittedDay;
+
+
+  const trainingAssigned =
+    worldDay >= 16 &&
+    case006Status === "Solved";
+
+
+  const continuityTrainingCompleted =
+    typeof MinistryTraining !== "undefined" &&
+    MinistryTraining.isCompleted();
 
 
   const dailyDutyCompleted =
@@ -513,6 +528,16 @@ function showDashboard(){
       mailLabel =
         "CASE-006 review";
     }
+  }
+
+
+  if(
+    trainingAssigned &&
+    !mail014Read
+  ){
+
+    mailLabel =
+      "Training directive";
   }
 
 
@@ -1038,6 +1063,43 @@ function showDashboard(){
 
 
   /* =====================================================
+     MINISTRY TRAINING
+  ===================================================== */
+
+  if(
+    trainingAssigned &&
+    !continuityTrainingCompleted
+  ){
+
+    if(!mail014Read){
+
+      assignmentLabel =
+        "Mandatory training assigned";
+
+      currentTask =
+        "Read the Continuity Training Directive";
+    }
+    else{
+
+      const trainingProgress =
+        MinistryTraining.getProgress();
+
+      assignmentLabel =
+        "Qualification in progress";
+
+      currentTask =
+        "Continuity Records Handling · Module " +
+        (
+          trainingProgress.completedModules.length +
+          1
+        ) +
+        " of " +
+        MinistryTraining.course.modules.length;
+    }
+  }
+
+
+  /* =====================================================
      END WORK DAY
   ===================================================== */
 
@@ -1181,6 +1243,16 @@ function showDashboard(){
 
     canEndWorkDay =
       !case006ReviewAvailable;
+  }
+
+
+  if(
+    trainingAssigned &&
+    !continuityTrainingCompleted
+  ){
+
+    canEndWorkDay =
+      false;
   }
 
 
@@ -1375,6 +1447,31 @@ function showDashboard(){
 
 
         <button
+          class="object training-desk"
+          onclick="openOfficeItem('Training Desk')">
+
+          🎓
+
+          <span>
+            Training Desk
+          </span>
+
+          <small>
+            ${
+              continuityTrainingCompleted
+                ? "Grade I certified"
+                : trainingAssigned
+                  ? mail014Read
+                    ? "Course in progress"
+                    : "Directive pending"
+                  : "No active course"
+            }
+          </small>
+
+        </button>
+
+
+        <button
           class="object ministry-network"
           onclick="openOfficeItem('Ministry Network')">
 
@@ -1525,6 +1622,17 @@ function startNextWorkDay(){
 ========================================================= */
 
 function openOfficeItem(item){
+
+
+  if(
+    item ===
+    "Training Desk"
+  ){
+
+    showTrainingDesk();
+
+    return;
+  }
 
 
   if(
@@ -2069,6 +2177,39 @@ function openOfficeItem(item){
 
           return;
         }
+      }
+
+
+      const continuityTrainingRequired =
+        worldDay >= 16 &&
+        Player.getCaseStatus(
+          "CASE-006"
+        ) === "Solved" &&
+        typeof MinistryTraining !== "undefined" &&
+        !MinistryTraining.isCompleted();
+
+
+      if(continuityTrainingRequired){
+
+        const trainingDirectiveRead =
+          localStorage.getItem(
+            "mailRead_MAIL-014"
+          ) === "true";
+
+
+        if(!trainingDirectiveRead){
+
+          alert(
+            "Read the mandatory Continuity Records Handling directive in Owl Mail first."
+          );
+
+          return;
+        }
+
+
+        showTrainingDesk();
+
+        return;
       }
 
 
