@@ -9,6 +9,9 @@ const MinistryStorage = {
   remoteAdapter:
     null,
 
+  maxSnapshotCharacters:
+    2000000,
+
 
   gameKeyPrefixes: [
     "ministry",
@@ -390,6 +393,22 @@ const MinistryStorage = {
 
 
     if(
+      JSON.stringify(
+        snapshot.data
+      ).length >
+      this.maxSnapshotCharacters
+    ){
+
+      return {
+        valid:
+          false,
+        reason:
+          "snapshot-too-large"
+      };
+    }
+
+
+    if(
       keys.some(
         key =>
           !this.isGameKey(key)
@@ -405,6 +424,61 @@ const MinistryStorage = {
     }
 
 
+    if(
+      keys.some(
+        key =>
+          typeof snapshot.data[key] !==
+            "string" &&
+          snapshot.data[key] !==
+            null
+      )
+    ){
+
+      return {
+        valid:
+          false,
+        reason:
+          "invalid-value"
+      };
+    }
+
+
+    const employeeId =
+      snapshot.data.ministryEmployeeId ||
+      null;
+
+
+    if(
+      (snapshot.employeeId || null) !==
+      employeeId
+    ){
+
+      return {
+        valid:
+          false,
+        reason:
+          "employee-id-mismatch"
+      };
+    }
+
+
+    if(
+      typeof snapshot.checksum !==
+        "string" ||
+      !/^[0-9a-f]{8}$/i.test(
+        snapshot.checksum
+      )
+    ){
+
+      return {
+        valid:
+          false,
+        reason:
+          "invalid-checksum"
+      };
+    }
+
+
     const expectedChecksum =
       this.calculateChecksum(
         snapshot.data
@@ -412,7 +486,6 @@ const MinistryStorage = {
 
 
     if(
-      snapshot.checksum &&
       snapshot.checksum !==
       expectedChecksum
     ){
@@ -524,6 +597,25 @@ const MinistryStorage = {
 
     this.remoteAdapter =
       adapter;
+
+    return true;
+  },
+
+
+  clearRemoteAdapter(adapter = null){
+
+    if(
+      adapter &&
+      this.remoteAdapter !==
+        adapter
+    ){
+
+      return false;
+    }
+
+
+    this.remoteAdapter =
+      null;
 
     return true;
   },
