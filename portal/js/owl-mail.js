@@ -894,6 +894,65 @@ British Ministry of Magic`
   }
 
 
+  /* =====================================================
+     DAY 16+
+     MINISTRY TRAINING DIRECTIVE
+  ===================================================== */
+
+  if(
+    worldDay >= 16 &&
+    case006Status === "Solved"
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-014",
+
+      from:
+        "Ministry Training Office",
+
+      subject:
+        "Mandatory Qualification · Continuity Records Handling",
+
+      status:
+        getMailStatus(
+          "MAIL-014"
+        ),
+
+      body:`Officer,
+
+Your appointment as Continuity Liaison now requires a formal Ministry qualification.
+
+COURSE:
+TRAIN-CONTINUITY-I
+
+QUALIFICATION:
+CONTINUITY RECORDS HANDLING · GRADE I
+
+The course covers:
+
+1. Separation of employee identity and appointment authorization.
+
+2. Preservation of contradictory authenticated records.
+
+3. Clearance restrictions and authorized escalation.
+
+Completion will be entered permanently into your employee personnel record.
+
+This qualification does not increase your current clearance.
+
+It establishes eligibility for a future Level III review.
+
+Report to the Training Desk in Office 3-B before beginning today's routine work order.
+
+— Ministry Training Office
+British Ministry of Magic`
+
+    });
+  }
+
+
   return mails;
 }
 
