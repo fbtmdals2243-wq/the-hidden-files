@@ -340,65 +340,84 @@ THE HIDDEN FILES: ACCESS AVAILABLE</div>
 
 function showArchiveCabinet(){
 
-  const case000Status =
-    Player.getCaseStatus(
-      "CASE-000"
-    );
-
-
-  const case001Status =
-    Player.getCaseStatus(
-      "CASE-001"
-    );
-
-
-  const hasLevelII =
-    Player.hasClearance(
-      "Level II"
-    );
-
-
-  const worldDay =
-    World.getDay();
-
-
-  /*
-    Day 2 Ministry communications
-  */
-
-  const day2MailRead =
-    localStorage.getItem(
-      "mailRead_MAIL-004"
-    ) === "true";
-
-
-  const day2NewsRead =
-    localStorage.getItem(
-      "newsRead_NEWS-003"
-    ) === "true";
-
-
-  const day2NoticeRead =
-    localStorage.getItem(
-      "noticeRead_NOTICE-003"
-    ) === "true";
-
-
-  /*
-    CASE-001 release conditions
-
-    1. Level II
-    2. Day 2 or later
-    3. Day 2 communications reviewed
-  */
+  const hasLevelII = Player.hasClearance("Level II");
+  const worldDay = World.getDay();
 
   const case001Available =
     hasLevelII &&
     worldDay >= 2 &&
-    day2MailRead &&
-    day2NewsRead &&
-    day2NoticeRead;
+    localStorage.getItem("mailRead_MAIL-004") === "true" &&
+    localStorage.getItem("newsRead_NEWS-003") === "true" &&
+    localStorage.getItem("noticeRead_NOTICE-003") === "true";
 
+  const case002Available =
+    hasLevelII &&
+    worldDay >= 3 &&
+    localStorage.getItem("mailRead_MAIL-005") === "true";
+
+  const case003Available =
+    hasLevelII &&
+    worldDay >= 4 &&
+    localStorage.getItem("mailRead_MAIL-006") === "true";
+
+  const case004Available =
+    hasLevelII &&
+    worldDay >= 6 &&
+    localStorage.getItem("mailRead_MAIL-008") === "true" &&
+    localStorage.getItem("day6PersonnelRecordViewed") === "true";
+
+  const case005Available =
+    hasLevelII &&
+    worldDay >= 8 &&
+    localStorage.getItem("mailRead_MAIL-010") === "true";
+
+  const case006Available =
+    hasLevelII &&
+    worldDay >= 14 &&
+    localStorage.getItem("mailRead_MAIL-012") === "true";
+
+  function renderCaseEntry(
+    caseId,
+    title,
+    isAvailable,
+    lockedMessage
+  ){
+
+    if(isAvailable){
+      return `
+        <button
+          class="case-entry available"
+          onclick="openCase('${caseId}')">
+
+          <b>${caseId}</b>
+
+          <span>${title}</span>
+
+          <small>
+            Status: ${Player.getCaseStatus(caseId)}
+          </small>
+
+        </button>
+      `;
+    }
+
+    return `
+      <button class="case-entry locked">
+
+        <b>${caseId}</b>
+
+        <span>${title}</span>
+
+        <small>${lockedMessage}</small>
+
+      </button>
+    `;
+  }
+
+  const case001LockedMessage =
+    !hasLevelII
+      ? "🔒 Clearance Level II Required"
+      : "⏳ Review Day 2 Ministry communications";
 
   app.innerHTML = `
     <section class="panel">
@@ -407,168 +426,97 @@ function showArchiveCabinet(){
         BRITISH MINISTRY OF MAGIC
       </div>
 
-      <h1>
-        ARCHIVE CABINET
-      </h1>
+      <h1>ARCHIVE CABINET</h1>
 
-      <h2>
-        ${Player.getClearance()} ACCESS
-      </h2>
-
+      <h2>${Player.getClearance()} ACCESS</h2>
 
       <div class="notice">
-
-        <h3>
-          PUBLIC ARCHIVE
-        </h3>
-
+        <h3>PUBLIC ARCHIVE</h3>
       </div>
 
+      <div class="case-list">
+        ${renderCaseEntry(
+          "CASE-000",
+          "The Missing Owl",
+          true,
+          ""
+        )}
+      </div>
+
+      <div class="notice">
+        <h3>RESTRICTED ARCHIVE</h3>
+      </div>
 
       <div class="case-list">
 
-        <button
-          class="case-entry available"
-          onclick="openCase('CASE-000')">
+        ${renderCaseEntry(
+          "CASE-001",
+          "Memory Fracture",
+          case001Available,
+          case001LockedMessage
+        )}
 
-          <b>
-            CASE-000
-          </b>
+        ${renderCaseEntry(
+          "CASE-002",
+          "The Officer Who Never Existed",
+          case002Available,
+          "⏳ Read the Day 3 Undersecretary briefing"
+        )}
 
-          <span>
-            The Missing Owl
-          </span>
+        ${renderCaseEntry(
+          "CASE-003",
+          "Sub-Level 4",
+          case003Available,
+          "⏳ Read the Sub-Level 4 access directive"
+        )}
 
-          <small>
-            Status: ${case000Status}
-          </small>
+        ${renderCaseEntry(
+          "CASE-004",
+          "The Second Signature",
+          case004Available,
+          "⏳ Review the Day 6 personnel integrity record"
+        )}
 
+        ${renderCaseEntry(
+          "CASE-005",
+          "The Position That Never Closed",
+          case005Available,
+          "⏳ Read the Day 8 Recruitment Systems Audit"
+        )}
+
+        ${renderCaseEntry(
+          "CASE-006",
+          "The Decision Before It Was Made",
+          case006Available,
+          "⏳ Await a Personnel Continuity recall"
+        )}
+
+        <button class="case-entry locked">
+          <b>CASE-ZERO</b>
+          <span>Restricted Archive Origin</span>
+          <small>🔒 Clearance Level V Required</small>
         </button>
 
       </div>
-
-
-      <div class="notice">
-
-        <h3>
-          RESTRICTED ARCHIVE
-        </h3>
-
-      </div>
-
-
-      <div class="case-list">
-
-
-        ${
-          case001Available
-
-          ? `
-
-            <button
-              class="case-entry available"
-              onclick="openCase('CASE-001')">
-
-              <b>
-                CASE-001
-              </b>
-
-              <span>
-                Memory Fracture
-              </span>
-
-              <small>
-                Status: ${case001Status}
-              </small>
-
-            </button>
-
-          `
-
-          : hasLevelII && worldDay >= 2
-
-            ? `
-
-              <button
-                class="case-entry locked">
-
-                <b>
-                  CASE-001
-                </b>
-
-                <span>
-                  Memory Fracture
-                </span>
-
-                <small>
-                  ⏳ Review Day 2 Ministry communications
-                </small>
-
-              </button>
-
-            `
-
-            : `
-
-              <button
-                class="case-entry locked">
-
-                <b>
-                  CASE-001
-                </b>
-
-                <span>
-                  Memory Fracture
-                </span>
-
-                <small>
-                  🔒 Clearance Level II Required
-                </small>
-
-              </button>
-
-            `
-        }
-
-
-        <button
-          class="case-entry locked">
-
-          <b>
-            CASE-ZERO
-          </b>
-
-          <span>
-            Restricted Archive Origin
-          </span>
-
-          <small>
-            🔒 Clearance Level V Required
-          </small>
-
-        </button>
-
-      </div>
-
 
       <div class="terminal">ARCHIVE STATUS: ACTIVE
 WORLD DATE: ${World.getDate()}
 CLEARANCE: ${Player.getClearance()}
 PUBLIC FILES: AVAILABLE
 LEVEL II ACCESS: ${hasLevelII ? "GRANTED" : "DENIED"}
-CASE-001: ${case001Available ? "RELEASED" : "PENDING"}</div>
-
+CASE-001: ${case001Available ? "RELEASED" : "PENDING"}
+CASE-002: ${case002Available ? "RELEASED" : "PENDING"}
+CASE-003: ${case003Available ? "RELEASED" : "PENDING"}
+CASE-004: ${case004Available ? "RELEASED" : "PENDING"}
+CASE-005: ${case005Available ? "RELEASED" : "PENDING"}
+CASE-006: ${case006Available ? "RELEASED" : "PENDING"}</div>
 
       <div class="center">
-
         <button
           class="btn"
           onclick="showDashboard()">
-
           RETURN TO OFFICE
-
         </button>
-
       </div>
 
     </section>
