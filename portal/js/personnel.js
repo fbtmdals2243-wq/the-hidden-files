@@ -47,6 +47,11 @@ function showPersonnelRecord(){
       "firstStoryArcCompleted"
     ) === "true";
 
+  const compatibilityConditionOne =
+    localStorage.getItem(
+      "sealedCompatibilityConditionOne"
+    ) === "true";
+
 
   const completedCaseIds =
     Player.getCompletedCaseIds();
@@ -185,6 +190,14 @@ function showPersonnelRecord(){
   }
 
 
+  if(compatibilityConditionOne){
+
+    careerTimeline.push(
+      "Compatibility Condition 1 Confirmed"
+    );
+  }
+
+
   if(completedDuties > 0){
 
     careerTimeline.push(
@@ -278,6 +291,33 @@ VALID
 
 Required Action:
 Continue assigned Ministry duties as Continuity Liaison.`;
+  }
+
+
+  if(compatibilityConditionOne){
+
+    registryIntegrityNotice += `
+
+Sealed Compatibility Review:
+COMPONENT 1 OF 3 SATISFIED
+
+Confirmed Component:
+PROCEDURAL RESPONSE CORRESPONDENCE
+
+Historical Record:
+MOM-000117 · LEGACY RECEIPT 117-C
+
+Current Record:
+DAY 13 PERSONNEL CROSS-REFERENCE DECISION
+
+Identity Match:
+NOT REQUIRED
+
+Remaining Components:
+2 SEALED · LEVEL IV AUTHORIZATION REQUIRED
+
+Required Action:
+Continue routine service and report any additional continuity echoes.`;
   }
 
 
