@@ -25,6 +25,11 @@ function getOwlMails(){
       "CASE-004"
     );
 
+  const case005Status =
+    Player.getCaseStatus(
+      "CASE-005"
+    );
+
   const worldDay =
     World.getDay();
 
@@ -546,6 +551,175 @@ British Ministry of Magic`
   }
 
 
+  /* =====================================================
+     DAY 8
+     RECRUITMENT SYSTEMS AUDIT
+  ===================================================== */
+
+  if(
+    worldDay >= 8 &&
+    case004Status === "Solved"
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-010",
+
+      from:
+        "Recruitment Oversight Office",
+
+      subject:
+        "Classified Assignment · Unresolved Vacancy AR-117",
+
+      status:
+        getMailStatus(
+          "MAIL-010"
+        ),
+
+      body:`Officer,
+
+The Office of the Undersecretary has authorized a limited audit of your original Ministry appointment.
+
+CASE-004 established that Room 4-7 submitted an authorization claim before your employee number was generated.
+
+Recruitment Oversight has now identified the target of that claim:
+
+VACANCY-AR-117
+
+DEPARTMENT:
+ARCHIVE DIVISION
+
+POSITION:
+CONTINUITY RECORDS LIAISON
+
+ORIGINAL APPOINTEE:
+MOM-000117
+
+The position was created thirty-one years ago.
+
+It has never been formally closed.
+
+The Personnel system currently records the position as both OCCUPIED and ELIGIBLE FOR RECRUITMENT.
+
+On Day 1, your application was routed into this position before your identity was attached to a Ministry credential.
+
+You are assigned to determine:
+
+1. Why VACANCY-AR-117 remained open.
+
+2. How the vacancy selected your application.
+
+3. Whether the shared continuity signature belongs to the employee, the position, or another Ministry authorization layer.
+
+This inquiry does not suspend your employment.
+
+Your credentials remain active.
+
+The sealed file is now available as:
+
+CASE-005
+THE POSITION THAT NEVER CLOSED
+
+— Recruitment Oversight Office
+British Ministry of Magic`
+
+    });
+  }
+
+
+  /* =====================================================
+     DAY 9
+     CASE-005 FINAL DETERMINATION
+  ===================================================== */
+
+  if(
+    worldDay >= 9 &&
+    (
+      case005Status === "Under Review" ||
+      case005Status === "Solved"
+    )
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-011",
+
+      from:
+        "Office of the Undersecretary",
+
+      subject:
+        "CASE-005 Final Determination · Continuity Appointment",
+
+      status:
+        getMailStatus(
+          "MAIL-011"
+        ),
+
+      body:`Officer,
+
+Your report concerning CASE-005 has been accepted.
+
+The Personnel Continuity Oversight Panel has reached a final determination regarding VACANCY-AR-117.
+
+The continuity signature does not establish that you and MOM-000117 share an identity.
+
+The available evidence supports a different conclusion.
+
+PC-117-CONTINUITY belongs to the Ministry appointment attached to VACANCY-AR-117.
+
+MOM-000117 was the first recorded holder of that appointment.
+
+You are the second.
+
+Thirty years ago, the Office of the Undersecretary ordered the position to remain recruitment-eligible while its original authorization stayed active inside Room 4-7.
+
+That order created a continuity-held post: one Ministry position capable of preserving a historical occupant while accepting a future compatible appointee.
+
+On Day 1, the Recruitment system determined that your application satisfied the sealed compatibility condition.
+
+The condition itself remains unavailable.
+
+The Ministry cannot currently determine why your application qualified.
+
+It can determine that your appointment is lawful, active, and distinct from the erased identity of MOM-000117.
+
+CASE-005 is officially closed.
+
+Your permanent personnel status is confirmed as follows.
+
+ASSIGNED DEPARTMENT:
+ARCHIVE DIVISION
+
+RANK:
+ARCHIVE OFFICER
+
+CLEARANCE:
+LEVEL II
+
+SPECIAL ASSIGNMENT:
+CONTINUITY LIAISON
+
+You will retain your current employee number and credentials.
+
+You are authorized to review future continuity anomalies assigned through Office 3-B.
+
+You are not authorized to reopen Room 4-7 or unseal the identity of MOM-000117.
+
+That identity remains a classified matter.
+
+Daily Ministry duties will continue while further continuity files are prepared.
+
+Report to Office 3-B on your next work day.
+
+— Office of the Undersecretary
+British Ministry of Magic`
+
+    });
+  }
+
+
   return mails;
 }
 
@@ -725,6 +899,46 @@ function openOwlMail(mailId){
   }
 
 
+  /* =====================================================
+     CASE-005 FINAL DETERMINATION
+  ===================================================== */
+
+  if(
+    mailId ===
+    "MAIL-011"
+  ){
+
+    Player.setCaseStatus(
+      "CASE-005",
+      "Solved"
+    );
+
+
+    localStorage.setItem(
+      "caseCompleted_CASE-005",
+      new Date().toISOString()
+    );
+
+
+    localStorage.setItem(
+      "firstStoryArcCompleted",
+      "true"
+    );
+
+
+    localStorage.setItem(
+      "playerAssignedDepartment",
+      "Archive Division"
+    );
+
+
+    localStorage.setItem(
+      "playerSpecialAssignment",
+      "Continuity Liaison"
+    );
+  }
+
+
   app.innerHTML = `
     <section class="panel">
 
@@ -759,7 +973,9 @@ function openOwlMail(mailId){
             mailId === "MAIL-006" ||
             mailId === "MAIL-007" ||
             mailId === "MAIL-008" ||
-            mailId === "MAIL-009"
+            mailId === "MAIL-009" ||
+            mailId === "MAIL-010" ||
+            mailId === "MAIL-011"
           )
             ? "Restricted"
             : "Internal",
