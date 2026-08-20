@@ -96,6 +96,12 @@ async function run(){
         }),
       dailyDutyCompleted_Day14:
         "true",
+      secondStoryArcStarted:
+        "true",
+      sealedCompatibilityStage:
+        "1",
+      case006SubmittedDay:
+        "14",
       themePreference:
         "unrelated-site-value"
     });
@@ -197,6 +203,18 @@ async function run(){
     localStorage.getItem(
       "report_CASE-005"
     )
+  );
+  assert.equal(
+    snapshot.data.secondStoryArcStarted,
+    "true"
+  );
+  assert.equal(
+    snapshot.data.sealedCompatibilityStage,
+    "1"
+  );
+  assert.equal(
+    snapshot.data.case006SubmittedDay,
+    "14"
   );
   pass("Snapshot contains game data and excludes unrelated site storage");
 
