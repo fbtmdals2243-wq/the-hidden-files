@@ -17,6 +17,10 @@
 - Daily news and notices
 - Service Points and permanent duty history
 - Automated progression and save-preservation test
+- Versioned save snapshots with checksum validation
+- Downloadable and restorable employee archives
+- Optional account and cloud-save client foundation
+- Supabase database schema with per-user Row Level Security
 
 
 ## Next Story Content
@@ -35,12 +39,21 @@
 
 The current localStorage save system is suitable only for the static prototype.
 
-Before a public account-based release, implement:
+Foundation now implemented:
 
-- Authentication
-- Server-side employee accounts
-- Database-backed player, world, mail, and case state
-- Cloud save and cross-device resume
+- Versioned local save schema without renaming existing keys
+- Validated save snapshots and archive transfer
+- Supabase Auth client integration in disabled-by-default local mode
+- Per-user cloud save and restore adapter
+- Row Level Security SQL denying anonymous save access
+- Automated local, cloud, and full-progression regression tests
+
+Before a public account-based release, complete:
+
+- Provision and configure the production Supabase project
+- Activate email authentication and approved redirect URLs
+- Apply and verify the supplied RLS database schema
+- Perform hosted cross-device account testing
 - Input validation and authorization enforcement
 - Secret and environment configuration
 - Audit logging
