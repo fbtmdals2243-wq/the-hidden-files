@@ -156,6 +156,8 @@ function loadPortal(initialValues){
     "portal/js/world-engine.js",
     "portal/js/daily-work.js",
     "portal/js/training.js",
+    "portal/js/career-review.js",
+    "portal/js/relationship.js",
     "portal/js/news-data.js",
     "portal/js/prophet.js",
     "portal/js/notice-data.js",
@@ -246,6 +248,28 @@ function loadPortal(initialValues){
       }
 
 
+      if(
+        scriptPath.endsWith(
+          "career-review.js"
+        )
+      ){
+
+        source +=
+          "\nthis.__MinistryCareerReview = MinistryCareerReview;";
+      }
+
+
+      if(
+        scriptPath.endsWith(
+          "relationship.js"
+        )
+      ){
+
+        source +=
+          "\nthis.__MinistryRelationships = MinistryRelationships;";
+      }
+
+
       vm.runInContext(
         source,
         context,
@@ -272,6 +296,10 @@ function loadPortal(initialValues){
       context.__DailyWork,
     MinistryTraining:
       context.__MinistryTraining,
+    MinistryCareerReview:
+      context.__MinistryCareerReview,
+    MinistryRelationships:
+      context.__MinistryRelationships,
     MinistryStorage:
       context.__MinistryStorage,
     MinistryCases:
@@ -370,6 +398,8 @@ const {
   World,
   DailyWork,
   MinistryTraining,
+  MinistryCareerReview,
+  MinistryRelationships,
   MinistryStorage,
   MinistryCases
 } = portal;
@@ -406,10 +436,11 @@ assert.deepEqual(
     "CASE-003",
     "CASE-004",
     "CASE-005",
-    "CASE-006"
+    "CASE-006",
+    "CASE-007"
   ]
 );
-pass("All seven story cases are registered");
+pass("All eight story cases are registered");
 
 
 assert.equal(
@@ -1007,9 +1038,205 @@ assert.doesNotMatch(
 pass("Routine Ministry work resumes after qualification");
 
 
+completeRoutineDay(16);
+context.endWorkDay();
+
+
+assert.equal(
+  World.getDay(),
+  17
+);
+
+const careerDirective =
+  context.getOwlMails()
+    .find(
+      mail =>
+        mail.id === "MAIL-015"
+    );
+
+assert.ok(careerDirective);
+assert.match(
+  careerDirective.body,
+  /SENIOR ARCHIVE OFFICER/
+);
+
+context.showDashboard();
+assert.match(
+  app.innerHTML,
+  /Read the Level III Career Review Directive/
+);
+assert.doesNotMatch(
+  app.innerHTML,
+  /END WORK DAY/
+);
+
+context.openOwlMail("MAIL-015");
+
+assert.equal(
+  MinistryCareerReview.submitAnswer(
+    "SCENARIO-INTEGRITY",
+    "preserve-both"
+  ).success,
+  true
+);
+assert.equal(
+  MinistryCareerReview.submitAnswer(
+    "SCENARIO-AUTHORITY",
+    "escalate"
+  ).success,
+  true
+);
+assert.equal(
+  MinistryCareerReview.submitAnswer(
+    "SCENARIO-PEOPLE",
+    "protect-review"
+  ).completed,
+  true
+);
+
+assert.equal(
+  Player.getRank(),
+  "Senior Archive Officer"
+);
+assert.equal(
+  Player.getClearance(),
+  "Level III"
+);
+pass("Day 17 career review grants permanent Level III access");
+
+
+completeRoutineDay(17);
+context.endWorkDay();
+
+
+assert.equal(
+  World.getDay(),
+  18
+);
+
+const memoryIncident =
+  context.getOwlMails()
+    .find(
+      mail =>
+        mail.id === "MAIL-016"
+    );
+
+assert.ok(memoryIncident);
+assert.match(
+  memoryIncident.body,
+  /Do not record the officer as returned/
+);
+
+context.showDashboard();
+assert.match(
+  app.innerHTML,
+  /Read the Memory Vial 117-M Incident/
+);
+
+context.openOwlMail("MAIL-016");
+activity.openedCase = null;
+context.openOfficeItem("Today’s Assignment");
+assert.equal(
+  activity.openedCase,
+  "CASE-007"
+);
+
+Player.setCaseStatus(
+  "CASE-007",
+  "Under Review"
+);
+localStorage.setItem(
+  "case007SubmittedDay",
+  "18"
+);
+localStorage.setItem(
+  "report_CASE-007",
+  JSON.stringify({
+    findings:
+      "The memory recognized the appointment, not the identity."
+  })
+);
+
+context.showDashboard();
+assert.match(
+  app.innerHTML,
+  /CASE-007 Under Review/
+);
+assert.match(
+  app.innerHTML,
+  /END WORK DAY/
+);
+context.endWorkDay();
+pass("Day 18 opens and submits the Level III memory incident");
+
+
+assert.equal(
+  World.getDay(),
+  19
+);
+
+const memoryReview =
+  context.getOwlMails()
+    .find(
+      mail =>
+        mail.id === "MAIL-017"
+    );
+
+assert.ok(memoryReview);
+assert.match(
+  memoryReview.body,
+  /MNEMONIC RESPONSE CORRESPONDENCE/
+);
+
+context.openOwlMail("MAIL-017");
+assert.equal(
+  Player.getCaseStatus("CASE-007"),
+  "Solved"
+);
+assert.equal(
+  localStorage.getItem(
+    "sealedCompatibilityConditionTwo"
+  ),
+  "true"
+);
+
+context.showPersonnelRecord();
+assert.match(
+  app.innerHTML,
+  /COMPONENT 2 OF 3 SATISFIED/
+);
+assert.match(
+  app.innerHTML,
+  /Identity Match:\s*NOT ESTABLISHED/
+);
+pass("Day 19 confirms only the second sealed compatibility condition");
+
+
+context.openOfficeItem("Colleagues");
+assert.match(app.innerHTML, /Eleanor Whitmore/);
+assert.match(app.innerHTML, /Dr. Miriam Vale/);
+assert.match(app.innerHTML, /Gideon March/);
+
+assert.equal(
+  MinistryRelationships.interact(
+    "NPC-ELEANOR-WHITMORE",
+    "share-concern"
+  ).success,
+  true
+);
+
+assert.equal(
+  MinistryRelationships.getRecord(
+    "NPC-ELEANOR-WHITMORE"
+  ).trust,
+  1
+);
+pass("Office 3-B adds persistent professional colleague relationships");
+
+
 for(
-  let day = 16;
-  day <= 24;
+  let day = 19;
+  day <= 25;
   day += 1
 ){
 
@@ -1039,13 +1266,13 @@ assert.equal(
   localStorage.getItem(
     "playerRank"
   ),
-  "Archive Officer"
+  "Senior Archive Officer"
 );
 assert.equal(
   localStorage.getItem(
     "playerClearance"
   ),
-  "Level II"
+  "Level III"
 );
 assert.equal(
   JSON.parse(
@@ -1066,6 +1293,10 @@ assert.match(
 assert.match(
   app.innerHTML,
   /openCase\('CASE-006'\)/
+);
+assert.match(
+  app.innerHTML,
+  /openCase\('CASE-007'\)/
 );
 pass("Completed story cases remain available in the Archive Cabinet");
 
