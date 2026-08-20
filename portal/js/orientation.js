@@ -366,6 +366,11 @@ function showArchiveCabinet(){
     localStorage.getItem("mailRead_MAIL-008") === "true" &&
     localStorage.getItem("day6PersonnelRecordViewed") === "true";
 
+  const case005Available =
+    hasLevelII &&
+    worldDay >= 8 &&
+    localStorage.getItem("mailRead_MAIL-010") === "true";
+
   function renderCaseEntry(
     caseId,
     title,
@@ -467,6 +472,13 @@ function showArchiveCabinet(){
           "⏳ Review the Day 6 personnel integrity record"
         )}
 
+        ${renderCaseEntry(
+          "CASE-005",
+          "The Position That Never Closed",
+          case005Available,
+          "⏳ Read the Day 8 Recruitment Systems Audit"
+        )}
+
         <button class="case-entry locked">
           <b>CASE-ZERO</b>
           <span>Restricted Archive Origin</span>
@@ -483,7 +495,8 @@ LEVEL II ACCESS: ${hasLevelII ? "GRANTED" : "DENIED"}
 CASE-001: ${case001Available ? "RELEASED" : "PENDING"}
 CASE-002: ${case002Available ? "RELEASED" : "PENDING"}
 CASE-003: ${case003Available ? "RELEASED" : "PENDING"}
-CASE-004: ${case004Available ? "RELEASED" : "PENDING"}</div>
+CASE-004: ${case004Available ? "RELEASED" : "PENDING"}
+CASE-005: ${case005Available ? "RELEASED" : "PENDING"}</div>
 
       <div class="center">
         <button
