@@ -23,7 +23,7 @@ The current portal includes:
 - Owl Mail, Daily Prophet, and Notice Board
 - World Day progression and End Work Day
 - Investigation reports saved in localStorage
-- CASE-000 through CASE-006
+- CASE-000 through CASE-007
 - First Personnel Continuity story arc
 - Second Personnel Continuity arc opening
 - Day 10 and later recurring Ministry work orders
@@ -31,6 +31,9 @@ The current portal includes:
 - Permanent Service Points and duty history
 - Ministry Training Desk and permanent qualification records
 - Continuity Records Handling · Grade I course
+- Level III Career Readiness Review
+- Senior Archive Officer promotion and Level III clearance
+- Persistent colleague relationships and daily professional check-ins
 - Downloadable and restorable employee archive files
 - Optional Ministry Network account and cloud-save client
 
@@ -52,7 +55,10 @@ Day 13  A routine personnel decision produces a sealed exception
 Day 14  CASE-006 · The Decision Before It Was Made
 Day 15  Compatibility Condition One review
 Day 16  Mandatory Continuity Records Handling qualification
-Day 17+ Continuing Ministry service
+Day 17  Level III Career Readiness Review
+Day 18  CASE-007 · The Memory That Recognized You
+Day 19  Compatibility Condition Two review
+Day 20+ Continuing Ministry service and colleague relationships
 ```
 
 The first arc establishes that the player and MOM-000117 are separate recorded identities connected to one unresolved Ministry appointment. The identity of MOM-000117 and the sealed compatibility condition remain available for future story arcs.
@@ -66,6 +72,19 @@ After CASE-006, the player must complete a three-module Ministry training
 course before returning to routine work. The resulting Grade I qualification
 is stored permanently in the employee personnel record and establishes future
 Level III review eligibility without increasing clearance immediately.
+
+On Day 17, qualified employees with the required service record complete a
+three-scenario Personnel Advancement Board review. Approval permanently grants
+the rank of Senior Archive Officer and Level III clearance.
+
+CASE-007 then confirms only the second sealed compatibility component:
+MNEMONIC RESPONSE CORRESPONDENCE. A memory prepared by MOM-000117 recognizes
+the current appointment, while the official record continues to state that an
+identity match is not established. The final component remains sealed.
+
+The Colleagues desk turns Eleanor Whitmore, Dr. Miriam Vale, and Gideon March
+into persistent professional relationships. One optional check-in per colleague
+per work day builds trust without allowing repeated-click reward farming.
 
 
 ## Run locally
@@ -96,23 +115,22 @@ http://localhost:8000/portal/
 Node.js is required only for testing.
 
 ```bash
-node tests/storage-engine.test.js
-node tests/cloud-engine.test.js
-node tests/cloud-portal.test.js
-node tests/case006-submission.test.js
-node tests/training-engine.test.js
-node tests/portal-progression.test.js
+node tests/run-all.js
 ```
 
 The test verifies:
 
-- CASE-000 through CASE-006 registration
+- recruitment identity through Day 6 preservation
+- CASE-000 through CASE-007 registration
 - scalable completed-case tracking
 - Day 8 and Day 9 story progression
 - first-arc career assignment
 - Day 13 through Day 15 second-arc progression
 - personalized duty recall and first compatibility component
 - Day 16 training directive and three-module qualification
+- Day 17 Level III career review and permanent career milestone
+- Day 18 through Day 19 CASE-007 and compatibility component two
+- daily colleague relationships with duplicate interaction protection
 - permanent qualification, training-credit, archive, and cloud-save preservation
 - recommended versus assigned department separation
 - fourteen continuous daily work cycles
@@ -138,6 +156,8 @@ portal/
     ├── cloud-portal.js
     ├── daily-work.js
     ├── training.js
+    ├── career-review.js
+    ├── relationship.js
     ├── dashboard.js
     ├── case-data.js
     ├── case-engine.js
@@ -151,10 +171,15 @@ supabase/
 └── SETUP.md
 
 tests/
+├── run-all.js
+├── new-employee-journey.test.js
 ├── storage-engine.test.js
 ├── cloud-engine.test.js
 ├── cloud-portal.test.js
 ├── case006-submission.test.js
+├── career-review.test.js
+├── case007-submission.test.js
+├── relationship-engine.test.js
 ├── training-engine.test.js
 └── portal-progression.test.js
 ```

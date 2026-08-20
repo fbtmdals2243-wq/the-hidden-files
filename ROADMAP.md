@@ -9,14 +9,17 @@
 - Rank, clearance, promotion, and personnel records
 - Owl Mail, Daily Prophet, and Notice Board
 - World Day progression
-- CASE-000 through CASE-006
+- CASE-000 through CASE-007
 - First Personnel Continuity story arc
 - Second Personnel Continuity arc opening
 - Day 13 routine-duty anomaly and personalized recall
-- First of three sealed compatibility components
+- First and second of three sealed compatibility components
 - Ministry Training Desk and course progression
 - Permanent employee qualification records
 - Continuity Records Handling · Grade I qualification
+- Level III Career Readiness Review
+- Senior Archive Officer rank and Level III clearance
+- Persistent colleague directory and professional trust records
 - Assigned department versus recommended department separation
 - Continuity Liaison career assignment
 - Day 10+ rotating daily work orders
@@ -31,10 +34,10 @@
 
 ## Next Story Content
 
-- Second Personnel Continuity arc continuation
+- Third Personnel Continuity arc continuation
 - Identity of MOM-000117
-- Sealed compatibility components 2 and 3
-- Level III eligibility and formal clearance review
+- Sealed compatibility component 3
+- Level IV eligibility and formal clearance review
 - CASE-ZERO and the origin of Room 4-7
 - Additional NPC relationships
 - Department-specific case chains
@@ -98,7 +101,7 @@ BRITISH MINISTRY OF MAGIC PORTAL
 ├── Colleagues
 ├── Ministry Events
 └── THE HIDDEN FILES
-    ├── CASE-000 ... CASE-006
+    ├── CASE-000 ... CASE-007
     ├── CASE-ZERO
     └── Future classified files
 ```
