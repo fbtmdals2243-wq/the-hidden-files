@@ -111,6 +111,14 @@ SESSION STATUS: READY</div>
 
         </button>
 
+        <button
+          class="btn"
+          onclick="showMinistryNetwork()">
+
+          MINISTRY NETWORK
+
+        </button>
+
       </div>
 
     </section>
