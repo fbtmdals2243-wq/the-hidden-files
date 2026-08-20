@@ -20,6 +20,11 @@ function getOwlMails(){
       "CASE-003"
     );
 
+  const case004Status =
+    Player.getCaseStatus(
+      "CASE-004"
+    );
+
   const worldDay =
     World.getDay();
 
@@ -449,6 +454,98 @@ Integrity and Continuity Review Desk`
   }
 
 
+  /* =====================================================
+     DAY 7
+     CASE-004 REVIEW RESULT
+  ===================================================== */
+
+  if(
+    worldDay >= 7 &&
+    (
+      case004Status === "Under Review" ||
+      case004Status === "Solved"
+    )
+  ){
+
+    mails.unshift({
+
+      id:
+        "MAIL-009",
+
+      from:
+        "Office of the Undersecretary",
+
+      subject:
+        "CASE-004 Review Result · Prior Authorization Claim",
+
+      status:
+        getMailStatus(
+          "MAIL-009"
+        ),
+
+      body:`Officer,
+
+Your report concerning CASE-004 has been reviewed by the Personnel Continuity Oversight Panel.
+
+The Ministry confirms that the signature attached to your active employee record is an exact match for:
+
+PC-117-CONTINUITY
+
+The signature was not copied, transferred, inherited, or manually reassigned.
+
+It entered your credential through a prior authorization claim.
+
+The recovered sequence is as follows.
+
+DAY 1 · 09:11:58
+
+Room 4-7 submitted an authorization claim for an unassigned Recruitment credential.
+
+DAY 1 · 09:12:04
+
+Your current Ministry employee number was generated.
+
+DAY 1 · 09:12:09
+
+Your verified identity was attached to that number.
+
+The authorization claim therefore existed six seconds before your employee number existed in the active personnel registry.
+
+The claim did not contain your name, wand registration, department, or any other standard identity marker.
+
+It contained only the instruction:
+
+RETAIN AUTHORIZATION
+
+SOURCE:
+PERSONNEL CONTINUITY CHAMBER / ROOM 4-7
+
+HISTORICAL RECORD:
+MOM-000117
+
+This result does not establish that you and MOM-000117 are the same person.
+
+It establishes that Room 4-7 recognized a credential assigned to you before the Ministry finished creating it.
+
+Your employee status remains ACTIVE.
+
+Your clearance remains LEVEL II.
+
+No disciplinary action has been authorized.
+
+CASE-004 is officially closed.
+
+Do not attempt to remove the continuity signature.
+
+A continuing assignment is being prepared.
+
+— Office of the Undersecretary
+British Ministry of Magic`
+
+    });
+  }
+
+
   return mails;
 }
 
@@ -600,6 +697,34 @@ function openOwlMail(mailId){
   }
 
 
+  /* =====================================================
+     CASE-004 REVIEW COMPLETE
+  ===================================================== */
+
+  if(
+    mailId ===
+    "MAIL-009"
+  ){
+
+    Player.setCaseStatus(
+      "CASE-004",
+      "Solved"
+    );
+
+
+    localStorage.setItem(
+      "caseCompleted_CASE-004",
+      new Date().toISOString()
+    );
+
+
+    localStorage.setItem(
+      "continuityPriorClaimConfirmed",
+      "true"
+    );
+  }
+
+
   app.innerHTML = `
     <section class="panel">
 
@@ -633,7 +758,8 @@ function openOwlMail(mailId){
             mailId === "MAIL-005" ||
             mailId === "MAIL-006" ||
             mailId === "MAIL-007" ||
-            mailId === "MAIL-008"
+            mailId === "MAIL-008" ||
+            mailId === "MAIL-009"
           )
             ? "Restricted"
             : "Internal",
