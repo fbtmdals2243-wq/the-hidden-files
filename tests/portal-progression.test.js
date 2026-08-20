@@ -155,6 +155,7 @@ function loadPortal(initialValues){
     "portal/js/player-engine.js",
     "portal/js/world-engine.js",
     "portal/js/daily-work.js",
+    "portal/js/training.js",
     "portal/js/news-data.js",
     "portal/js/prophet.js",
     "portal/js/notice-data.js",
@@ -234,6 +235,17 @@ function loadPortal(initialValues){
       }
 
 
+      if(
+        scriptPath.endsWith(
+          "training.js"
+        )
+      ){
+
+        source +=
+          "\nthis.__MinistryTraining = MinistryTraining;";
+      }
+
+
       vm.runInContext(
         source,
         context,
@@ -258,6 +270,8 @@ function loadPortal(initialValues){
       context.__World,
     DailyWork:
       context.__DailyWork,
+    MinistryTraining:
+      context.__MinistryTraining,
     MinistryStorage:
       context.__MinistryStorage,
     MinistryCases:
@@ -355,6 +369,7 @@ const {
   Player,
   World,
   DailyWork,
+  MinistryTraining,
   MinistryStorage,
   MinistryCases
 } = portal;
@@ -867,6 +882,129 @@ pass("Personnel record preserves the new finding without merging identities");
 
 completeRoutineDay(15);
 context.endWorkDay();
+
+
+assert.equal(
+  World.getDay(),
+  16
+);
+
+
+const trainingDirective =
+  context.getOwlMails()
+    .find(
+      mail =>
+        mail.id === "MAIL-014"
+    );
+
+assert.ok(trainingDirective);
+assert.match(
+  trainingDirective.body,
+  /CONTINUITY RECORDS HANDLING · GRADE I/
+);
+assert.match(
+  trainingDirective.body,
+  /future Level III review/
+);
+
+
+context.showDashboard();
+assert.match(
+  app.innerHTML,
+  /Read the Continuity Training Directive/
+);
+assert.match(
+  app.innerHTML,
+  /Training Desk/
+);
+assert.doesNotMatch(
+  app.innerHTML,
+  /END WORK DAY/
+);
+
+
+context.openOfficeItem(
+  "Training Desk"
+);
+assert.match(
+  app.innerHTML,
+  /Training Directive Required/
+);
+
+
+context.openOwlMail(
+  "MAIL-014"
+);
+
+context.openOfficeItem(
+  "Today’s Assignment"
+);
+assert.match(
+  app.innerHTML,
+  /Identity and Authorization/
+);
+pass("Day 16 assigns mandatory employee training before routine work");
+
+
+assert.equal(
+  MinistryTraining.submitAnswer(
+    "MODULE-IDENTITY",
+    "preserve"
+  ).success,
+  true
+);
+assert.equal(
+  MinistryTraining.submitAnswer(
+    "MODULE-CONFLICT",
+    "dual-preserve"
+  ).success,
+  true
+);
+assert.equal(
+  MinistryTraining.submitAnswer(
+    "MODULE-CLEARANCE",
+    "request"
+  ).completed,
+  true
+);
+
+
+assert.equal(
+  Player.hasQualification(
+    "QUAL-CONTINUITY-I"
+  ),
+  true
+);
+assert.equal(
+  MinistryTraining.getTrainingCredits(),
+  3
+);
+
+
+context.showPersonnelRecord();
+assert.match(
+  app.innerHTML,
+  /Continuity Records Handling · Grade I · Active/
+);
+assert.match(
+  app.innerHTML,
+  /Training Credits:\s*3/
+);
+pass("Training qualification becomes part of the permanent personnel record");
+
+
+context.showDashboard();
+assert.match(
+  app.innerHTML,
+  new RegExp(
+    DailyWork.getTaskForDay(16).title
+  )
+);
+assert.doesNotMatch(
+  app.innerHTML,
+  /END WORK DAY/
+);
+pass("Routine Ministry work resumes after qualification");
 
 
 for(
