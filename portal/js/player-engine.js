@@ -2,28 +2,122 @@ const Player = {
 
   getName(){
 
-    return localStorage.getItem(
-      "ministryApplicantName"
-    ) || "Officer";
+    return MinistryStorage.getItem(
+      "ministryApplicantName",
+      "Officer"
+    );
 
   },
 
 
   getEmployeeId(){
 
-    return localStorage.getItem(
-      "ministryEmployeeId"
-    ) || "MOM-000000";
+    return MinistryStorage.getItem(
+      "ministryEmployeeId",
+      "MOM-000000"
+    );
 
   },
 
 
   getIdentity(){
 
-    return JSON.parse(
-      localStorage.getItem(
-        "ministryIdentity"
-      ) || "{}"
+    return MinistryStorage.getJSON(
+      "ministryIdentity",
+      {}
+    );
+
+  },
+
+
+  getRecommendedDepartment(){
+
+    const identity =
+      this.getIdentity();
+
+    return (
+      identity.department ||
+      "Not recorded"
+    );
+
+  },
+
+
+  getAssignedDepartment(){
+
+    return MinistryStorage.getItem(
+      "playerAssignedDepartment",
+      "Archive Division"
+    );
+
+  },
+
+
+  setAssignedDepartment(department){
+
+    if(
+      typeof department !== "string" ||
+      !department.trim()
+    ){
+
+      return false;
+    }
+
+    MinistryStorage.setItem(
+      "playerAssignedDepartment",
+      department.trim()
+    );
+
+    return true;
+
+  },
+
+
+  getSpecialAssignment(){
+
+    return MinistryStorage.getItem(
+      "playerSpecialAssignment",
+      "None"
+    );
+
+  },
+
+
+  setSpecialAssignment(assignment){
+
+    if(
+      typeof assignment !== "string" ||
+      !assignment.trim()
+    ){
+
+      return false;
+    }
+
+    MinistryStorage.setItem(
+      "playerSpecialAssignment",
+      assignment.trim()
+    );
+
+    return true;
+
+  },
+
+
+  getServicePoints(){
+
+    return MinistryStorage.getNumber(
+      "ministryServicePoints",
+      0
+    );
+
+  },
+
+
+  getCompletedDuties(){
+
+    return MinistryStorage.getNumber(
+      "dailyDutyCompletedCount",
+      0
     );
 
   },
@@ -31,16 +125,17 @@ const Player = {
 
   getCaseStatus(caseId){
 
-    return localStorage.getItem(
-      "caseStatus_" + caseId
-    ) || "Active";
+    return MinistryStorage.getItem(
+      "caseStatus_" + caseId,
+      "Active"
+    );
 
   },
 
 
   setCaseStatus(caseId, status){
 
-    localStorage.setItem(
+    MinistryStorage.setItem(
       "caseStatus_" + caseId,
       status
     );
@@ -48,27 +143,73 @@ const Player = {
   },
 
 
+  getCaseIds(){
+
+    if(
+      typeof MinistryCases === "undefined" ||
+      !MinistryCases ||
+      typeof MinistryCases !== "object"
+    ){
+
+      return [];
+    }
+
+
+    return Object.keys(
+      MinistryCases
+    )
+      .filter(
+        caseId =>
+          caseId.startsWith("CASE-")
+      )
+      .sort(
+        (a, b) =>
+          a.localeCompare(
+            b,
+            undefined,
+            {
+              numeric: true
+            }
+          )
+      );
+
+  },
+
+
+  getCompletedCaseIds(){
+
+    return this.getCaseIds()
+      .filter(
+        caseId =>
+          this.getCaseStatus(caseId) ===
+          "Solved"
+      );
+
+  },
+
+
   getCompletedCases(){
 
-    return this.getCaseStatus("CASE-000") === "Solved"
-      ? 1
-      : 0;
+    return this
+      .getCompletedCaseIds()
+      .length;
 
   },
 
 
   getRank(){
 
-    return localStorage.getItem(
-      "playerRank"
-    ) || "Junior Archive Officer";
+    return MinistryStorage.getItem(
+      "playerRank",
+      "Junior Archive Officer"
+    );
 
   },
 
 
   setRank(rank){
 
-    localStorage.setItem(
+    MinistryStorage.setItem(
       "playerRank",
       rank
     );
@@ -78,9 +219,10 @@ const Player = {
 
   getClearance(){
 
-    return localStorage.getItem(
-      "playerClearance"
-    ) || "Level I";
+    return MinistryStorage.getItem(
+      "playerClearance",
+      "Level I"
+    );
 
   },
 
@@ -96,6 +238,7 @@ const Player = {
     ];
 
     if(!validLevels.includes(level)){
+
       console.error(
         "Invalid clearance level:",
         level
@@ -104,7 +247,7 @@ const Player = {
       return false;
     }
 
-    localStorage.setItem(
+    MinistryStorage.setItem(
       "playerClearance",
       level
     );
@@ -131,14 +274,11 @@ const Player = {
       levels[requiredLevel];
 
 
-    /*
-      알 수 없는 권한 단계가 들어오면
-      접근을 허용하지 않는다.
-    */
     if(
       currentLevel === undefined ||
       required === undefined
     ){
+
       return false;
     }
 
