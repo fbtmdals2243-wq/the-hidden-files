@@ -5,6 +5,11 @@ function getMinistryNews(){
       "CASE-000"
     );
 
+  const case004Status =
+    Player.getCaseStatus(
+      "CASE-004"
+    );
+
   const worldDay =
     World.getDay();
 
@@ -118,6 +123,52 @@ Several departments have been instructed to examine record-handling procedures a
 The Archive Division declined to comment on the investigation that prompted the review.
 
 Sources inside the Ministry suggest additional restricted files may soon be reopened for examination.`
+
+    });
+  }
+
+
+  /* =====================================================
+     DAY 7 NEWS
+  ===================================================== */
+
+  if(
+    worldDay >= 7 &&
+    (
+      case004Status === "Under Review" ||
+      case004Status === "Solved"
+    )
+  ){
+
+    news.unshift({
+
+      id:
+        "NEWS-004",
+
+      title:
+        "Ministry Denies Widespread Credential Delays",
+
+      category:
+        "Ministry Affairs",
+
+      status:
+        getNewsStatus(
+          "NEWS-004"
+        ),
+
+      body:`The Ministry of Magic has denied reports of a widespread security failure after several employees experienced brief credential verification delays yesterday morning.
+
+The interruptions began shortly after 08:41 and affected entry checkpoints in three administrative departments.
+
+A Ministry spokesperson described the incident as a routine validation of legacy authorization records and stated that no employee identities had been lost, replaced, or compromised.
+
+Personnel Registry staff have been instructed to preserve all active credentials while the review continues.
+
+Employees have also been advised not to request replacement identification unless directly contacted by their department.
+
+The Ministry declined to explain why a legacy system was able to interrupt current security checks.
+
+Normal operations have resumed.`
 
     });
   }
