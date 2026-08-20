@@ -13,6 +13,11 @@ function showDashboard(){
   const identity =
     Player.getIdentity();
 
+  const assignedDepartment =
+    localStorage.getItem(
+      "playerAssignedDepartment"
+    ) || "Archive Division";
+
   const clearance =
     Player.getClearance();
 
@@ -66,6 +71,11 @@ function showDashboard(){
       "CASE-004"
     );
 
+  const case005Status =
+    Player.getCaseStatus(
+      "CASE-005"
+    );
+
 
   /* =====================================================
      MAIL READ STATES
@@ -109,6 +119,16 @@ function showDashboard(){
   const mail009Read =
     localStorage.getItem(
       "mailRead_MAIL-009"
+    ) === "true";
+
+  const mail010Read =
+    localStorage.getItem(
+      "mailRead_MAIL-010"
+    ) === "true";
+
+  const mail011Read =
+    localStorage.getItem(
+      "mailRead_MAIL-011"
     ) === "true";
 
 
@@ -157,6 +177,20 @@ function showDashboard(){
     mail004Read &&
     news003Read &&
     notice003Read;
+
+
+  const firstStoryArcCompleted =
+    localStorage.getItem(
+      "firstStoryArcCompleted"
+    ) === "true";
+
+
+  const dailyDutyCompleted =
+    worldDay >= 10 &&
+    typeof DailyWork !== "undefined" &&
+    DailyWork.isCompleted(
+      worldDay
+    );
 
 
   /* =====================================================
@@ -344,21 +378,79 @@ function showDashboard(){
 
 
   /* =====================================================
-     DAY 8+
+     DAY 8
   ===================================================== */
 
   if(
-    worldDay >= 8
+    worldDay === 8
   ){
 
     mailLabel =
-      "No unread mail";
+      mail010Read
+        ? "Assignment read"
+        : "Classified assignment";
 
     newsLabel =
       "Morning edition";
 
     noticeLabel =
       "Security reminder";
+  }
+
+
+  /* =====================================================
+     DAY 9
+  ===================================================== */
+
+  if(
+    worldDay === 9
+  ){
+
+    mailLabel =
+      mail011Read
+        ? "Determination read"
+        : "Final determination";
+
+    newsLabel =
+      "Morning edition";
+
+    noticeLabel =
+      "Security reminder";
+  }
+
+
+  /* =====================================================
+     DAY 10+
+  ===================================================== */
+
+  if(
+    worldDay >= 10
+  ){
+
+    const dailyNewsRead =
+      localStorage.getItem(
+        "newsRead_NEWS-DAY-" +
+        worldDay
+      ) === "true";
+
+    const dailyNoticeRead =
+      localStorage.getItem(
+        "noticeRead_NOTICE-DAY-" +
+        worldDay
+      ) === "true";
+
+    mailLabel =
+      "No unread mail";
+
+    newsLabel =
+      dailyNewsRead
+        ? "Reviewed"
+        : "New daily edition";
+
+    noticeLabel =
+      dailyNoticeRead
+        ? "Reviewed"
+        : "New daily notice";
   }
 
 
@@ -702,18 +794,134 @@ function showDashboard(){
 
 
   /* =====================================================
-     DAY 8+
+     DAY 8
   ===================================================== */
 
   if(
-    worldDay >= 8
+    worldDay === 8
   ){
 
-    assignmentLabel =
-      "No assignment issued";
+    if(
+      !mail010Read
+    ){
 
-    currentTask =
-      "Awaiting Classified Assignment";
+      assignmentLabel =
+        "Classified assignment";
+
+      currentTask =
+        "Read Recruitment Systems Audit";
+    }
+
+    else if(
+      case005Status ===
+      "Under Review"
+    ){
+
+      assignmentLabel =
+        "Report submitted";
+
+      currentTask =
+        "CASE-005 Under Review";
+    }
+
+    else if(
+      case005Status ===
+      "Solved"
+    ){
+
+      assignmentLabel =
+        "Assignment completed";
+
+      currentTask =
+        "CASE-005 Completed";
+    }
+
+    else{
+
+      assignmentLabel =
+        "CASE-005 active";
+
+      currentTask =
+        "Investigate CASE-005 · The Position That Never Closed";
+    }
+  }
+
+
+  /* =====================================================
+     DAY 9
+  ===================================================== */
+
+  if(
+    worldDay === 9
+  ){
+
+    if(
+      !mail011Read
+    ){
+
+      assignmentLabel =
+        "Final determination received";
+
+      currentTask =
+        "Read CASE-005 Final Determination";
+    }
+
+    else{
+
+      assignmentLabel =
+        "Continuity appointment confirmed";
+
+      currentTask =
+        "Continuity Liaison · Await Daily Orders";
+    }
+  }
+
+
+  /* =====================================================
+     DAY 10+
+  ===================================================== */
+
+  if(
+    worldDay >= 10
+  ){
+
+    if(
+      !firstStoryArcCompleted
+    ){
+
+      assignmentLabel =
+        "Continuity review required";
+
+      currentTask =
+        "Awaiting Personnel Determination";
+    }
+
+    else if(
+      dailyDutyCompleted
+    ){
+
+      assignmentLabel =
+        "Daily duty recorded";
+
+      currentTask =
+        "Daily Ministry Duty Complete";
+    }
+
+    else{
+
+      const dailyTask =
+        DailyWork.getTaskForDay(
+          worldDay
+        );
+
+      assignmentLabel =
+        "Daily work order";
+
+      currentTask =
+        dailyTask
+          ? dailyTask.title
+          : "Daily Ministry Duty";
+    }
   }
 
 
@@ -809,6 +1017,41 @@ function showDashboard(){
   }
 
 
+  if(
+    worldDay === 8 &&
+    (
+      case005Status === "Under Review" ||
+      case005Status === "Solved"
+    )
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  if(
+    worldDay === 9 &&
+    mail011Read &&
+    case005Status === "Solved"
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  if(
+    worldDay >= 10 &&
+    firstStoryArcCompleted &&
+    dailyDutyCompleted
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
   /* =====================================================
      DASHBOARD
   ===================================================== */
@@ -854,7 +1097,7 @@ function showDashboard(){
 
           <br>
 
-          ${identity.department || "Archive Division"}
+          ${assignedDepartment}
 
           <br>
 
@@ -1470,15 +1713,124 @@ function openOfficeItem(item){
     }
 
 
-    /* DAY 8+ */
+    /* DAY 8 */
 
     if(
-      worldDay >= 8
+      worldDay === 8
     ){
 
-      alert(
-        "No new classified assignment has been issued yet."
+      const auditAssignmentRead =
+        localStorage.getItem(
+          "mailRead_MAIL-010"
+        ) === "true";
+
+
+      if(
+        !auditAssignmentRead
+      ){
+
+        alert(
+          "Read the classified Recruitment Systems Audit in Owl Mail first."
+        );
+
+        return;
+      }
+
+
+      const caseStatus =
+        Player.getCaseStatus(
+          "CASE-005"
+        );
+
+
+      if(
+        caseStatus ===
+        "Under Review"
+      ){
+
+        alert(
+          "Your CASE-005 report has already been submitted. Await the Oversight Panel review."
+        );
+
+        return;
+      }
+
+
+      if(
+        caseStatus ===
+        "Solved"
+      ){
+
+        alert(
+          "CASE-005 has already been closed."
+        );
+
+        return;
+      }
+
+
+      openCase(
+        "CASE-005"
       );
+
+      return;
+    }
+
+
+    /* DAY 9 */
+
+    if(
+      worldDay === 9
+    ){
+
+      const finalDeterminationRead =
+        localStorage.getItem(
+          "mailRead_MAIL-011"
+        ) === "true";
+
+
+      if(
+        !finalDeterminationRead
+      ){
+
+        alert(
+          "Read the CASE-005 Final Determination in Owl Mail first."
+        );
+
+        return;
+      }
+
+      alert(
+        "Your Continuity Liaison appointment is confirmed. Daily Ministry orders begin on Day 10."
+      );
+
+      return;
+    }
+
+
+    /* DAY 10+ */
+
+    if(
+      worldDay >= 10
+    ){
+
+      const firstArcComplete =
+        localStorage.getItem(
+          "firstStoryArcCompleted"
+        ) === "true";
+
+
+      if(!firstArcComplete){
+
+        alert(
+          "Complete the Personnel Continuity determination before receiving daily orders."
+        );
+
+        return;
+      }
+
+
+      showDailyWorkOrder();
 
       return;
     }
