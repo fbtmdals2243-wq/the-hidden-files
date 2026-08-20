@@ -844,7 +844,25 @@ FURTHER ACCESS: RESTRICTED</div>
 
 
     /* =====================================================
-       CASE-000 ORIGINAL FLOW
+       CASE-006 REVIEW TIMING
+    ===================================================== */
+
+    if(
+        caseId ===
+        "CASE-006"
+    ){
+
+        localStorage.setItem(
+            "case006SubmittedDay",
+            String(
+                World.getDay()
+            )
+        );
+    }
+
+
+    /* =====================================================
+       STANDARD REVIEW FLOW
     ===================================================== */
 
     Player.setCaseStatus(
