@@ -3,10 +3,9 @@ const World = {
   getDay(){
 
     const savedDay =
-      Number(
-        localStorage.getItem(
-          "worldDay"
-        )
+      MinistryStorage.getNumber(
+        "worldDay",
+        1
       );
 
     if(
@@ -39,7 +38,7 @@ const World = {
     }
 
 
-    localStorage.setItem(
+    MinistryStorage.setItem(
       "worldDay",
       String(newDay)
     );
