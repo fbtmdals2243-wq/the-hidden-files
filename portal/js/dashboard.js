@@ -1241,6 +1241,23 @@ function showDashboard(){
 
         </button>
 
+
+        <button
+          class="object ministry-network"
+          onclick="openOfficeItem('Ministry Network')">
+
+          🔐
+
+          <span>
+            Ministry Network
+          </span>
+
+          <small>
+            Employee archive
+          </small>
+
+        </button>
+
       </div>
 
 
@@ -1376,6 +1393,17 @@ function startNextWorkDay(){
 ========================================================= */
 
 function openOfficeItem(item){
+
+
+  if(
+    item ===
+    "Ministry Network"
+  ){
+
+    showMinistryNetwork();
+
+    return;
+  }
 
 
   if(
