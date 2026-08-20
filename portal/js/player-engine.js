@@ -123,6 +123,111 @@ const Player = {
   },
 
 
+  getQualifications(){
+
+    const savedQualifications =
+      MinistryStorage.getJSON(
+        "playerQualifications",
+        []
+      );
+
+
+    if(!Array.isArray(savedQualifications)){
+      return [];
+    }
+
+
+    return savedQualifications
+      .filter(
+        qualification =>
+          qualification &&
+          typeof qualification === "object" &&
+          typeof qualification.id === "string" &&
+          typeof qualification.title === "string"
+      )
+      .map(
+        qualification => ({
+          id:
+            qualification.id,
+          title:
+            qualification.title,
+          authority:
+            qualification.authority ||
+            "Ministry Training Office",
+          issuedAt:
+            qualification.issuedAt ||
+            null
+        })
+      );
+
+  },
+
+
+  hasQualification(qualificationId){
+
+    return this.getQualifications()
+      .some(
+        qualification =>
+          qualification.id ===
+          qualificationId
+      );
+
+  },
+
+
+  addQualification(qualification){
+
+    if(
+      !qualification ||
+      typeof qualification !== "object" ||
+      typeof qualification.id !== "string" ||
+      !qualification.id.trim() ||
+      typeof qualification.title !== "string" ||
+      !qualification.title.trim()
+    ){
+
+      return false;
+    }
+
+
+    const qualifications =
+      this.getQualifications();
+
+
+    if(
+      qualifications.some(
+        item =>
+          item.id ===
+          qualification.id
+      )
+    ){
+
+      return true;
+    }
+
+
+    qualifications.push({
+      id:
+        qualification.id.trim(),
+      title:
+        qualification.title.trim(),
+      authority:
+        qualification.authority ||
+        "Ministry Training Office",
+      issuedAt:
+        qualification.issuedAt ||
+        new Date().toISOString()
+    });
+
+
+    return MinistryStorage.setJSON(
+      "playerQualifications",
+      qualifications
+    );
+
+  },
+
+
   getCaseStatus(caseId){
 
     return MinistryStorage.getItem(
