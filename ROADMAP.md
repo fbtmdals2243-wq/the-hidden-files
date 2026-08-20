@@ -14,6 +14,9 @@
 - Second Personnel Continuity arc opening
 - Day 13 routine-duty anomaly and personalized recall
 - First of three sealed compatibility components
+- Ministry Training Desk and course progression
+- Permanent employee qualification records
+- Continuity Records Handling · Grade I qualification
 - Assigned department versus recommended department separation
 - Continuity Liaison career assignment
 - Day 10+ rotating daily work orders
@@ -31,10 +34,11 @@
 - Second Personnel Continuity arc continuation
 - Identity of MOM-000117
 - Sealed compatibility components 2 and 3
+- Level III eligibility and formal clearance review
 - CASE-ZERO and the origin of Room 4-7
 - Additional NPC relationships
 - Department-specific case chains
-- Training and qualification records
+- Additional training and advanced qualification records
 - Promotion and disciplinary events
 
 
