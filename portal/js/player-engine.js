@@ -20,10 +20,115 @@ const Player = {
 
   getIdentity(){
 
-    return JSON.parse(
+    try{
+
+      return JSON.parse(
+        localStorage.getItem(
+          "ministryIdentity"
+        ) || "{}"
+      );
+    }
+    catch(error){
+
+      console.error(
+        "Invalid Ministry identity record:",
+        error
+      );
+
+      return {};
+    }
+
+  },
+
+
+  getRecommendedDepartment(){
+
+    const identity =
+      this.getIdentity();
+
+    return (
+      identity.department ||
+      "Not recorded"
+    );
+
+  },
+
+
+  getAssignedDepartment(){
+
+    return localStorage.getItem(
+      "playerAssignedDepartment"
+    ) || "Archive Division";
+
+  },
+
+
+  setAssignedDepartment(department){
+
+    if(
+      typeof department !== "string" ||
+      !department.trim()
+    ){
+
+      return false;
+    }
+
+    localStorage.setItem(
+      "playerAssignedDepartment",
+      department.trim()
+    );
+
+    return true;
+
+  },
+
+
+  getSpecialAssignment(){
+
+    return localStorage.getItem(
+      "playerSpecialAssignment"
+    ) || "None";
+
+  },
+
+
+  setSpecialAssignment(assignment){
+
+    if(
+      typeof assignment !== "string" ||
+      !assignment.trim()
+    ){
+
+      return false;
+    }
+
+    localStorage.setItem(
+      "playerSpecialAssignment",
+      assignment.trim()
+    );
+
+    return true;
+
+  },
+
+
+  getServicePoints(){
+
+    return Number(
       localStorage.getItem(
-        "ministryIdentity"
-      ) || "{}"
+        "ministryServicePoints"
+      ) || 0
+    );
+
+  },
+
+
+  getCompletedDuties(){
+
+    return Number(
+      localStorage.getItem(
+        "dailyDutyCompletedCount"
+      ) || 0
     );
 
   },
