@@ -29,6 +29,8 @@ The current portal includes:
 - Day 10 and later recurring Ministry work orders
 - Rotating daily news and notices
 - Permanent Service Points and duty history
+- Ministry Training Desk and permanent qualification records
+- Continuity Records Handling · Grade I course
 - Downloadable and restorable employee archive files
 - Optional Ministry Network account and cloud-save client
 
@@ -49,7 +51,8 @@ Day 10  Continuing daily Ministry service begins
 Day 13  A routine personnel decision produces a sealed exception
 Day 14  CASE-006 · The Decision Before It Was Made
 Day 15  Compatibility Condition One review
-Day 16+ Continuing Ministry service
+Day 16  Mandatory Continuity Records Handling qualification
+Day 17+ Continuing Ministry service
 ```
 
 The first arc establishes that the player and MOM-000117 are separate recorded identities connected to one unresolved Ministry appointment. The identity of MOM-000117 and the sealed compatibility condition remain available for future story arcs.
@@ -58,6 +61,11 @@ The second arc begins inside ordinary Ministry work rather than replacing it.
 A routine Day 13 decision is found in a MOM-000117 record that was authenticated
 before the player made the decision. CASE-006 confirms only the first of three
 sealed compatibility components; it does not establish an identity match.
+
+After CASE-006, the player must complete a three-module Ministry training
+course before returning to routine work. The resulting Grade I qualification
+is stored permanently in the employee personnel record and establishes future
+Level III review eligibility without increasing clearance immediately.
 
 
 ## Run locally
@@ -92,6 +100,7 @@ node tests/storage-engine.test.js
 node tests/cloud-engine.test.js
 node tests/cloud-portal.test.js
 node tests/case006-submission.test.js
+node tests/training-engine.test.js
 node tests/portal-progression.test.js
 ```
 
@@ -103,6 +112,8 @@ The test verifies:
 - first-arc career assignment
 - Day 13 through Day 15 second-arc progression
 - personalized duty recall and first compatibility component
+- Day 16 training directive and three-module qualification
+- permanent qualification, training-credit, archive, and cloud-save preservation
 - recommended versus assigned department separation
 - fourteen continuous daily work cycles
 - daily news and notice state
@@ -126,6 +137,7 @@ portal/
     ├── cloud-engine.js
     ├── cloud-portal.js
     ├── daily-work.js
+    ├── training.js
     ├── dashboard.js
     ├── case-data.js
     ├── case-engine.js
@@ -143,6 +155,7 @@ tests/
 ├── cloud-engine.test.js
 ├── cloud-portal.test.js
 ├── case006-submission.test.js
+├── training-engine.test.js
 └── portal-progression.test.js
 ```
 
