@@ -106,6 +106,11 @@ function showDashboard(){
       "mailRead_MAIL-008"
     ) === "true";
 
+  const mail009Read =
+    localStorage.getItem(
+      "mailRead_MAIL-009"
+    ) === "true";
+
 
   const day6PersonnelRecordViewed =
     localStorage.getItem(
@@ -125,6 +130,11 @@ function showDashboard(){
   const news003Read =
     localStorage.getItem(
       "newsRead_NEWS-003"
+    ) === "true";
+
+  const news004Read =
+    localStorage.getItem(
+      "newsRead_NEWS-004"
     ) === "true";
 
 
@@ -290,17 +300,59 @@ function showDashboard(){
 
 
   /* =====================================================
-     DAY 6+
+     DAY 6
   ===================================================== */
 
   if(
-    worldDay >= 6
+    worldDay === 6
   ){
 
     mailLabel =
       mail008Read
         ? "Personnel audit read"
         : "Restricted personnel mail";
+
+    newsLabel =
+      "Morning edition";
+
+    noticeLabel =
+      "Security reminder";
+  }
+
+
+  /* =====================================================
+     DAY 7
+  ===================================================== */
+
+  if(
+    worldDay === 7
+  ){
+
+    mailLabel =
+      mail009Read
+        ? "Review result read"
+        : "CASE-004 review result";
+
+    newsLabel =
+      news004Read
+        ? "Reviewed"
+        : "New Ministry report";
+
+    noticeLabel =
+      "Security reminder";
+  }
+
+
+  /* =====================================================
+     DAY 8+
+  ===================================================== */
+
+  if(
+    worldDay >= 8
+  ){
+
+    mailLabel =
+      "No unread mail";
 
     newsLabel =
       "Morning edition";
@@ -541,11 +593,11 @@ function showDashboard(){
 
 
   /* =====================================================
-     DAY 6+
+     DAY 6
   ===================================================== */
 
   if(
-    worldDay >= 6
+    worldDay === 6
   ){
 
     if(
@@ -605,6 +657,63 @@ function showDashboard(){
           "Investigate CASE-004 · The Second Signature";
       }
     }
+  }
+
+
+  /* =====================================================
+     DAY 7
+  ===================================================== */
+
+  if(
+    worldDay === 7
+  ){
+
+    if(
+      !mail009Read
+    ){
+
+      assignmentLabel =
+        "Review result received";
+
+      currentTask =
+        "Read CASE-004 Review Result";
+    }
+
+    else if(
+      !news004Read
+    ){
+
+      assignmentLabel =
+        "Morning coverage required";
+
+      currentTask =
+        "Review Daily Prophet · Credential Delays";
+    }
+
+    else{
+
+      assignmentLabel =
+        "Continuity review complete";
+
+      currentTask =
+        "Awaiting Classified Assignment";
+    }
+  }
+
+
+  /* =====================================================
+     DAY 8+
+  ===================================================== */
+
+  if(
+    worldDay >= 8
+  ){
+
+    assignmentLabel =
+      "No assignment issued";
+
+    currentTask =
+      "Awaiting Classified Assignment";
   }
 
 
@@ -681,6 +790,18 @@ function showDashboard(){
       case004Status === "Under Review" ||
       case004Status === "Solved"
     )
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  if(
+    worldDay === 7 &&
+    mail009Read &&
+    news004Read &&
+    case004Status === "Solved"
   ){
 
     canEndWorkDay =
@@ -1219,10 +1340,10 @@ function openOfficeItem(item){
     }
 
 
-    /* DAY 6+ */
+    /* DAY 6 */
 
     if(
-      worldDay >= 6
+      worldDay === 6
     ){
 
       const personnelAuditRead =
@@ -1293,6 +1414,70 @@ function openOfficeItem(item){
 
       openCase(
         "CASE-004"
+      );
+
+      return;
+    }
+
+
+    /* DAY 7 */
+
+    if(
+      worldDay === 7
+    ){
+
+      const reviewResultRead =
+        localStorage.getItem(
+          "mailRead_MAIL-009"
+        ) === "true";
+
+
+      if(
+        !reviewResultRead
+      ){
+
+        alert(
+          "Read the CASE-004 Review Result in Owl Mail first."
+        );
+
+        return;
+      }
+
+
+      const ministryReportRead =
+        localStorage.getItem(
+          "newsRead_NEWS-004"
+        ) === "true";
+
+
+      if(
+        !ministryReportRead
+      ){
+
+        alert(
+          "Review today's Daily Prophet report on Ministry credential delays."
+        );
+
+        return;
+      }
+
+
+      alert(
+        "Your Day 7 continuity review is complete. Await further classified assignment."
+      );
+
+      return;
+    }
+
+
+    /* DAY 8+ */
+
+    if(
+      worldDay >= 8
+    ){
+
+      alert(
+        "No new classified assignment has been issued yet."
       );
 
       return;
