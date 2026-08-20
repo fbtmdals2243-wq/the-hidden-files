@@ -27,8 +27,25 @@ function showPersonnelRecord(){
   const employeeId =
     Player.getEmployeeId();
 
-  const identity =
-    Player.getIdentity();
+  const recommendedDepartment =
+    Player.getRecommendedDepartment();
+
+  const assignedDepartment =
+    Player.getAssignedDepartment();
+
+  const specialAssignment =
+    Player.getSpecialAssignment();
+
+  const servicePoints =
+    Player.getServicePoints();
+
+  const completedDuties =
+    Player.getCompletedDuties();
+
+  const firstStoryArcCompleted =
+    localStorage.getItem(
+      "firstStoryArcCompleted"
+    ) === "true";
 
 
   const completedCaseIds =
@@ -80,10 +97,17 @@ function showPersonnelRecord(){
       : "- No completed cases recorded";
 
 
-  const reputation =
+  let reputation =
     completedCases >= 1
       ? "Excellent"
       : "Promising";
+
+
+  if(servicePoints >= 30){
+
+    reputation =
+      "Distinguished";
+  }
 
 
   let promotionStatus =
@@ -149,6 +173,27 @@ function showPersonnelRecord(){
   }
 
 
+  if(firstStoryArcCompleted){
+
+    careerTimeline.push(
+      "Continuity Appointment Confirmed"
+    );
+
+    careerTimeline.push(
+      "Assigned as Continuity Liaison"
+    );
+  }
+
+
+  if(completedDuties > 0){
+
+    careerTimeline.push(
+      "Completed Daily Duties: " +
+      completedDuties
+    );
+  }
+
+
   if(
     isPromoted &&
     !completedCaseIds.includes(
@@ -172,11 +217,16 @@ function showPersonnelRecord(){
       "Junior Archive Officer";
 
 
-  const registryIntegrityNotice =
+  let registryIntegrityNotice =
+    "";
+
+
+  if(
     worldDay >= 6 &&
     day6PersonnelAuditRead
+  ){
 
-      ? `
+    registryIntegrityNotice = `
 
 Registry Integrity:
 DISCREPANCY DETECTED
@@ -197,9 +247,38 @@ Source Record:
 RESTRICTED BY PERSONNEL CONTINUITY SYSTEM
 
 Required Action:
-Retain current employee credentials and await classified instructions.`
+Retain current employee credentials and await classified instructions.`;
+  }
 
-      : "";
+
+  if(firstStoryArcCompleted){
+
+    registryIntegrityNotice = `
+
+Continuity Determination:
+APPOINTMENT AUTHORIZATION CONFIRMED
+
+Continuity Position:
+VACANCY-AR-117
+
+Historical Appointee:
+MOM-000117
+
+Current Appointee:
+${employeeId}
+
+Identity Match:
+NOT ESTABLISHED
+
+Personnel Finding:
+The shared continuity signature belongs to the Ministry appointment. The current employee identity remains active and distinct.
+
+Credential Status:
+VALID
+
+Required Action:
+Continue assigned Ministry duties as Continuity Liaison.`;
+  }
 
 
   app.innerHTML = `
@@ -228,14 +307,25 @@ Retain current employee credentials and await classified instructions.`
           "Employee Record",
 
         department:
-          identity.department ||
-          "Archive Division",
+          assignedDepartment,
 
         status:
           "Active",
 
-        body:`Department:
-${identity.department || "Archive Division"}
+        body:`Assigned Department:
+${assignedDepartment}
+
+Identity Engine Recommendation:
+${recommendedDepartment}
+
+Special Assignment:
+${specialAssignment}
+
+Daily Duties Completed:
+${completedDuties}
+
+Ministry Service Points:
+${servicePoints}
 
 Completed Cases:
 ${completedCases}
