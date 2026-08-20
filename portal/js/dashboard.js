@@ -13,6 +13,11 @@ function showDashboard(){
   const identity =
     Player.getIdentity();
 
+  const assignedDepartment =
+    localStorage.getItem(
+      "playerAssignedDepartment"
+    ) || "Archive Division";
+
   const clearance =
     Player.getClearance();
 
@@ -61,6 +66,21 @@ function showDashboard(){
       "CASE-003"
     );
 
+  const case004Status =
+    Player.getCaseStatus(
+      "CASE-004"
+    );
+
+  const case005Status =
+    Player.getCaseStatus(
+      "CASE-005"
+    );
+
+  const case006Status =
+    Player.getCaseStatus(
+      "CASE-006"
+    );
+
 
   /* =====================================================
      MAIL READ STATES
@@ -96,6 +116,42 @@ function showDashboard(){
       "mailRead_MAIL-007"
     ) === "true";
 
+  const mail008Read =
+    localStorage.getItem(
+      "mailRead_MAIL-008"
+    ) === "true";
+
+  const mail009Read =
+    localStorage.getItem(
+      "mailRead_MAIL-009"
+    ) === "true";
+
+  const mail010Read =
+    localStorage.getItem(
+      "mailRead_MAIL-010"
+    ) === "true";
+
+  const mail011Read =
+    localStorage.getItem(
+      "mailRead_MAIL-011"
+    ) === "true";
+
+  const mail012Read =
+    localStorage.getItem(
+      "mailRead_MAIL-012"
+    ) === "true";
+
+  const mail013Read =
+    localStorage.getItem(
+      "mailRead_MAIL-013"
+    ) === "true";
+
+
+  const day6PersonnelRecordViewed =
+    localStorage.getItem(
+      "day6PersonnelRecordViewed"
+    ) === "true";
+
 
   /* =====================================================
      NEWS READ STATES
@@ -109,6 +165,11 @@ function showDashboard(){
   const news003Read =
     localStorage.getItem(
       "newsRead_NEWS-003"
+    ) === "true";
+
+  const news004Read =
+    localStorage.getItem(
+      "newsRead_NEWS-004"
     ) === "true";
 
 
@@ -131,6 +192,45 @@ function showDashboard(){
     mail004Read &&
     news003Read &&
     notice003Read;
+
+
+  const firstStoryArcCompleted =
+    localStorage.getItem(
+      "firstStoryArcCompleted"
+    ) === "true";
+
+
+  const day13DutyCompleted =
+    localStorage.getItem(
+      "dailyDutyCompleted_Day13"
+    ) === "true";
+
+
+  const secondArcEligible =
+    worldDay >= 14 &&
+    firstStoryArcCompleted &&
+    day13DutyCompleted;
+
+
+  const case006SubmittedDay =
+    Number(
+      localStorage.getItem(
+        "case006SubmittedDay"
+      ) || worldDay
+    );
+
+
+  const case006ReviewAvailable =
+    case006Status === "Under Review" &&
+    worldDay > case006SubmittedDay;
+
+
+  const dailyDutyCompleted =
+    worldDay >= 10 &&
+    typeof DailyWork !== "undefined" &&
+    DailyWork.isCompleted(
+      worldDay
+    );
 
 
   /* =====================================================
@@ -274,21 +374,145 @@ function showDashboard(){
 
 
   /* =====================================================
-     DAY 6+
+     DAY 6
   ===================================================== */
 
   if(
-    worldDay >= 6
+    worldDay === 6
   ){
 
     mailLabel =
-      "Reviewed";
+      mail008Read
+        ? "Personnel audit read"
+        : "Restricted personnel mail";
 
     newsLabel =
       "Morning edition";
 
     noticeLabel =
       "Security reminder";
+  }
+
+
+  /* =====================================================
+     DAY 7
+  ===================================================== */
+
+  if(
+    worldDay === 7
+  ){
+
+    mailLabel =
+      mail009Read
+        ? "Review result read"
+        : "CASE-004 review result";
+
+    newsLabel =
+      news004Read
+        ? "Reviewed"
+        : "New Ministry report";
+
+    noticeLabel =
+      "Security reminder";
+  }
+
+
+  /* =====================================================
+     DAY 8
+  ===================================================== */
+
+  if(
+    worldDay === 8
+  ){
+
+    mailLabel =
+      mail010Read
+        ? "Assignment read"
+        : "Classified assignment";
+
+    newsLabel =
+      "Morning edition";
+
+    noticeLabel =
+      "Security reminder";
+  }
+
+
+  /* =====================================================
+     DAY 9
+  ===================================================== */
+
+  if(
+    worldDay === 9
+  ){
+
+    mailLabel =
+      mail011Read
+        ? "Determination read"
+        : "Final determination";
+
+    newsLabel =
+      "Morning edition";
+
+    noticeLabel =
+      "Security reminder";
+  }
+
+
+  /* =====================================================
+     DAY 10+
+  ===================================================== */
+
+  if(
+    worldDay >= 10
+  ){
+
+    const dailyNewsRead =
+      localStorage.getItem(
+        "newsRead_NEWS-DAY-" +
+        worldDay
+      ) === "true";
+
+    const dailyNoticeRead =
+      localStorage.getItem(
+        "noticeRead_NOTICE-DAY-" +
+        worldDay
+      ) === "true";
+
+    mailLabel =
+      "No unread mail";
+
+    newsLabel =
+      dailyNewsRead
+        ? "Reviewed"
+        : "New daily edition";
+
+    noticeLabel =
+      dailyNoticeRead
+        ? "Reviewed"
+        : "New daily notice";
+  }
+
+
+  /* =====================================================
+     SECOND CONTINUITY ARC MAIL
+  ===================================================== */
+
+  if(secondArcEligible){
+
+    if(!mail012Read){
+
+      mailLabel =
+        "Personnel recall";
+    }
+    else if(
+      case006ReviewAvailable &&
+      !mail013Read
+    ){
+
+      mailLabel =
+        "CASE-006 review";
+    }
   }
 
 
@@ -523,18 +747,293 @@ function showDashboard(){
 
 
   /* =====================================================
-     DAY 6+
+     DAY 6
   ===================================================== */
 
   if(
-    worldDay >= 6
+    worldDay === 6
   ){
 
-    assignmentLabel =
-      "Await new assignment";
+    if(
+      !mail008Read
+    ){
 
-    currentTask =
-      "Awaiting Classified Assignment";
+      assignmentLabel =
+        "Personnel integrity alert";
+
+      currentTask =
+        "Read Mandatory Personnel Integrity Audit";
+    }
+
+    else if(
+      !day6PersonnelRecordViewed
+    ){
+
+      assignmentLabel =
+        "Employee record flagged";
+
+      currentTask =
+        "Inspect Your Employee Record";
+    }
+
+    else{
+
+      if(
+        case004Status ===
+        "Under Review"
+      ){
+
+        assignmentLabel =
+          "Report submitted";
+
+        currentTask =
+          "CASE-004 Under Review";
+      }
+
+      else if(
+        case004Status ===
+        "Solved"
+      ){
+
+        assignmentLabel =
+          "Assignment completed";
+
+        currentTask =
+          "CASE-004 Completed";
+      }
+
+      else{
+
+        assignmentLabel =
+          "CASE-004 active";
+
+        currentTask =
+          "Investigate CASE-004 · The Second Signature";
+      }
+    }
+  }
+
+
+  /* =====================================================
+     DAY 7
+  ===================================================== */
+
+  if(
+    worldDay === 7
+  ){
+
+    if(
+      !mail009Read
+    ){
+
+      assignmentLabel =
+        "Review result received";
+
+      currentTask =
+        "Read CASE-004 Review Result";
+    }
+
+    else if(
+      !news004Read
+    ){
+
+      assignmentLabel =
+        "Morning coverage required";
+
+      currentTask =
+        "Review Daily Prophet · Credential Delays";
+    }
+
+    else{
+
+      assignmentLabel =
+        "Continuity review complete";
+
+      currentTask =
+        "Awaiting Classified Assignment";
+    }
+  }
+
+
+  /* =====================================================
+     DAY 8
+  ===================================================== */
+
+  if(
+    worldDay === 8
+  ){
+
+    if(
+      !mail010Read
+    ){
+
+      assignmentLabel =
+        "Classified assignment";
+
+      currentTask =
+        "Read Recruitment Systems Audit";
+    }
+
+    else if(
+      case005Status ===
+      "Under Review"
+    ){
+
+      assignmentLabel =
+        "Report submitted";
+
+      currentTask =
+        "CASE-005 Under Review";
+    }
+
+    else if(
+      case005Status ===
+      "Solved"
+    ){
+
+      assignmentLabel =
+        "Assignment completed";
+
+      currentTask =
+        "CASE-005 Completed";
+    }
+
+    else{
+
+      assignmentLabel =
+        "CASE-005 active";
+
+      currentTask =
+        "Investigate CASE-005 · The Position That Never Closed";
+    }
+  }
+
+
+  /* =====================================================
+     DAY 9
+  ===================================================== */
+
+  if(
+    worldDay === 9
+  ){
+
+    if(
+      !mail011Read
+    ){
+
+      assignmentLabel =
+        "Final determination received";
+
+      currentTask =
+        "Read CASE-005 Final Determination";
+    }
+
+    else{
+
+      assignmentLabel =
+        "Continuity appointment confirmed";
+
+      currentTask =
+        "Continuity Liaison · Await Daily Orders";
+    }
+  }
+
+
+  /* =====================================================
+     DAY 10+
+  ===================================================== */
+
+  if(
+    worldDay >= 10
+  ){
+
+    if(
+      !firstStoryArcCompleted
+    ){
+
+      assignmentLabel =
+        "Continuity review required";
+
+      currentTask =
+        "Awaiting Personnel Determination";
+    }
+
+    else if(
+      dailyDutyCompleted
+    ){
+
+      assignmentLabel =
+        "Daily duty recorded";
+
+      currentTask =
+        "Daily Ministry Duty Complete";
+    }
+
+    else{
+
+      const dailyTask =
+        DailyWork.getTaskForDay(
+          worldDay
+        );
+
+      assignmentLabel =
+        "Daily work order";
+
+      currentTask =
+        dailyTask
+          ? dailyTask.title
+          : "Daily Ministry Duty";
+    }
+  }
+
+
+  /* =====================================================
+     SECOND CONTINUITY ARC
+  ===================================================== */
+
+  if(
+    secondArcEligible &&
+    case006Status !== "Solved"
+  ){
+
+    if(!mail012Read){
+
+      assignmentLabel =
+        "Continuity recall received";
+
+      currentTask =
+        "Read the Day 13 Decision Recall";
+    }
+    else if(
+      case006Status ===
+      "Active"
+    ){
+
+      assignmentLabel =
+        "CASE-006 active";
+
+      currentTask =
+        "Investigate CASE-006 · The Decision Before It Was Made";
+    }
+    else if(
+      case006ReviewAvailable &&
+      !mail013Read
+    ){
+
+      assignmentLabel =
+        "Review result received";
+
+      currentTask =
+        "Read CASE-006 Compatibility Review";
+    }
+    else{
+
+      assignmentLabel =
+        "Report submitted";
+
+      currentTask =
+        "CASE-006 Under Review";
+    }
   }
 
 
@@ -605,6 +1104,86 @@ function showDashboard(){
   }
 
 
+  if(
+    worldDay === 6 &&
+    (
+      case004Status === "Under Review" ||
+      case004Status === "Solved"
+    )
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  if(
+    worldDay === 7 &&
+    mail009Read &&
+    news004Read &&
+    case004Status === "Solved"
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  if(
+    worldDay === 8 &&
+    (
+      case005Status === "Under Review" ||
+      case005Status === "Solved"
+    )
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  if(
+    worldDay === 9 &&
+    mail011Read &&
+    case005Status === "Solved"
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  if(
+    worldDay >= 10 &&
+    firstStoryArcCompleted &&
+    dailyDutyCompleted
+  ){
+
+    canEndWorkDay =
+      true;
+  }
+
+
+  if(
+    secondArcEligible &&
+    case006Status === "Active"
+  ){
+
+    canEndWorkDay =
+      false;
+  }
+
+
+  if(
+    secondArcEligible &&
+    case006Status === "Under Review"
+  ){
+
+    canEndWorkDay =
+      !case006ReviewAvailable;
+  }
+
+
   /* =====================================================
      DASHBOARD
   ===================================================== */
@@ -650,7 +1229,7 @@ function showDashboard(){
 
           <br>
 
-          ${identity.department || "Archive Division"}
+          ${assignedDepartment}
 
           <br>
 
@@ -794,6 +1373,23 @@ function showDashboard(){
 
         </button>
 
+
+        <button
+          class="object ministry-network"
+          onclick="openOfficeItem('Ministry Network')">
+
+          🔐
+
+          <span>
+            Ministry Network
+          </span>
+
+          <small>
+            Employee archive
+          </small>
+
+        </button>
+
       </div>
 
 
@@ -929,6 +1525,17 @@ function startNextWorkDay(){
 ========================================================= */
 
 function openOfficeItem(item){
+
+
+  if(
+    item ===
+    "Ministry Network"
+  ){
+
+    showMinistryNetwork();
+
+    return;
+  }
 
 
   if(
@@ -1131,6 +1738,341 @@ function openOfficeItem(item){
       alert(
         "CASE-003 is closed. Await further classified authorization."
       );
+
+      return;
+    }
+
+
+    /* DAY 6 */
+
+    if(
+      worldDay === 6
+    ){
+
+      const personnelAuditRead =
+        localStorage.getItem(
+          "mailRead_MAIL-008"
+        ) === "true";
+
+
+      if(
+        !personnelAuditRead
+      ){
+
+        alert(
+          "Read the Mandatory Personnel Integrity Audit in Owl Mail first."
+        );
+
+        return;
+      }
+
+
+      const personnelRecordViewed =
+        localStorage.getItem(
+          "day6PersonnelRecordViewed"
+        ) === "true";
+
+
+      if(
+        !personnelRecordViewed
+      ){
+
+        showPersonnelRecord();
+
+        return;
+      }
+
+
+      const caseStatus =
+        Player.getCaseStatus(
+          "CASE-004"
+        );
+
+
+      if(
+        caseStatus ===
+        "Under Review"
+      ){
+
+        alert(
+          "Your CASE-004 report has already been submitted. Await further Ministry instructions."
+        );
+
+        return;
+      }
+
+
+      if(
+        caseStatus ===
+        "Solved"
+      ){
+
+        alert(
+          "CASE-004 has already been closed."
+        );
+
+        return;
+      }
+
+
+      openCase(
+        "CASE-004"
+      );
+
+      return;
+    }
+
+
+    /* DAY 7 */
+
+    if(
+      worldDay === 7
+    ){
+
+      const reviewResultRead =
+        localStorage.getItem(
+          "mailRead_MAIL-009"
+        ) === "true";
+
+
+      if(
+        !reviewResultRead
+      ){
+
+        alert(
+          "Read the CASE-004 Review Result in Owl Mail first."
+        );
+
+        return;
+      }
+
+
+      const ministryReportRead =
+        localStorage.getItem(
+          "newsRead_NEWS-004"
+        ) === "true";
+
+
+      if(
+        !ministryReportRead
+      ){
+
+        alert(
+          "Review today's Daily Prophet report on Ministry credential delays."
+        );
+
+        return;
+      }
+
+
+      alert(
+        "Your Day 7 continuity review is complete. Await further classified assignment."
+      );
+
+      return;
+    }
+
+
+    /* DAY 8 */
+
+    if(
+      worldDay === 8
+    ){
+
+      const auditAssignmentRead =
+        localStorage.getItem(
+          "mailRead_MAIL-010"
+        ) === "true";
+
+
+      if(
+        !auditAssignmentRead
+      ){
+
+        alert(
+          "Read the classified Recruitment Systems Audit in Owl Mail first."
+        );
+
+        return;
+      }
+
+
+      const caseStatus =
+        Player.getCaseStatus(
+          "CASE-005"
+        );
+
+
+      if(
+        caseStatus ===
+        "Under Review"
+      ){
+
+        alert(
+          "Your CASE-005 report has already been submitted. Await the Oversight Panel review."
+        );
+
+        return;
+      }
+
+
+      if(
+        caseStatus ===
+        "Solved"
+      ){
+
+        alert(
+          "CASE-005 has already been closed."
+        );
+
+        return;
+      }
+
+
+      openCase(
+        "CASE-005"
+      );
+
+      return;
+    }
+
+
+    /* DAY 9 */
+
+    if(
+      worldDay === 9
+    ){
+
+      const finalDeterminationRead =
+        localStorage.getItem(
+          "mailRead_MAIL-011"
+        ) === "true";
+
+
+      if(
+        !finalDeterminationRead
+      ){
+
+        alert(
+          "Read the CASE-005 Final Determination in Owl Mail first."
+        );
+
+        return;
+      }
+
+      alert(
+        "Your Continuity Liaison appointment is confirmed. Daily Ministry orders begin on Day 10."
+      );
+
+      return;
+    }
+
+
+    /* DAY 10+ */
+
+    if(
+      worldDay >= 10
+    ){
+
+      const firstArcComplete =
+        localStorage.getItem(
+          "firstStoryArcCompleted"
+        ) === "true";
+
+
+      if(!firstArcComplete){
+
+        alert(
+          "Complete the Personnel Continuity determination before receiving daily orders."
+        );
+
+        return;
+      }
+
+
+      const secondArcEligible =
+        worldDay >= 14 &&
+        localStorage.getItem(
+          "dailyDutyCompleted_Day13"
+        ) === "true";
+
+
+      if(secondArcEligible){
+
+        const recallRead =
+          localStorage.getItem(
+            "mailRead_MAIL-012"
+          ) === "true";
+
+        const caseStatus =
+          Player.getCaseStatus(
+            "CASE-006"
+          );
+
+
+        if(!recallRead){
+
+          alert(
+            "Read the Personnel Continuity recall in Owl Mail before opening the recalled file."
+          );
+
+          return;
+        }
+
+
+        if(
+          caseStatus ===
+          "Active"
+        ){
+
+          openCase(
+            "CASE-006"
+          );
+
+          return;
+        }
+
+
+        if(
+          caseStatus ===
+          "Under Review"
+        ){
+
+          const submittedDay =
+            Number(
+              localStorage.getItem(
+                "case006SubmittedDay"
+              ) || worldDay
+            );
+
+          const reviewRead =
+            localStorage.getItem(
+              "mailRead_MAIL-013"
+            ) === "true";
+
+
+          if(
+            worldDay > submittedDay &&
+            !reviewRead
+          ){
+
+            alert(
+              "Read the CASE-006 Compatibility Review in Owl Mail first."
+            );
+          }
+          else{
+
+            alert(
+              "Your CASE-006 report is under review. Continue to monitor Owl Mail."
+            );
+          }
+
+          return;
+        }
+      }
+
+
+      showDailyWorkOrder();
 
       return;
     }
