@@ -40,6 +40,11 @@ The current portal includes:
 - Persistent colleague relationships and daily professional check-ins
 - Downloadable and restorable employee archive files
 - Optional Ministry Network account and cloud-save client
+- Save Schema Version 2 with automatic pre-restore recovery checkpoints
+- Local-versus-incoming record comparison before replacement
+- One-action undo for the latest file or cloud restore
+- Local record deletion with employee-number confirmation
+- Public data and privacy notice
 
 
 ## Story progression
@@ -165,6 +170,9 @@ The test verifies:
 - duplicate Service Point protection
 - preservation of employee number, rank, clearance, and old reports
 - save snapshot validation and checksum protection
+- Version 1 to Version 2 save migration without progress loss
+- pre-restore recovery checkpoint and one-time undo
+- local record deletion without touching unrelated browser storage
 - account login, per-user cloud save, restore, and local sign-out behavior
 
 
@@ -225,6 +233,18 @@ The optional Ministry Network client supports Supabase Auth and per-user cloud
 saves. It is disabled by default, so the static portal continues to work without
 a server. Activation instructions and Row Level Security requirements are in
 [supabase/SETUP.md](supabase/SETUP.md).
+
+Before replacing a local record from an archive file or the Ministry Network,
+the portal now compares employee number, World Day, rank, clearance, and record
+checksum. The current record is saved as one protected recovery checkpoint and
+can be restored from the Records Transfer Desk. Recovery metadata is excluded
+from exported archives to prevent recursive backups.
+
+Players can remove the employee record and recovery checkpoint from the current
+browser after entering the exact employee number. This local action preserves
+unrelated browser storage and does not claim to delete a separately configured
+cloud account. The public explanation is available at
+[portal/privacy.html](portal/privacy.html).
 
 
 ## Technology

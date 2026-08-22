@@ -40,6 +40,19 @@
 - Supabase database schema with per-user Row Level Security
 
 
+## Completed: STEP 28 · Records Safety & Privacy Controls
+
+- Save Schema Version 2 with lossless Version 1 migration
+- Incoming-versus-local employee record comparison
+- Automatic recovery checkpoint before file or cloud replacement
+- One-time undo for the latest completed restore
+- Recovery metadata excluded from downloadable and cloud snapshots
+- Local employee record deletion with exact employee-number confirmation
+- Unrelated browser storage preserved during deletion and replacement
+- Public local-storage, archive, cloud, recovery, and deletion notice
+- Automated records-safety regression coverage
+
+
 ## Optional Post-Release Content
 
 - Additional NPC relationships
@@ -60,6 +73,9 @@ Foundation now implemented:
 - Per-user cloud save and restore adapter
 - Row Level Security SQL denying anonymous save access
 - Automated local, cloud, and full-progression regression tests
+- Protected pre-restore recovery checkpoints
+- Restore conflict warnings based on employee identity and World Day
+- Local data deletion controls and a public privacy notice
 
 Before a public account-based release, complete:
 
@@ -71,7 +87,16 @@ Before a public account-based release, complete:
 - Secret and environment configuration
 - Audit logging
 - Backup and migration strategy
-- Privacy policy and account deletion flow
+- Production privacy policy and server-side account deletion flow
+
+
+## Release Polish
+
+- Installable offline portal shell
+- Keyboard and screen-reader accessibility audit
+- Mobile layout and low-bandwidth testing
+- Hosted error reporting without collecting story text
+- Public release checklist and versioned deployment notes
 
 
 ## Persistent Online Ministry
