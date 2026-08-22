@@ -146,9 +146,9 @@ async function run(){
     localStorage.getItem(
       "ministrySaveSchemaVersion"
     ),
-    "1"
+    "2"
   );
-  pass("Existing localStorage save adopts schema version 1");
+  pass("Existing localStorage save migrates to schema version 2");
 
 
   assert.equal(
@@ -184,7 +184,7 @@ async function run(){
 
   assert.equal(
     snapshot.schemaVersion,
-    1
+    2
   );
   assert.equal(
     snapshot.employeeId,

@@ -247,6 +247,14 @@ async function run(){
     app.innerHTML,
     /CLOUD OVERWRITE: DISABLED/
   );
+  assert.match(
+    app.innerHTML,
+    /Record Safety/
+  );
+  assert.match(
+    app.innerHTML,
+    /DATA &amp; PRIVACY NOTICE/
+  );
   pass("Local Records Transfer Desk renders without a cloud project");
 
 
@@ -304,7 +312,17 @@ async function run(){
     activity.confirmations,
     1
   );
-  pass("Approved archive restoration replaces the complete local record");
+  assert.equal(
+    context.MinistryStorage
+      .getRecoveryCheckpoint()
+      .snapshot.data.worldDay,
+    "99"
+  );
+  assert.match(
+    app.innerHTML,
+    /UNDO LAST RESTORE/
+  );
+  pass("Approved archive restoration preserves an undo checkpoint");
 
 
   const tampered =
@@ -338,6 +356,50 @@ async function run(){
     /failed its security checksum inspection/
   );
   pass("Modified archive files are rejected before confirmation or mutation");
+
+
+  localStorage.setItem(
+    "worldDay",
+    "31"
+  );
+  localStorage.setItem(
+    "playerRank",
+    "Network Test Rank"
+  );
+
+  context.MinistryStorage
+    .configureRemoteAdapter({
+
+      async saveSnapshot(){},
+
+
+      async loadSnapshot(){
+        return snapshot;
+      }
+
+    });
+
+
+  await context.restoreMinistryRecord();
+
+
+  assert.equal(
+    localStorage.getItem(
+      "worldDay"
+    ),
+    "15"
+  );
+  assert.equal(
+    context.MinistryStorage
+      .getRecoveryCheckpoint()
+      .snapshot.data.worldDay,
+    "31"
+  );
+  assert.equal(
+    activity.confirmations,
+    2
+  );
+  pass("Approved cloud restoration compares records and preserves an undo checkpoint");
 
 
   const portalIndex =
@@ -381,6 +443,31 @@ async function run(){
     /js\/cloud-portal\.js/
   );
   pass("Portal loads cloud configuration safely after storage and before player use");
+
+
+  const privacyPage =
+    fs.readFileSync(
+      path.resolve(
+        __dirname,
+        "../portal/privacy.html"
+      ),
+      "utf8"
+    );
+
+
+  assert.match(
+    privacyPage,
+    /Local employee record/
+  );
+  assert.match(
+    privacyPage,
+    /does not send that\s+record to a server automatically/i
+  );
+  assert.match(
+    privacyPage,
+    /Delete This Device's Record/
+  );
+  pass("Public privacy notice explains local, cloud, recovery, and deletion behavior");
 
 
   console.log(
