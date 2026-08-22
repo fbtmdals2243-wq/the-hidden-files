@@ -185,6 +185,7 @@ The test verifies:
 - account login, per-user cloud save, restore, and local sign-out behavior
 - valid install manifest and 192px/512px application icons
 - complete offline shell coverage for every portal script and stylesheet
+- offline navigation, stale-cache cleanup, and background revalidation behavior
 - same-origin GET-only service-worker boundaries that exclude cloud APIs
 - skip navigation, live connection status, reduced motion, and mobile touch targets
 
@@ -230,6 +231,7 @@ supabase/
 tests/
 ├── run-all.js
 ├── pwa-accessibility.test.js
+├── service-worker-runtime.test.js
 ├── new-employee-journey.test.js
 ├── storage-engine.test.js
 ├── cloud-engine.test.js
