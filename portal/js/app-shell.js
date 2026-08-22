@@ -9,8 +9,29 @@
   const installButton =
     document.getElementById("installAppButton");
 
+  const releaseVersionElement =
+    document.getElementById("releaseVersion");
+
+  const releaseVersion =
+    document
+      .querySelector(
+        'meta[name="app-version"]'
+      )
+      ?.getAttribute("content") ||
+    "";
+
   let installPrompt = null;
   let onlineMessageTimer = null;
+
+
+  if(
+    releaseVersionElement &&
+    releaseVersion
+  ){
+
+    releaseVersionElement.textContent =
+      `v${releaseVersion}`;
+  }
 
 
   function announceConnection(message, persistent){
