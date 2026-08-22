@@ -53,12 +53,212 @@ function getArchiveFailureMessage(reason){
     "remote-save-failed":
       "The Ministry Network could not save this employee record.",
     "remote-load-failed":
-      "No restorable employee record could be retrieved."
+      "No restorable employee record could be retrieved.",
+    "checkpoint-save-failed":
+      "A recovery checkpoint could not be created, so the current record was not replaced.",
+    "recovery-not-found":
+      "No protected record is available to restore."
   };
 
 
   return messages[reason] ||
     "The requested records operation could not be completed.";
+}
+
+
+function getMinistryRecordDate(value){
+
+  if(!value){
+    return "Not recorded";
+  }
+
+
+  const date =
+    new Date(value);
+
+
+  return Number.isNaN(
+    date.getTime()
+  )
+    ? "Not recorded"
+    : date.toLocaleString();
+}
+
+
+function getSnapshotRelationLabel(relation){
+
+  const labels = {
+    "identical":
+      "The incoming record matches this device.",
+    "incoming-ahead":
+      "The incoming record is further ahead than this device.",
+    "local-ahead":
+      "This device is further ahead than the incoming record.",
+    "diverged":
+      "Both records are on the same day but contain different progress.",
+    "different-employee":
+      "The incoming archive belongs to a different employee."
+  };
+
+
+  return labels[relation] ||
+    "The two employee records are different.";
+}
+
+
+function buildRestoreConfirmation(
+  snapshot,
+  sourceLabel
+){
+
+  const incoming =
+    MinistryStorage
+      .getSnapshotSummary(
+        snapshot
+      );
+
+  const comparison =
+    MinistryStorage
+      .compareSnapshots(
+        MinistryStorage
+          .createSnapshot(),
+        snapshot
+      );
+
+
+  if(
+    !incoming.valid ||
+    !comparison.valid
+  ){
+
+    return null;
+  }
+
+
+  return (
+    "Restore record from " +
+    sourceLabel +
+    "?\n\n" +
+    "Employee: " +
+    incoming.employeeId +
+    "\n" +
+    "World Day: " +
+    incoming.worldDay +
+    "\n" +
+    "Rank: " +
+    incoming.rank +
+    "\n" +
+    "Clearance: " +
+    incoming.clearance +
+    "\n\n" +
+    getSnapshotRelationLabel(
+      comparison.relation
+    ) +
+    "\n\n" +
+    "The current record will be protected as an undo checkpoint before replacement."
+  );
+}
+
+
+function renderRecordSafetyPanel(){
+
+  const localSummary =
+    MinistryStorage
+      .getSnapshotSummary(
+        MinistryStorage
+          .createSnapshot()
+      );
+
+  const checkpoint =
+    MinistryStorage
+      .getRecoveryCheckpoint();
+
+  const checkpointSummary =
+    checkpoint
+      ? MinistryStorage
+          .getSnapshotSummary(
+            checkpoint.snapshot
+          )
+      : null;
+
+
+  return `
+    <section class="record-safety">
+
+      <div>
+        <h3>Record Safety</h3>
+        <p>
+          Save Schema ${escapeMinistryText(
+            localSummary.schemaVersion
+          )} · ${escapeMinistryText(
+            localSummary.keyCount
+          )} protected record fields
+        </p>
+        <p class="muted">
+          Record integrity verified · World Day ${escapeMinistryText(
+            localSummary.worldDay
+          )}
+        </p>
+      </div>
+
+      <div>
+        <h3>Recovery Checkpoint</h3>
+        <p>
+          ${
+            checkpointSummary &&
+            checkpointSummary.valid
+              ? "World Day " +
+                escapeMinistryText(
+                  checkpointSummary.worldDay
+                ) +
+                " · " +
+                escapeMinistryText(
+                  getMinistryRecordDate(
+                    checkpoint.createdAt
+                  )
+                )
+              : "No restore checkpoint is currently held."
+          }
+        </p>
+
+        ${
+          checkpointSummary &&
+          checkpointSummary.valid
+            ? `
+              <button
+                class="btn secondary compact"
+                onclick="restoreLastMinistryRecord()">
+
+                UNDO LAST RESTORE
+
+              </button>
+            `
+            : ""
+        }
+      </div>
+
+      <div class="record-safety-links">
+
+        <button
+          class="btn danger compact"
+          onclick="showLocalRecordDeletion()">
+
+          DELETE THIS DEVICE'S RECORD
+
+        </button>
+
+        <a
+          class="privacy-link"
+          href="privacy.html">
+
+          DATA &amp; PRIVACY NOTICE
+
+        </a>
+
+      </div>
+
+    </section>
+  `;
 }
 
 
@@ -189,6 +389,8 @@ CLOUD OVERWRITE: DISABLED</div>
 
         ${renderArchiveTransferActions()}
 
+        ${renderRecordSafetyPanel()}
+
         <div class="center">
 
           <button
@@ -297,6 +499,8 @@ LOCAL RECORD: PROTECTED</div>
 
         ${renderArchiveTransferActions()}
 
+        ${renderRecordSafetyPanel()}
+
         <div class="center">
 
           <button
@@ -381,6 +585,8 @@ AUTOMATIC OVERWRITE: DISABLED</div>
       </div>
 
       ${renderArchiveTransferActions()}
+
+      ${renderRecordSafetyPanel()}
 
       <div class="network-actions">
 
@@ -542,24 +748,60 @@ async function syncMinistryRecord(){
 
 async function restoreMinistryRecord(){
 
-  const approved =
-    confirm(
-      "Restore the Ministry Network record on this device?\n\n" +
-      "The current local employee record will be replaced."
+  const remote =
+    await MinistryStorage
+      .loadFromRemote();
+
+
+  if(!remote.success){
+
+    showMinistryNetwork(
+      getArchiveFailureMessage(
+        remote.reason
+      ),
+      "error"
+    );
+
+    return;
+  }
+
+
+  const prompt =
+    buildRestoreConfirmation(
+      remote.snapshot,
+      "the Ministry Network"
     );
 
 
-  if(!approved){
+  if(!prompt){
+
+    showMinistryNetwork(
+      "The network record could not be compared safely.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if(!confirm(prompt)){
     return;
   }
 
 
   const result =
-    await MinistryStorage
-      .pullFromRemote({
-        replace:
-          true
-      });
+    MinistryStorage
+      .restoreSnapshot(
+        remote.snapshot,
+        {
+          replace:
+            true,
+          createCheckpoint:
+            true,
+          checkpointReason:
+            "before-cloud-restore"
+        }
+      );
 
 
   showMinistryNetwork(
@@ -572,6 +814,199 @@ async function restoreMinistryRecord(){
       ? "success"
       : "error"
   );
+}
+
+
+async function restoreLastMinistryRecord(){
+
+  const checkpoint =
+    MinistryStorage
+      .getRecoveryCheckpoint();
+
+
+  if(!checkpoint){
+
+    showMinistryNetwork(
+      getArchiveFailureMessage(
+        "recovery-not-found"
+      ),
+      "error"
+    );
+
+    return;
+  }
+
+
+  const summary =
+    MinistryStorage
+      .getSnapshotSummary(
+        checkpoint.snapshot
+      );
+
+  const approved =
+    confirm(
+      "Undo the last record restore?\n\n" +
+      "Employee: " +
+      summary.employeeId +
+      "\nWorld Day: " +
+      summary.worldDay +
+      "\nRank: " +
+      summary.rank
+    );
+
+
+  if(!approved){
+    return;
+  }
+
+
+  const result =
+    MinistryStorage
+      .restoreRecoveryCheckpoint();
+
+
+  showMinistryNetwork(
+    result.success
+      ? "The protected pre-restore record has been restored."
+      : getArchiveFailureMessage(
+          result.reason
+        ),
+    result.success
+      ? "success"
+      : "error"
+  );
+}
+
+
+function showLocalRecordDeletion(){
+
+  const employeeId =
+    Player.getEmployeeId();
+
+
+  app.innerHTML = `
+    <section class="panel network-panel destructive-panel">
+
+      <div class="seal">
+        MINISTRY RECORDS CONTROL
+      </div>
+
+      <h1>Delete Local Record</h1>
+
+      <h2>${escapeMinistryText(employeeId)}</h2>
+
+      <div class="notice">
+
+        <p>
+          This removes the employee record from this browser only.
+          It does not delete a separately stored Ministry Network record.
+        </p>
+
+        <p>
+          Download an employee archive first if you may want to
+          restore this career later.
+        </p>
+
+        <label for="localRecordDeletionConfirmation">
+          Type the employee number to authorize deletion
+        </label>
+
+        <input
+          id="localRecordDeletionConfirmation"
+          class="field"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="${escapeMinistryText(employeeId)}"
+        >
+
+        <div
+          id="localRecordDeletionMessage"
+          class="deletion-message"
+          aria-live="polite">
+        </div>
+
+      </div>
+
+      <div class="network-actions">
+
+        <button
+          class="btn secondary"
+          onclick="showMinistryNetwork()">
+
+          CANCEL
+
+        </button>
+
+        <button
+          class="btn danger"
+          onclick="eraseLocalMinistryRecord()">
+
+          PERMANENTLY DELETE LOCAL RECORD
+
+        </button>
+
+      </div>
+
+    </section>
+  `;
+}
+
+
+async function eraseLocalMinistryRecord(){
+
+  const field =
+    document.getElementById(
+      "localRecordDeletionConfirmation"
+    );
+
+  const message =
+    document.getElementById(
+      "localRecordDeletionMessage"
+    );
+
+  const employeeId =
+    Player.getEmployeeId();
+
+
+  if(
+    !field ||
+    field.value.trim() !== employeeId
+  ){
+
+    if(message){
+      message.textContent =
+        "The employee number does not match.";
+    }
+
+    return;
+  }
+
+
+  const approved =
+    confirm(
+      "Permanently delete " +
+      employeeId +
+      " from this device?\n\n" +
+      "This action cannot be undone unless you previously downloaded an archive."
+    );
+
+
+  if(!approved){
+    return;
+  }
+
+
+  if(
+    MinistryCloud &&
+    MinistryCloud.isAuthenticated()
+  ){
+
+    await MinistryCloud.signOut();
+  }
+
+
+  MinistryStorage.eraseLocalRecord();
+  bootPortal();
 }
 
 
@@ -731,8 +1166,10 @@ async function importMinistryArchive(file){
     const approved =
       confirm(
         warning +
-        "Restore this employee archive?\n\n" +
-        "The current local record will be replaced."
+        buildRestoreConfirmation(
+          snapshot,
+          "the selected employee archive"
+        )
       );
 
 
@@ -747,7 +1184,11 @@ async function importMinistryArchive(file){
           snapshot,
           {
             replace:
-              true
+              true,
+            createCheckpoint:
+              true,
+            checkpointReason:
+              "before-file-restore"
           }
         );
 

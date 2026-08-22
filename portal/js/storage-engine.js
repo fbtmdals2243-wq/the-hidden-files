@@ -1,10 +1,13 @@
 const MinistryStorage = {
 
   schemaVersion:
-    1,
+    2,
 
   schemaKey:
     "ministrySaveSchemaVersion",
+
+  recoveryKey:
+    "ministryRecoveryCheckpoint",
 
   remoteAdapter:
     null,
@@ -103,21 +106,39 @@ const MinistryStorage = {
       Version 1 adopts every existing localStorage key
       without renaming or deleting player data.
 
+      Version 2 adds protected recovery checkpoints and
+      record comparison without changing existing save keys.
+
       Future migrations must be added here in order and
       must preserve older employee records.
     */
 
+    let migratedVersion =
+      fromVersion;
+
+
     if(
-      fromVersion <= 0 &&
+      migratedVersion <= 0 &&
       toVersion >= 1
     ){
 
-      return true;
+      migratedVersion =
+        1;
+    }
+
+
+    if(
+      migratedVersion === 1 &&
+      toVersion >= 2
+    ){
+
+      migratedVersion =
+        2;
     }
 
 
     return (
-      fromVersion ===
+      migratedVersion ===
       toVersion
     );
   },
@@ -254,6 +275,10 @@ const MinistryStorage = {
 
   isGameKey(key){
 
+    if(key === this.recoveryKey){
+      return false;
+    }
+
     if(key === this.schemaKey){
       return true;
     }
@@ -357,6 +382,401 @@ const MinistryStorage = {
       checksum:
         this.calculateChecksum(data),
       data
+    };
+  },
+
+
+  getSnapshotSummary(snapshot){
+
+    const validation =
+      this.validateSnapshot(
+        snapshot
+      );
+
+
+    if(!validation.valid){
+
+      return {
+        valid:
+          false,
+        reason:
+          validation.reason
+      };
+    }
+
+
+    const data =
+      snapshot.data;
+
+    const completedCases =
+      Object.keys(data)
+        .filter(
+          key =>
+            key.startsWith(
+              "caseCompleted_"
+            ) &&
+            data[key] === "true"
+        ).length;
+
+    const createdAt =
+      typeof snapshot.createdAt ===
+        "string" &&
+      !Number.isNaN(
+        new Date(
+          snapshot.createdAt
+        ).getTime()
+      )
+        ? snapshot.createdAt
+        : null;
+
+    const storedWorldDay =
+      Number(
+        data.worldDay || 1
+      );
+
+
+    return {
+      valid:
+        true,
+      reason:
+        null,
+      schemaVersion:
+        Number(
+          snapshot.schemaVersion
+        ),
+      employeeId:
+        snapshot.employeeId ||
+        "MOM-000000",
+      worldDay:
+        Number.isFinite(
+          storedWorldDay
+        ) &&
+        storedWorldDay >= 1
+          ? storedWorldDay
+          : 1,
+      rank:
+        data.playerRank ||
+        "Unassigned",
+      clearance:
+        data.playerClearance ||
+        "Unassigned",
+      completedCases,
+      keyCount:
+        Object.keys(data).length,
+      createdAt,
+      checksum:
+        snapshot.checksum
+    };
+  },
+
+
+  compareSnapshots(
+    localSnapshot,
+    incomingSnapshot
+  ){
+
+    const local =
+      this.getSnapshotSummary(
+        localSnapshot
+      );
+
+    const incoming =
+      this.getSnapshotSummary(
+        incomingSnapshot
+      );
+
+
+    if(!local.valid){
+
+      return {
+        valid:
+          false,
+        reason:
+          "invalid-local-snapshot"
+      };
+    }
+
+
+    if(!incoming.valid){
+
+      return {
+        valid:
+          false,
+        reason:
+          incoming.reason
+      };
+    }
+
+
+    if(
+      local.employeeId !==
+      incoming.employeeId
+    ){
+
+      return {
+        valid:
+          true,
+        relation:
+          "different-employee",
+        local,
+        incoming
+      };
+    }
+
+
+    if(
+      local.checksum ===
+      incoming.checksum
+    ){
+
+      return {
+        valid:
+          true,
+        relation:
+          "identical",
+        local,
+        incoming
+      };
+    }
+
+
+    if(
+      incoming.worldDay >
+      local.worldDay
+    ){
+
+      return {
+        valid:
+          true,
+        relation:
+          "incoming-ahead",
+        local,
+        incoming
+      };
+    }
+
+
+    if(
+      incoming.worldDay <
+      local.worldDay
+    ){
+
+      return {
+        valid:
+          true,
+        relation:
+          "local-ahead",
+        local,
+        incoming
+      };
+    }
+
+
+    return {
+      valid:
+        true,
+      relation:
+        "diverged",
+      local,
+      incoming
+    };
+  },
+
+
+  createRecoveryCheckpoint(
+    reason = "before-restore"
+  ){
+
+    try{
+
+      const snapshot =
+        this.createSnapshot();
+
+      const validation =
+        this.validateSnapshot(
+          snapshot
+        );
+
+
+      if(!validation.valid){
+
+        return {
+          success:
+            false,
+          reason:
+            validation.reason
+        };
+      }
+
+
+      const checkpoint = {
+        version:
+          1,
+        createdAt:
+          new Date().toISOString(),
+        reason:
+          String(reason || "before-restore")
+            .slice(0, 80),
+        snapshot
+      };
+
+
+      localStorage.setItem(
+        this.recoveryKey,
+        JSON.stringify(
+          checkpoint
+        )
+      );
+
+
+      return {
+        success:
+          true,
+        reason:
+          null,
+        checkpoint
+      };
+    }
+    catch(error){
+
+      console.error(
+        "Unable to create recovery checkpoint:",
+        error
+      );
+
+      return {
+        success:
+          false,
+        reason:
+          "checkpoint-save-failed"
+      };
+    }
+  },
+
+
+  getRecoveryCheckpoint(){
+
+    const value =
+      localStorage.getItem(
+        this.recoveryKey
+      );
+
+
+    if(!value){
+      return null;
+    }
+
+
+    try{
+
+      const checkpoint =
+        JSON.parse(value);
+
+
+      if(
+        !checkpoint ||
+        checkpoint.version !== 1 ||
+        !checkpoint.snapshot
+      ){
+
+        return null;
+      }
+
+
+      const validation =
+        this.validateSnapshot(
+          checkpoint.snapshot
+        );
+
+
+      return validation.valid
+        ? checkpoint
+        : null;
+    }
+    catch(error){
+
+      console.warn(
+        "Invalid recovery checkpoint ignored:",
+        error
+      );
+
+      return null;
+    }
+  },
+
+
+  clearRecoveryCheckpoint(){
+
+    localStorage.removeItem(
+      this.recoveryKey
+    );
+
+    return true;
+  },
+
+
+  restoreRecoveryCheckpoint(){
+
+    const checkpoint =
+      this.getRecoveryCheckpoint();
+
+
+    if(!checkpoint){
+
+      return {
+        success:
+          false,
+        reason:
+          "recovery-not-found"
+      };
+    }
+
+
+    const result =
+      this.restoreSnapshot(
+        checkpoint.snapshot,
+        {
+          replace:
+            true
+        }
+      );
+
+
+    if(result.success){
+      this.clearRecoveryCheckpoint();
+    }
+
+
+    return {
+      ...result,
+      checkpoint:
+        result.success
+          ? checkpoint
+          : null
+    };
+  },
+
+
+  eraseLocalRecord(){
+
+    const keys =
+      this.getGameKeys();
+
+
+    keys.forEach(
+      key =>
+        localStorage.removeItem(key)
+    );
+
+    this.clearRecoveryCheckpoint();
+    this.initialize();
+
+
+    return {
+      success:
+        true,
+      removedKeys:
+        keys.length
     };
   },
 
@@ -548,6 +968,37 @@ const MinistryStorage = {
     const replace =
       options.replace === true;
 
+    let checkpointCreated =
+      false;
+
+
+    if(
+      replace &&
+      options.createCheckpoint === true
+    ){
+
+      const checkpoint =
+        this.createRecoveryCheckpoint(
+          options.checkpointReason ||
+          "before-restore"
+        );
+
+
+      if(!checkpoint.success){
+
+        return {
+          success:
+            false,
+          reason:
+            "checkpoint-save-failed"
+        };
+      }
+
+
+      checkpointCreated =
+        true;
+    }
+
 
     if(replace){
 
@@ -590,6 +1041,7 @@ const MinistryStorage = {
         true,
       reason:
         null,
+      checkpointCreated,
       restoredKeys:
         Object.keys(
           snapshot.data
@@ -686,6 +1138,24 @@ const MinistryStorage = {
     options = {}
   ){
 
+    const remote =
+      await this.loadFromRemote();
+
+
+    if(!remote.success){
+      return remote;
+    }
+
+
+    return this.restoreSnapshot(
+      remote.snapshot,
+      options
+    );
+  },
+
+
+  async loadFromRemote(){
+
     if(!this.remoteAdapter){
 
       return {
@@ -703,10 +1173,30 @@ const MinistryStorage = {
         await this.remoteAdapter
           .loadSnapshot();
 
-      return this.restoreSnapshot(
-        snapshot,
-        options
-      );
+      const validation =
+        this.validateSnapshot(
+          snapshot
+        );
+
+
+      if(!validation.valid){
+
+        return {
+          success:
+            false,
+          reason:
+            validation.reason
+        };
+      }
+
+
+      return {
+        success:
+          true,
+        reason:
+          null,
+        snapshot
+      };
     }
     catch(error){
 

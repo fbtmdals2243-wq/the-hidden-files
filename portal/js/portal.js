@@ -184,6 +184,18 @@ CLEARANCE ISSUANCE: PENDING</div>
 
         </button>
 
+        <div class="portal-privacy">
+
+          <a
+            class="privacy-link"
+            href="privacy.html">
+
+            DATA &amp; PRIVACY NOTICE
+
+          </a>
+
+        </div>
+
       </div>
 
     </section>
