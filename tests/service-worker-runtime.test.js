@@ -106,7 +106,7 @@ async function run(){
 
         return [
           "hidden-files-portal-old",
-          "hidden-files-portal-2026-08-step-29",
+          "hidden-files-portal-2.0.0-public-alpha.1",
           "unrelated-site-cache"
         ];
       },
