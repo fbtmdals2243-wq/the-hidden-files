@@ -918,3 +918,221 @@ label{
     width:100%;
   }
 }
+
+/* =========================================================
+   INSTALLABLE PORTAL · ACCESSIBILITY · SMALL SCREENS
+========================================================= */
+
+html{
+  color-scheme:dark;
+  -webkit-text-size-adjust:100%;
+}
+
+body{
+  overflow-wrap:anywhere;
+}
+
+.skip-link{
+  position:fixed;
+  z-index:1000;
+  top:12px;
+  left:12px;
+  padding:12px 16px;
+  border:2px solid #efe6d2;
+  background:#030504;
+  color:#efe6d2;
+  transform:translateY(-180%);
+  transition:transform .16s ease;
+}
+
+.skip-link:focus{
+  transform:translateY(0);
+}
+
+.app-utility{
+  position:fixed;
+  z-index:40;
+  right:max(12px, env(safe-area-inset-right));
+  bottom:max(12px, env(safe-area-inset-bottom));
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:8px;
+  max-width:min(390px, calc(100vw - 24px));
+  pointer-events:none;
+}
+
+.network-status,
+.utility-button{
+  margin:0;
+  border:1px solid var(--gold);
+  background:rgba(3,5,4,.97);
+  color:#efe6d2;
+  padding:11px 14px;
+  box-shadow:0 12px 32px rgba(0,0,0,.55);
+  line-height:1.4;
+  pointer-events:auto;
+}
+
+.network-status{
+  color:#d8c59b;
+}
+
+.utility-button{
+  min-height:44px;
+  cursor:pointer;
+  font:inherit;
+  letter-spacing:.5px;
+}
+
+.utility-button:disabled{
+  opacity:.58;
+  cursor:wait;
+}
+
+.noscript-notice{
+  position:fixed;
+  inset:auto 12px 12px;
+  z-index:100;
+  margin:0;
+  border:1px solid #9f5f5f;
+  background:#180909;
+  color:#fff;
+  padding:14px;
+  text-align:center;
+}
+
+.offline-panel{
+  width:min(760px,92vw);
+}
+
+.offline-panel .btn{
+  display:inline-block;
+  text-decoration:none;
+}
+
+.terminal,
+.ministry-document,
+.record-comparison{
+  max-width:100%;
+  overflow-wrap:anywhere;
+}
+
+.btn,
+.choice,
+.desk-item,
+.object,
+.utility-button,
+.field,
+.privacy-link{
+  min-height:44px;
+}
+
+.btn:focus-visible,
+.choice:focus-visible,
+.desk-item:focus-visible,
+.object:focus-visible,
+.utility-button:focus-visible,
+.field:focus-visible,
+.privacy-link:focus-visible,
+.skip-link:focus-visible{
+  outline:3px solid #f4cf83;
+  outline-offset:4px;
+}
+
+#app:focus,
+#app h1[tabindex="-1"]:focus,
+#offlineNotice:focus{
+  outline:none;
+}
+
+@media(max-width:600px){
+
+  #app{
+    place-items:start center;
+    padding:
+      max(14px, env(safe-area-inset-top))
+      max(12px, env(safe-area-inset-right))
+      max(84px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left));
+  }
+
+  .panel,
+  .dashboard-panel,
+  .dialogue-panel,
+  .office-screen,
+  .office-scene{
+    width:100%;
+    min-width:0;
+    padding:20px 16px;
+  }
+
+  h1{
+    font-size:clamp(30px,10vw,40px);
+    letter-spacing:1px;
+  }
+
+  h2{
+    font-size:clamp(18px,6vw,24px);
+    letter-spacing:1px;
+  }
+
+  .notice{
+    margin:20px 0;
+    padding:16px;
+  }
+
+  .center .btn,
+  .center > .privacy-link{
+    width:100%;
+    margin-right:0;
+    margin-left:0;
+  }
+
+  .app-utility{
+    left:max(12px, env(safe-area-inset-left));
+    right:max(12px, env(safe-area-inset-right));
+    align-items:stretch;
+    max-width:none;
+  }
+
+  .network-status,
+  .utility-button{
+    width:100%;
+  }
+
+  .seal{
+    letter-spacing:3px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    scroll-behavior:auto !important;
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+
+  .rain{
+    display:none;
+  }
+}
+
+@media(forced-colors:active){
+
+  .panel,
+  .office-screen,
+  .office-scene,
+  .notice,
+  .terminal,
+  .btn,
+  .choice,
+  .desk-item,
+  .object{
+    border:1px solid CanvasText;
+  }
+}
