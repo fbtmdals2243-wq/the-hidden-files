@@ -2,6 +2,8 @@
 
 THE HIDDEN FILES is a browser-based British Ministry of Magic employee experience built with static HTML, CSS, and vanilla JavaScript.
 
+Current release: `2.0.0-public-alpha.1`
+
 The player does not simply open a mystery game. They are recruited, interviewed, assigned an employee identity, and return to Office 3-B for continuing Ministry work.
 
 The target feeling is:
@@ -155,6 +157,14 @@ Node.js is required only for testing.
 
 ```bash
 node tests/run-all.js
+```
+
+For the complete public-alpha release gate, including SHA-256 portal integrity
+and JavaScript syntax, run:
+
+```bash
+node scripts/generate-release-integrity.js
+node scripts/release-check.js
 ```
 
 The test verifies:

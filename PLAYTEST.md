@@ -17,6 +17,9 @@ http://localhost:8000/portal/
 
 No installation or build step is required.
 
+The hosted HTTPS release may also show `Install Ministry Portal`. Installation
+is optional and uses the same browser-held employee record for that origin.
+
 
 ## Continue an existing employee
 
@@ -144,3 +147,32 @@ The final line must be:
 ```text
 ALL THE HIDDEN FILES TESTS PASSED.
 ```
+
+
+## Install and offline smoke test
+
+Use a separate browser profile so the test does not affect a regular employee
+record.
+
+1. Open the hosted portal while online and wait for Recruitment to render.
+2. Use `Install Ministry Portal` when the browser offers it.
+3. Open Recruitment, Data & Privacy, and the Application screen once.
+4. Close every portal tab so a waiting service-worker update can activate.
+5. Disconnect the test device from the network.
+6. Launch the installed portal and confirm the cached screen renders.
+7. Confirm the offline status is announced and local game progress remains.
+8. Reconnect and confirm the connection-restored announcement appears.
+
+
+## Keyboard and assistive-technology smoke test
+
+1. Press Tab from the top of the page and confirm the skip link is visible.
+2. Activate the skip link and confirm focus reaches the Ministry record.
+3. Move through every control without a mouse and confirm the focus ring is
+   visible.
+4. Start the Application and confirm focus moves to `Applicant Registration`.
+5. Repeat the recruitment and returning-employee paths with VoiceOver or NVDA.
+6. Enable reduced motion and confirm rain and long transitions stop.
+
+Record any human assistive-technology results in
+`PUBLIC_ALPHA_CHECKLIST.md`; automated markup checks alone are not a WCAG claim.

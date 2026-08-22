@@ -70,6 +70,17 @@
 - Automated manifest, cache-boundary, icon, accessibility, and mobile checks
 
 
+## Completed: STEP 30 · Versioned Public Alpha Release Gate
+
+- `2.0.0-public-alpha.1` release metadata across portal surfaces
+- Deterministic SHA-256 manifest for every deployable portal file
+- One-command JavaScript syntax, integrity, security-mode, and test gate
+- Public release checklist separating tested code from external owner actions
+- GitHub Pages deployment, cache-update, hosted smoke-test, and rollback runbook
+- Versioned release notes and expanded install, offline, and keyboard playtest
+- Cloud mode verified disabled with no production project or privileged key
+
+
 ## Optional Post-Release Content
 
 - Additional NPC relationships
@@ -109,10 +120,9 @@ Before a public account-based release, complete:
 
 ## Release Polish
 
-- Hosted browser installation and offline smoke test
-- Manual screen-reader journey audit
-- Hosted error reporting without collecting story text
-- Public release checklist and versioned deployment notes
+- Complete the device-install and fully disconnected manual smoke test
+- Complete a human VoiceOver or NVDA journey before a WCAG claim
+- Provision privacy-safe hosted error reporting without collecting story text
 
 
 ## Persistent Online Ministry
