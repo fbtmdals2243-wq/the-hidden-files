@@ -45,6 +45,10 @@ The current portal includes:
 - One-action undo for the latest file or cloud restore
 - Local record deletion with employee-number confirmation
 - Public data and privacy notice
+- Installable web app manifest and Ministry seal icons
+- Offline portal shell for previously loaded static game screens
+- Same-origin static caching that excludes cloud and account APIs
+- Keyboard focus, reduced-motion, touch-target, and mobile safe-area support
 
 
 ## Story progression
@@ -135,6 +139,11 @@ Then visit:
 http://localhost:8000/portal/
 ```
 
+The install and offline features require an HTTP or HTTPS origin and therefore
+do not activate when `portal/index.html` is opened as a direct `file://` URL.
+The core local game still opens directly, but using the local server keeps one
+stable browser origin for employee records and matches the hosted release.
+
 The Archive OS home page and the employee portal link to each other. The
 CASE-OMEGA epilogue may open the Archive OS directly, while the Archive OS
 sidebar provides a return path to the Ministry employee portal.
@@ -174,6 +183,10 @@ The test verifies:
 - pre-restore recovery checkpoint and one-time undo
 - local record deletion without touching unrelated browser storage
 - account login, per-user cloud save, restore, and local sign-out behavior
+- valid install manifest and 192px/512px application icons
+- complete offline shell coverage for every portal script and stylesheet
+- same-origin GET-only service-worker boundaries that exclude cloud APIs
+- skip navigation, live connection status, reduced motion, and mobile touch targets
 
 
 ## Project structure
@@ -181,9 +194,17 @@ The test verifies:
 ```text
 portal/
 ├── index.html
+├── privacy.html
+├── offline.html
+├── manifest.webmanifest
+├── service-worker.js
+├── icons/
+│   ├── ministry-seal-192.png
+│   └── ministry-seal-512.png
 ├── css/
 │   └── portal.css
 └── js/
+    ├── app-shell.js
     ├── player-engine.js
     ├── world-engine.js
     ├── storage-engine.js
@@ -208,6 +229,7 @@ supabase/
 
 tests/
 ├── run-all.js
+├── pwa-accessibility.test.js
 ├── new-employee-journey.test.js
 ├── storage-engine.test.js
 ├── cloud-engine.test.js

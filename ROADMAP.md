@@ -53,6 +53,23 @@
 - Automated records-safety regression coverage
 
 
+## Completed: STEP 29 · Installable, Offline & Accessible Portal
+
+- Scoped web app manifest with 192px and 512px Ministry icons
+- Install prompt that appears only when the browser reports eligibility
+- Offline application shell covering every portal script and stylesheet
+- Network-first page navigation with a cached offline fallback
+- Static-asset caching limited to same-origin GET requests
+- Cloud, account, Supabase, and cross-origin requests excluded from caching
+- Updates held safely until existing portal tabs close
+- Live online and offline status announcements
+- Skip navigation and screen-transition focus management
+- Visible keyboard focus and 44px minimum interactive targets
+- Reduced-motion and forced-colors support
+- Mobile safe-area, panel, heading, and control refinements
+- Automated manifest, cache-boundary, icon, accessibility, and mobile checks
+
+
 ## Optional Post-Release Content
 
 - Additional NPC relationships
@@ -92,9 +109,8 @@ Before a public account-based release, complete:
 
 ## Release Polish
 
-- Installable offline portal shell
-- Keyboard and screen-reader accessibility audit
-- Mobile layout and low-bandwidth testing
+- Hosted browser installation and offline smoke test
+- Manual screen-reader journey audit
 - Hosted error reporting without collecting story text
 - Public release checklist and versioned deployment notes
 
