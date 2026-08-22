@@ -34,6 +34,16 @@ external checklist in `PUBLIC_ALPHA_CHECKLIST.md` is complete.
 
 ## 3. Hosted smoke test
 
+From the repository root, first run the deterministic hosted release check:
+
+```bash
+node scripts/hosted-release-check.js
+```
+
+It fetches the deployed release metadata and all 41 portal files, verifies HTTP
+success, compares every SHA-256 hash with the tested local integrity manifest,
+and confirms the manifest and service-worker content types.
+
 Verify these exact paths return HTTP 200:
 
 ```text

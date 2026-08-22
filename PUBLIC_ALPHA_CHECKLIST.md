@@ -22,6 +22,8 @@
 - [x] Keyboard focus, skip navigation, reduced motion, touch targets, and mobile
   safe areas are implemented and automatically checked.
 - [x] Hosted release assets match the tested source files.
+- [x] Hosted metadata, content types, and all 41 portal hashes pass the
+  deterministic hosted release check.
 - [x] Fifteen automated suites pass from a clean clone of `main`.
 
 

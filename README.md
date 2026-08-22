@@ -167,6 +167,13 @@ node scripts/generate-release-integrity.js
 node scripts/release-check.js
 ```
 
+After GitHub Pages publishes `main`, verify the deployed files against the same
+release manifest:
+
+```bash
+node scripts/hosted-release-check.js
+```
+
 The test verifies:
 
 - recruitment identity through Day 6 preservation
