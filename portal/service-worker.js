@@ -1,8 +1,11 @@
 const CACHE_NAMESPACE =
   "hidden-files-portal-";
 
+const RELEASE_VERSION =
+  "2.0.0-public-alpha.1";
+
 const CACHE_NAME =
-  `${CACHE_NAMESPACE}2026-08-step-29`;
+  `${CACHE_NAMESPACE}${RELEASE_VERSION}`;
 
 const APP_SHELL = [
   "./",
@@ -10,6 +13,8 @@ const APP_SHELL = [
   "./offline.html",
   "./privacy.html",
   "./manifest.webmanifest",
+  "./release.json",
+  "./release-integrity.json",
   "./css/portal.css",
   "./icons/ministry-seal-192.png",
   "./icons/ministry-seal-512.png",
