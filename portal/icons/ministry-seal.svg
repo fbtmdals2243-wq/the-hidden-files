@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">The Hidden Files Ministry seal</title>
+  <desc id="desc">A gold Ministry M inside a dark green circular seal.</desc>
+  <rect width="512" height="512" rx="112" fill="#07100c"/>
+  <circle cx="256" cy="256" r="178" fill="#0b2018" stroke="#b99355" stroke-width="18"/>
+  <circle cx="256" cy="256" r="139" fill="none" stroke="#d8c59b" stroke-width="5" stroke-dasharray="8 14"/>
+  <path d="M151 342V175h47l58 83 58-83h47v167h-49V250l-56 78-56-78v92z" fill="#d8c59b"/>
+  <path d="M256 91l10 21 23 3-17 16 4 23-20-11-20 11 4-23-17-16 23-3z" fill="#b99355"/>
+  <path d="M256 421l-10-21-23-3 17-16-4-23 20 11 20-11-4 23 17 16-23 3z" fill="#b99355"/>
+</svg>
