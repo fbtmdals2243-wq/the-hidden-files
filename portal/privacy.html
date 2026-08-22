@@ -5,9 +5,23 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<meta name="theme-color" content="#0b120f">
+
+<meta
+name="description"
+content="How The Hidden Files stores, restores, synchronizes, and deletes fictional employee records.">
 
 <title>Data &amp; Privacy · The Hidden Files</title>
+
+<link rel="manifest" href="manifest.webmanifest">
+
+<link
+rel="icon"
+type="image/png"
+sizes="192x192"
+href="icons/ministry-seal-192.png">
 
 <link rel="stylesheet" href="css/portal.css">
 
@@ -15,7 +29,33 @@ content="width=device-width, initial-scale=1.0">
 
 <body>
 
-<main id="app">
+<a class="skip-link" href="#app">
+  Skip to data and privacy notice
+</a>
+
+<aside
+  class="app-utility"
+  aria-label="Portal connection and installation">
+
+  <p
+    id="networkStatus"
+    class="network-status"
+    role="status"
+    aria-live="polite"
+    hidden>
+  </p>
+
+  <button
+    id="installAppButton"
+    class="utility-button"
+    type="button"
+    hidden>
+    Install Ministry Portal
+  </button>
+
+</aside>
+
+<main id="app" tabindex="-1">
 
   <section class="panel privacy-panel">
 
@@ -106,6 +146,8 @@ content="width=device-width, initial-scale=1.0">
   </section>
 
 </main>
+
+<script src="js/app-shell.js"></script>
 
 </body>
 </html>

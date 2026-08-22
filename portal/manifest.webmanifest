@@ -1,0 +1,54 @@
+{
+  "id": "./",
+  "name": "The Hidden Files · Ministry Portal",
+  "short_name": "Hidden Files",
+  "description": "A local-first Ministry employee mystery and continuing-service game.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "any",
+  "theme_color": "#0b120f",
+  "background_color": "#030504",
+  "categories": [
+    "games",
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "icons/ministry-seal-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/ministry-seal-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Open Ministry Portal",
+      "short_name": "Portal",
+      "url": "./",
+      "icons": [
+        {
+          "src": "icons/ministry-seal-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Data and Privacy Notice",
+      "short_name": "Privacy",
+      "url": "privacy.html"
+    }
+  ]
+}
