@@ -8,6 +8,7 @@ const tests = [
   "cloud-engine.test.js",
   "cloud-portal.test.js",
   "pwa-accessibility.test.js",
+  "service-worker-runtime.test.js",
   "new-employee-journey.test.js",
   "case006-submission.test.js",
   "training-engine.test.js",
